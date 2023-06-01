@@ -1,0 +1,92 @@
+prontera,123,67,3	script	SG Resetter	644,{
+   query_sql("SELECT CAST(`value` AS CHAR(13)) FROM `in_security` WHERE account_id = " + getcharid(3), @INOnHand);
+	query_sql("SELECT `block` FROM `in_security` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@INOnBlock);
+   query_sql("SELECT `value` FROM `in_delay_transact` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @INTransaction);
+   if($sgreseter == 1) {
+      mes "[ SG Resetter ]";
+      mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+      close;
+    }
+if( Class == 4047 ) {
+   if (.@INOnBlock > 0 ) {
+      mes "[ SG Resetter ]";
+      mes "Your account block on ^8a2be2$IN^000000 transaction";
+      mes "^ffffff_^000000";
+      mes "^ff0000Please contact the administrator^000000";
+      close;
+   }
+if(@INTransaction > gettimetick(2)){
+   mes "[ SG Resetter ]";
+   mes "^ff0000Note^000000: For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+   mes "--";
+   mes "You need to wait "+Time2Str(@INTransaction)+" before you can do another transaction.";
+   close;
+}
+   mes "[ SG Resetter ]";
+   mes "SG Reset 10 ^8a2be2$IN^000000 each reset";
+   mes "--";
+   mes "What do you wish to reset?";
+   next;
+   menu "Reset Feeling",feeling,"Reset Hatred",hatred;
+
+feeling:
+if(countitem(35371) < 10 ) {
+    mes "[ SG Resetter ]";
+    mes "Sorry you dont have enought ^8a2be2$IN^000000";
+    close;
+}
+   delitem 35371,10;
+   //#TCGOnHand -= 10;
+   .ttime$ = gettimetick(2)+900;
+   mes "[ SG Resetter ]";
+   mes "Please wait while we are processing your request...";
+   sleep2 1000;
+   query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',10) ON DUPLICATE KEY UPDATE `value` = `value` - 10;");
+   sleep2 1000;
+	query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+   sleep2 1000;
+	query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',10) ON DUPLICATE KEY UPDATE `value` = `value` + 10;");
+   atcommand "@feelreset";
+   mes "Complete...";
+   close;
+
+hatred:
+if(countitem(35371) < 10 ) {
+    mes "[ SG Resetter ]";
+    mes "Sorry you dont have enought ^8a2be2$IN^000000";
+    close;
+}
+   delitem 35371,10;
+   //#TCGOnHand -= 10;
+   .ttime$ = gettimetick(2)+900;
+   mes "[ SG Resetter ]";
+   mes "Please wait while we are processing your request...";
+   sleep2 1000;
+   query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',10) ON DUPLICATE KEY UPDATE `value` = `value` - 10;");
+   sleep2 1000;
+	query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+   set PC_HATE_MOB_MOON, 0;
+   set PC_HATE_MOB_STAR, 0;
+   set PC_HATE_MOB_SUN, 0;
+   mes "[ SG Resetter ]";
+   mes "Complete...";
+   next;
+   mes "[ SG Resetter ]";
+   mes "Hatred will be reset upon relogging.";
+   mes "Do you wish to relog now?";
+   next;
+   menu "Relog now",relog,"Later",later;
+
+relog:
+   atcommand "@kick "+strcharinfo(0);
+   end;
+
+later:
+   mes "[ SG Resetter ]";
+   mes "Ok then, but don't forget changes won't take effect until you relog.";
+   close;
+}
+   mes "[ SG Resetter ]";
+   mes "Whaat?";
+   close;
+}

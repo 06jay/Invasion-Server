@@ -1,0 +1,124 @@
+prontera,117,125,3	script	Gacha	562,{
+	if($gachama1 == 1) {
+    mes "[ Gatcha Machine ]";
+    mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+    close;
+	}
+	mes "[ Gatcha Machine ]";
+	mes "Hello Sir! Are you out";
+	mes "shopping in the city?!";
+	next;
+	
+switch(select("Play Gatcha:Information")){
+	case 1:
+		mes "[ Gatcha Machine ]";
+		mes "I'm Gatcha Machine! I'll exchange ";
+		mes "cool random prizes for every";
+		mes "^ff0000864,000 ^000000zeny.";
+        mes "^ff000017^000000 cashpoints.";
+		next;
+		mes "[ Gatcha Machine ]";
+		mes "You can still get random item";
+		mes "if you failed to get the grand";
+		mes "prize and special prizes.";
+		next;
+		mes "[ Gatcha Machine ]";
+		mes "you will get ^ff00001^000000 Life Insurance as bonus for every roll";
+		next;
+        .@weight = 100 * Weight / MaxWeight; 
+        if( 70 <= .@weight ) {	
+        mes "[ Gatcha Machine ]";
+        mes "You are currently at 70% percent of your maximum weight."; 
+        close;  
+        }
+	switch(select("Roll:No")){
+		case 1:
+			if (Zeny < 864000 || #CASHPOINTS < 17 ) {
+			mes "[ Gatcha Machine]";
+			mes "You do not have enough zeny or cashpoints.";
+			close;
+			}
+			next;	
+			.@gancho = rand(1,100),{
+			if (.@gancho <= 15) setarray .@duca[0],12209,1;           //1-15 15% - insurance
+			else if(.@gancho <=30) setarray .@duca[0],35385,20;       // 16-30 15% - LG White potion
+			else if(.@gancho <=45) setarray .@duca[0],35386,20;       // 31-45 15% - LG blue potion
+			else if(.@gancho <=60) setarray .@duca[0],985,1;       // 46-60 15% - Elunium
+			else if(.@gancho <=75) setarray .@duca[0],984,1;       // 61-75 15% - Oridecon
+			else if(.@gancho <=84) setarray .@duca[0],603,1;       // 76-84 8% - OBB
+			else if(.@gancho <=87) setarray .@duca[0],617,1;       //  85-87 3% - OVB
+			else if(.@gancho <=91) setarray .@duca[0],5403,1;       //   	88-91 Fish_In_Mouth 4%
+			else if(.@gancho <=95) setarray .@duca[0],5521,1;       // 		92-95 Angry Mouth 4%
+			else if(.@gancho <=97) setarray .@duca[0],5208,1;       // 		96-97 rideword hat 2%
+			else if(.@gancho <=99) setarray .@duca[0],35003,1;       // 	98-99 refine protection potion 2%
+			else if(.@gancho <=100) setarray .@duca[0],18503,1;       // 	100Small Devil Horns 1%
+			mes "[ Gatcha Machine ]";
+			progressbar "0x11CC99",3; 
+			specialeffect2 EF_REMOVETRAP;
+			getitem .@duca[0],.@duca[1];
+			set Zeny, Zeny-864000;
+            set #CASHPOINTS, #CASHPOINTS-17;
+			mes " You draw ^ff0000"+.@gancho+"^000000 out of ^0000ff100^000000" ;
+			mes " You win ^0000ff"+.@duca[1]+"^000000x ^ff0000"+getitemname(.@duca[0])+"^000000 " ;
+			if(.@gancho <= 100 && .@gancho > 88 )
+			announce "Congratulations! "+strcharinfo(0)+" just received "+ .@duca[1] +"x "+ getitemname(.@duca[0]) +" from [ Gacha Machine ] draw "+.@gancho+" out of 100 (prontera 122 110)!",0,0xe08dff;
+			end;
+			}
+			
+		case 2:
+			mes "[ Gatcha Machine ]";
+			mes "Alright..";
+			close;
+			}
+			
+
+	case 2:
+		mes "[ Gatcha Machine ]";
+		mes "this gacha is limited version only";
+		mes "for every change of gacha machine.";
+		mes "it will increase per roll by 20%";
+		next;
+		mes "but dont worry....";
+		mes "it will announce in game and post in on our facebook page 1 to 2 weeks prior notice before we change ";
+		next;	
+		mes "[ Gatcha Machine ]";
+		mes "the following information contains prize list";
+		mes "__________________________________";
+		next;
+		mes "[ Gatcha Machine ]";
+        mes  "per draw you will get random number between 1 and 100.";
+        mes "__________________________________";
+        mes  "if you get";
+        mes  "1 to 15 life insurance (15)";
+        mes  "16 to 30 low grade white potion (20)";
+        mes  "31 to 45 Low grade blue potion";
+        mes  "46 to 60 elunium";
+        mes  "61 to 75 oridecon";
+        mes  "76 to 84 old blue box";
+        next;
+        mes "[ Gatcha Machine ]";
+        mes  "85 to 87 old purple box";
+        mes  "88 to 91 Fish in mouth";
+        mes  "92 to 95 angry mouth";
+        mes  "96 to 97 rideword hat";
+        mes  "98 to 99 refine protection potion";
+        mes  "100 Small Devil Horns";
+
+
+        next ;
+        mes "[ Gatcha Machine ]";
+        mes "life insurance (1) is 15%" ;
+        mes "low grade white potion (1)is 15%" ;
+        mes "low grade blue potion (1) is 15%" ;
+        mes "elunium (1) is 15%" ;
+        mes "OBB (1) is 9%" ;
+        mes "Old Purple Box is 3%" ;
+        mes "Fish in mouth is 4%" ;
+        mes "Angry mouth  is 4%" ;
+        mes "Rideword Hat is 2%" ;
+        mes "refine protection potion is 2%" ;
+        mes "small devil horn is 1%" ;
+      
+        close;
+     }
+}	

@@ -1,0 +1,1 @@
+guild_vs3	mapflag	restricted	2

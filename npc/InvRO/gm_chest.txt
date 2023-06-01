@@ -1,0 +1,119 @@
+prontera,102,66,5	script	GM Chest	10005,{
+    .@weight = 100 * Weight / MaxWeight;
+	.n$ = "[ ^000088GM Chest^000000 ]";
+    if( 50 <= .@weight ) {
+        mes .n$;
+        mes "You are currently at 50% percent of your maximum weight."; 
+        close;
+    }
+	mes .n$;
+	mes "Are you looking for treasure?";
+	next;
+	.@s1 = query_sql("SELECT `id`,`sender_name`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`message`,`sent_date` FROM `gm_transfer_npc` WHERE `receiver_name` = '"+strcharinfo(0)+"' AND `status` = '0'",.@id,.@sender0$,.@nameid,.@amt,.@refine,.@card0,.@card1,.@card2,.@card3,.@message$,.@sentdate$);
+	.@s2 = query_sql("SELECT `id`,`gm_name` FROM `new_rewards` WHERE `name` = '"+strcharinfo(0)+"' ",.@id1,.@sender1$);
+	.@s3 = query_sql("SELECT `id`,`gm_name` FROM `admin_generate_item` WHERE `name` = '"+strcharinfo(0)+"' ",.@id2,.@sender2$);
+	switch(select(
+		(.@s1) ? "Claim Item from ^ff0000"+.@sender0$[.@select]+"^000000" : "",
+		(.@s2) ? "Claim Item from ^ff0000"+.@sender1$[.@select]+"^000000" : "",
+		(.@s3) ? "Claim Item from ^ff0000"+.@sender2$[.@select]+"^000000" : "",
+        "Nothing"
+		)){
+		case 1:
+			if(!.@s1){
+				mes .n$;
+				mes "You don't have unclaimed item.";
+				close;
+			}
+			mes .n$;
+			mes "GM has sent you a item.";
+			next;
+			for(@i = 0; @i < .@s1; @i = @i+1)
+				.@menu$ = .@menu$ +":^ff0000"+ .@sender0$[@i] +"^000000 sent^0000ff"+((.@refine[@i]>1) ? " +"+.@refine[@i]+" ":"")+" "+((.@amt[@i] > 1) ? .@amt[@i]+"x ":"")+""+getitemname(.@nameid[@i])+"^000000.";
+				.@select = select(.@menu$) - 2;
+			mes .n$;
+			mes "Player "+.@sender0$[.@select]+" sent you "+.@amt[.@select]+"x "+getitemname(.@nameid[.@select])+" on "+.@sentdate$[.@select]+".";
+			if(!checkweight(.@nameid[.@select],.@amt[.@select])){
+				mes "Please clean your inventory first before claiming your item.";
+				mes "Its either you don't have enough space in your inventory or you have reached more than 30,000 item in total after you receive your item.";
+				close;
+			} else {
+				mes "Message : "+.@message$[.@select];
+				getitem2 .@nameid[.@select],.@amt[.@select],1,.@refine[.@select],0,.@card0[.@select],.@card1[.@select],.@card2[.@select],.@card3[.@select];
+				query_sql("UPDATE `gm_transfer_npc` SET `received_date` = NOW(), `status` = '1' WHERE `id` = '"+.@id[.@select]+"'");
+				close;
+			}
+
+		case 2:
+			query_sql("SELECT `id`,`name` FROM `new_rewards` WHERE `name` = '"+strcharinfo(0)+"'", .@id1,.@name$);
+			if(!.@id1){
+				mes .n$;
+				mes "You don't have items waiting.";
+				close;
+			} else {
+				for(.@i = 0;.@i < getarraysize(.@name$);.@i++){
+					query_sql("SELECT `itemid1`, `itemrefine1`, `amount1`, `itemid2`, `itemrefine2`, `amount2`, `itemid3`, `itemrefine3`, `amount3`, `itemid4`, `itemrefine4`, `amount4`, `itemid5`, `itemrefine5`, `amount5`, `itemid6`, `itemrefine6`, `amount6`, `itemid7`, `itemrefine7`, `amount7`, `itemid8`, `itemrefine8`, `amount8`, `itemid9`, `itemrefine9`, `amount9`, `itemid10`, `itemrefine10`, `amount10` FROM `new_rewards` WHERE `name` = '" +strcharinfo(0)+ "' ",.@s_Item_id1,.@s_Item_Refine1,.@s_Item_Amount1,.@s_Item_id2,.@s_Item_Refine2,.@s_Item_Amount2,.@s_Item_id3,.@s_Item_Refine3,.@s_Item_Amount3,.@s_Item_id4,.@s_Item_Refine4,.@s_Item_Amount4,.@s_Item_id5,.@s_Item_Refine5,.@s_Item_Amount5,.@s_Item_id6,.@s_Item_Refine6,.@s_Item_Amount6,.@s_Item_id7,.@s_Item_Refine7,.@s_Item_Amount7,.@s_Item_id8,.@s_Item_Refine8,.@s_Item_Amount8,.@s_Item_id9,.@s_Item_Refine9,.@s_Item_Amount9,.@s_Item_id10,.@s_Item_Refine10,.@s_Item_Amount10);
+					mes .n$;
+					mes "Someone has sent you a item.";
+					next;
+					mes .n$;
+						if (((Weight*100)/MaxWeight) < 50) {
+							for(.@s=1;.@s<11;.@s++){
+								if(getd(".@s_Item_id" + .@s) != 0){
+									getitem2 getd(".@s_Item_id" + .@s),getd(".@s_Item_Amount" + .@s),1,getd(".@s_Item_Refine" + .@s),0,0,0,0,0;	
+								}
+							}
+							mes "You received all your items.";
+							query_sql("DELETE FROM `new_rewards` WHERE `name` = '"+strcharinfo(0)+"'");
+							query_sql("UPDATE `new_rewards_log` SET `date_claimed` = NOW()");
+							close;
+						}else{
+							mes .n$;
+							mes "Woow!";
+							mes "how you can move like that !!?";
+							mes "you must be less then 50% Weight to get the Item;";
+							close;
+						}
+				}
+			}
+
+		case 3:
+			query_sql("SELECT `id`,`name` FROM `admin_generate_item` WHERE `name` = '"+strcharinfo(0)+"'", .@id2,.@name$);
+			if(!.@id2){
+				mes .n$;
+				mes "You don't have items waiting.";
+				close;
+			} else {
+				for(.@i = 0;.@i < getarraysize(.@name$);.@i++){
+					query_sql("SELECT `itemid1`, `amount1`, `itemid2`, `amount2`, `itemid3`, `amount3`, `itemid4`, `amount4`, `itemid5`, `amount5`, `itemid6`, `amount6`, `itemid7`, `amount7`, `itemid8`, `amount8`, `itemid9`, `amount9`, `itemid10`, `amount10` FROM `admin_generate_item` WHERE `name` = '" +strcharinfo(0)+ "' ",.@s_Item_id1,.@s_Item_Amount1,.@s_Item_id2,.@s_Item_Amount2,.@s_Item_id3,.@s_Item_Amount3,.@s_Item_id4,.@s_Item_Amount4,.@s_Item_id5,.@s_Item_Amount5,.@s_Item_id6,.@s_Item_Amount6,.@s_Item_id7,.@s_Item_Amount7,.@s_Item_id8,.@s_Item_Amount8,.@s_Item_id9,.@s_Item_Amount9,.@s_Item_id10,.@s_Item_Amount10);
+					mes .n$;
+					mes "Someone has sent you a item.";
+					next;
+					mes .n$;
+						if (((Weight*100)/MaxWeight) < 50) {
+							for(.@s=1;.@s<11;.@s++){
+								if(getd(".@s_Item_id" + .@s) != 0){
+									getitem getd(".@s_Item_id" + .@s),getd(".@s_Item_Amount" + .@s);	
+								}
+							}
+							mes "You received all your items.";
+							query_sql("DELETE FROM `admin_generate_item` WHERE `name` = '"+strcharinfo(0)+"'");
+							query_sql("UPDATE `admin_generate_item_log` SET `date_claimed` = NOW()");
+							close;
+						}else{
+							mes .n$;
+							mes "Woow!";
+							mes "how you can move like that !!?";
+							mes "you must be less then 50% Weight to get the Item;";
+							close;
+						}
+				}
+			}
+
+        case 4:
+            close;
+
+
+}
+
+}
+	

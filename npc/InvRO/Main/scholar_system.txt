@@ -1,0 +1,772 @@
+///DROP TABLE IF EXISTS `marketplace_main`.`guild_castle`;
+//CREATE TABLE  `marketplace_main`.`guild_castle` (
+//  `castle_id` int(11) unsigned NOT NULL default '0',
+//  `guild_id` int(11) unsigned NOT NULL default '0',
+//  `economy` int(11) unsigned NOT NULL default '0',
+//  `defense` int(11) unsigned NOT NULL default '0',
+//  `triggerE` int(11) unsigned NOT NULL default '0',
+//  `triggerD` int(11) unsigned NOT NULL default '0',
+//  `nextTime` int(11) unsigned NOT NULL default '0',
+//  `payTime` int(11) unsigned NOT NULL default '0',
+//  `createTime` int(11) unsigned NOT NULL default '0',
+//  `visibleC` int(11) unsigned NOT NULL default '0',
+//  `visibleG0` int(11) unsigned NOT NULL default '0',
+//  `visibleG1` int(11) unsigned NOT NULL default '0',
+//  `visibleG2` int(11) unsigned NOT NULL default '0',
+//  `visibleG3` int(11) unsigned NOT NULL default '0',
+//  `visibleG4` int(11) unsigned NOT NULL default '0',
+//  `visibleG5` int(11) unsigned NOT NULL default '0',
+//  `visibleG6` int(11) unsigned NOT NULL default '0',
+//  `visibleG7` int(11) unsigned NOT NULL default '0',
+//  PRIMARY KEY  (`castle_id`),
+//  KEY `guild_id` (`guild_id`)
+//) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+///* Additional setup
+//
+//1. add this to your groups.conf. You need to push up the existing groups upwards to occupy 1 and 2.
+//2 is used by the manager(for @storeall command)
+//
+//{
+//	id: 1
+//	name: "Worker"
+//	inherit: ( "Player" ) /* can do everything Players can and more */
+//	level: 0
+//	commands: {
+//		/* informational commands */
+//	}
+//	permissions: {
+//		can_trade: false
+//	}
+//},
+//{
+//	id: 2
+//	name: "Manager"
+//	inherit: ( "Player" ) /* can do everything Players can and more */
+//	level: 0
+//	commands: {
+//		/* informational commands */
+//		storeall: true
+//	}
+//	permissions: {
+//		
+//	}
+//},
+//
+//
+//2. You can change group ids on the config below the OnInit:
+//
+//
+//3. on conf/map_athena.conf there is a setting called autosave_time:
+//change that to 60 seconds or lower. This is so that the view worker section will update faster.
+//The script uses rathena main db char_reg_num after hiring to set the boss of the worker.
+//char_reg_num is fetched by the npc, but rathena will only save the variable on certain actions such as when the worker moves to another map/trades/relog etc.
+//or when autosave_time triggers. If you keep this default the manager/boss will need to wait about 300 seconds before the worker appears on view worker.
+//Same thing when doing @jobend , the npc may still show the former worker at view worker till autosave kicks in.
+//
+//
+//4. If you encounter any issue please message me right away including how to reproduce the issue. Although I've tested this to the best of my ability, 
+//I still recommend doing your own testing before allowing player access.
+//
+//Other notes:
+//When sending an item, I made it so they can just pick from a menu based on items in their inventory instead of trying to find out what the item id is.
+//Let me know if you want that changed to item id instead.
+//
+//
+//*/
+
+-	script	transfershare_sys	-1,{
+
+OnInit:
+	bindatcmd "manage",strnpcinfo(3) + "::OnManage";
+	bindatcmd "acceptjob",strnpcinfo(3) + "::OnAccept";
+	bindatcmd "rejectjob",strnpcinfo(3) + "::OnReject";
+	bindatcmd "jobend",strnpcinfo(3) + "::OnJobend";
+
+	.employee_groupid = 1;
+	.boss_groupid = 2;
+	//.@npcname$ = "[Transfer]";
+	
+	end;
+
+OnManage:
+	.@name$ = .@atcmd_parameters$[0];
+
+	
+
+	if (.@name$ != "") {
+		if (employer_rid || #employer_rid) {
+			dispbottom "You cannot be an employer";
+			end;
+		}
+		.@rid = getcharid(3);
+		.@boss_name$ = strcharinfo(0);
+		if (attachrid(getcharid(3,.@name$))) {
+			if (getgroupid() == .employee_groupid) {
+				attachrid(.@rid);
+				dispbottom "Player is already hired by someone else";
+				end;
+			}
+			dispbottom .@boss_name$+" wants to hire you as scholar.";
+			dispbottom "Please type @acceptjob or @rejectjob";
+			@futureboss$ = .@boss_name$;
+			@futureboss = .@rid;
+			attachrid(.@rid);
+			dispbottom "Hiring Invitation Sent";
+			end;
+		} else {
+			dispbottom "Player is offline";
+			end;
+		}
+	}
+	mes "[ Scholar Management ]";
+	mes "Hi, What can I do for you?";
+
+	.@count = query_sql("SELECT `char_id` FROM `char_reg_num` WHERE `key`='employer_rid' AND `value`="+getcharid(3),.@employees);
+	if (employer_rid) {
+		.@menu$ = "Send to IGN and Manager:Claim from Manager:Send to Manager";
+
+		switch(select(.@menu$)) {
+
+			case 2: // TODO Claim
+				.@nb = query_sql("SELECT `char_id` FROM `char` WHERE `name`='"+employer_name$+"'",.@boss_charid);
+				if (!.@nb) {
+					mes "Manager not found";
+					close;
+				}
+				.@claimshare = query_sql("SELECT `nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`enchantgrade` FROM `transfer` WHERE `char_id`="+getcharid(0)+" AND `sender_id`="+.@boss_charid,.@nameid,.@amount,.@identify,.@refine,.@attribute,.@card1,.@card2,.@card3,.@card4,.@opt_id1,.@opt_val1,.@opt_parm1,.@opt_id2,.@opt_val2,.@opt_parm2,.@opt_id3,.@opt_val3,.@opt_parm3,.@opt_id4,.@opt_val4,.@opt_parm4,.@opt_id5,.@opt_val5,.@opt_parm5,.@enchantgrade);
+
+				if (!.@claimshare) {
+					next;
+					mes "[ Scholar Management ]";
+					mes "Nothing to claim from Manager at this time";
+					close;
+				}
+
+				if (!checkweight2(.@nameid,.@amount)) {
+					next;
+					mes "[ Scholar Management ]";
+					mes "Please free up some space";
+					close;
+				}
+				query_sql("DELETE FROM `transfer` WHERE `char_id`="+getcharid(0)+" AND `sender_id`="+.@boss_charid);
+				freeloop(1);
+				for (.@i = 0;.@i < .@claimshare;.@i++) {
+					
+					deletearray(.@optionids);
+					deletearray(.@optionvals);
+					deletearray(.@optionparams);
+					for (.@j = 1;.@j <= 5;.@j++) {
+						setarray(.@optionids[.@j-1],getd(".@opt_id"+j+"["+.@i+"]"));
+						setarray(.@optionvals[.@j-1],getd(".@opt_val"+j+"["+.@i+"]"));
+						setarray(.@optionparams[.@j-1],getd(".@opt_parm"+j+"["+.@i+"]"));
+					}
+
+
+					getitem3 .@nameid[.@i],.@amount[.@i],.@identify[.@i],.@refine[.@i],.@attribute[.@i],.@card1[.@i],.@card2[.@i],.@card3[.@i],.@card4[.@i],.@optionids,.@optionvals,.@optionparams;
+
+				}
+				freeloop(0);
+				next;
+				mes "[ Scholar Management ]";
+				mes "Thank you for claiming!";
+				close;
+
+			case 1: //Send to IGN and Manager
+				while(1) 
+				{
+					next;
+					getinventorylist;
+					mes "[ Scholar Management ]";
+					mes "Please select the item you want to send";
+					.@menu$ = "";
+					freeloop(1);
+					for (.@i = 0; .@i < @inventorylist_count;.@i++){
+						.@item$ = "";
+						.@item$ += " "+getitemname(@inventorylist_id[.@i])+"["+@inventorylist_id[.@i]+"]";
+						if (@inventorylist_refine[.@i])
+							.@item$ += " +"+@inventorylist_refine[.@i];
+						if (@inventorylist_card1[.@i])
+							.@item$ += " ["+@inventorylist_card1[.@i];
+						if (@inventorylist_card2[.@i])
+							.@item$ += ","+@inventorylist_card2[.@i];
+						if (@inventorylist_card3[.@i])
+							.@item$ += ","+@inventorylist_card3[.@i];
+						if (@inventorylist_card4[.@i])
+							.@item$ += ","+@inventorylist_card4[.@i];
+
+						if (@inventorylist_card1[.@i])
+							.@item$ +="]";
+
+						.@menu$ += .@item$ + ":";
+					}
+					freeloop(0);
+
+					.@item = select(.@menu$)-1;
+
+					if (@inventorylist_bound[.@item] > BOUND_NONE || @inventorylist_expire[.@item] ||  @inventorylist_tradable[.@item] < 1) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "This item is non trade-able";
+						close;
+					}
+					
+					mes "Please input amount of "+getitemname(@inventorylist_id[.@item])+" to send";
+					input(.@amount);
+					if (.@amount % 2 != 0) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Amount is not divisible by 2.";
+						close;
+					}
+					mes "Please enter IGN of receiver";
+					input(.@receiver$);
+					.@nb = query_sql("SELECT `char_id` FROM `char` WHERE `name`='"+.@receiver$+"'",.@charid);
+					if (!.@nb) {
+						mes "Receiver not found";
+						close;
+					}
+					.@nb = query_sql("SELECT `char_id` FROM `char` WHERE `name`='"+employer_name$+"'",.@boss_charid);
+					if (!.@nb) {
+						mes "Manager not found";
+						close;
+					}
+					next;
+					mes "[ Scholar Management ]";
+					mes "Item to send: "+ getitemname(@inventorylist_id[.@item]);
+					mes "Amount: "+.@amount;
+					mes "Receiver: "+.@receiver$;
+					mes "Manager: "+employer_name$;
+					if (select("Proceed:Cancel")==2) {
+						next;
+						continue;
+					}
+
+				
+					
+					if (countitem2(@inventorylist_id[.@item],@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item]) < .@amount) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Item(s) not enough. Please be sure to enter a valid amount";
+						close;
+					}
+
+					deletearray(.@optionids);
+					deletearray(.@optionvals);
+					deletearray(.@optionparams);
+					for (.@j = 1;.@j <= 5;.@j++) {
+						setarray(.@optionids[.@j-1],getd("@inventorylist_option_id"+j+"["+.@item+"]"));
+						setarray(.@optionvals[.@j-1],getd("@inventorylist_option_value"+j+"["+.@item+"]"));
+						setarray(.@optionparams[.@j-1],getd("@inventorylist_option_parameter"+j+"["+.@item+"]"));
+					}
+
+
+					delitem3 @inventorylist_id[.@item],.@amount,@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],.@optionids,.@optionvals,.@optionparams;
+
+
+					.@q$ = sprintf("INSERT INTO `transfer` (`sender_id`,`char_id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`expire_time`,`favorite` ,`bound` ,`equip_switch`,`enchantgrade`) VALUES (%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", getcharid(0),.@charid,@inventorylist_id[.@item],.@amount/2,@inventorylist_equip[.@item],@inventorylist_identify[.@item], @inventorylist_refine[.@item],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],@inventorylist_option_id1[.@item],@inventorylist_option_value1[.@item],@inventorylist_option_parameter1[.@item],@inventorylist_option_id2[.@item],@inventorylist_option_value2[.@item],@inventorylist_option_parameter2[.@item],@inventorylist_option_id3[.@item],@inventorylist_option_value3[.@item],@inventorylist_option_parameter3[.@item],@inventorylist_option_id4[.@item],@inventorylist_option_value4[.@item],@inventorylist_option_parameter4[.@item],@inventorylist_option_id5[.@item],@inventorylist_option_value5[.@item],@inventorylist_option_parameter5[.@item],@inventorylist_expire[.@item],@inventorylist_favorite[.@item], @inventorylist_bound[.@item],0,@inventorylist_enchantgrade[.@item] );
+
+					query_sql(.@q$);
+
+					.@q$ = sprintf("INSERT INTO `transfer` (`sender_id`,`char_id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`expire_time`,`favorite` ,`bound` ,`equip_switch`,`enchantgrade`) VALUES (%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", getcharid(0),.@boss_charid,@inventorylist_id[.@item],.@amount/2,@inventorylist_equip[.@item],@inventorylist_identify[.@item], @inventorylist_refine[.@item],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],@inventorylist_option_id1[.@item],@inventorylist_option_value1[.@item],@inventorylist_option_parameter1[.@item],@inventorylist_option_id2[.@item],@inventorylist_option_value2[.@item],@inventorylist_option_parameter2[.@item],@inventorylist_option_id3[.@item],@inventorylist_option_value3[.@item],@inventorylist_option_parameter3[.@item],@inventorylist_option_id4[.@item],@inventorylist_option_value4[.@item],@inventorylist_option_parameter4[.@item],@inventorylist_option_id5[.@item],@inventorylist_option_value5[.@item],@inventorylist_option_parameter5[.@item],@inventorylist_expire[.@item],@inventorylist_favorite[.@item], @inventorylist_bound[.@item],0,@inventorylist_enchantgrade[.@item] );
+
+					query_sql(.@q$);
+					next;
+					mes "[ Scholar Management ]";
+					mes "Sent";
+					if (select("Send Another:Close")==2)
+						break;
+
+				}
+				next;
+				mes "[ Scholar Management ]";
+				mes "Thank you for using my service";
+				close;
+
+			case 3:
+				while(1) 
+				{
+					next;
+					getinventorylist;
+					mes "[ Scholar Management ]";
+					mes "Please select the item you want to send";
+					.@menu$ = "";
+					freeloop(1);
+					for (.@i = 0; .@i < @inventorylist_count;.@i++){
+						.@item$ = "";
+						.@item$ += " "+getitemname(@inventorylist_id[.@i])+"["+@inventorylist_id[.@i]+"]";
+						if (@inventorylist_refine[.@i])
+							.@item$ += " +"+@inventorylist_refine[.@i];
+						if (@inventorylist_card1[.@i])
+							.@item$ += " ["+@inventorylist_card1[.@i];
+						if (@inventorylist_card2[.@i])
+							.@item$ += ","+@inventorylist_card2[.@i];
+						if (@inventorylist_card3[.@i])
+							.@item$ += ","+@inventorylist_card3[.@i];
+						if (@inventorylist_card4[.@i])
+							.@item$ += ","+@inventorylist_card4[.@i];
+
+						if (@inventorylist_card1[.@i])
+							.@item$ +="]";
+
+						.@menu$ += .@item$ + ":";
+					}
+					freeloop(0);
+
+					.@item = select(.@menu$)-1;
+
+					if (@inventorylist_bound[.@item] > BOUND_NONE || @inventorylist_expire[.@item] ||  @inventorylist_tradable[.@item] < 1) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "This item is non trade-able";
+						close;
+					}
+			
+					mes "Please input amount of "+getitemname(@inventorylist_id[.@item])+" to send";
+					input(.@amount);
+					.@nb = query_sql("SELECT `char_id` FROM `char` WHERE `name`='"+employer_name$+"'",.@boss_charid);
+					if (!.@nb) {
+						mes "Manager not found";
+						close;
+					}
+					next;
+					mes "[ Scholar Management ]";
+					mes "Item to send: "+ getitemname(@inventorylist_id[.@item]);
+					mes "Amount: "+.@amount;
+					mes "Manager: "+employer_name$;
+					if (select("Proceed:Cancel")==2) {
+						next;
+						continue;
+					}
+
+				
+					
+					if (countitem2(@inventorylist_id[.@item],@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item]) < .@amount) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Item(s) not enough. Please be sure to enter a valid amount";
+						close;
+					}
+
+					deletearray(.@optionids);
+					deletearray(.@optionvals);
+					deletearray(.@optionparams);
+					for (.@j = 1;.@j <= 5;.@j++) {
+						setarray(.@optionids[.@j-1],getd("@inventorylist_option_id"+j+"["+.@item+"]"));
+						setarray(.@optionvals[.@j-1],getd("@inventorylist_option_value"+j+"["+.@item+"]"));
+						setarray(.@optionparams[.@j-1],getd("@inventorylist_option_parameter"+j+"["+.@item+"]"));
+					}
+
+
+					delitem3 @inventorylist_id[.@item],.@amount,@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],.@optionids,.@optionvals,.@optionparams;
+
+
+					.@q$ = sprintf("INSERT INTO `transfer` (`sender_id`,`char_id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`expire_time`,`favorite` ,`bound` ,`equip_switch`,`enchantgrade`) VALUES (%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", getcharid(0),.@boss_charid,@inventorylist_id[.@item],.@amount,@inventorylist_equip[.@item],@inventorylist_identify[.@item], @inventorylist_refine[.@item],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],@inventorylist_option_id1[.@item],@inventorylist_option_value1[.@item],@inventorylist_option_parameter1[.@item],@inventorylist_option_id2[.@item],@inventorylist_option_value2[.@item],@inventorylist_option_parameter2[.@item],@inventorylist_option_id3[.@item],@inventorylist_option_value3[.@item],@inventorylist_option_parameter3[.@item],@inventorylist_option_id4[.@item],@inventorylist_option_value4[.@item],@inventorylist_option_parameter4[.@item],@inventorylist_option_id5[.@item],@inventorylist_option_value5[.@item],@inventorylist_option_parameter5[.@item],@inventorylist_expire[.@item],@inventorylist_favorite[.@item], @inventorylist_bound[.@item],0,@inventorylist_enchantgrade[.@item] );
+
+					query_sql(.@q$);
+					next;
+					mes "[ Scholar Management ]";
+					mes "Sent";
+					if (select("Send Another:Close")==2)
+						break;
+
+				}
+				next;
+				mes "[ Scholar Management ]";
+				mes "Thank you for using my service";
+				close;
+		}
+	} else if (!.@count) {
+		
+		.@claimshare = query_sql("SELECT `nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`enchantgrade` FROM `transfer` WHERE `char_id`="+getcharid(0),.@nameid,.@amount,.@identify,.@refine,.@attribute,.@card1,.@card2,.@card3,.@card4,.@opt_id1,.@opt_val1,.@opt_parm1,.@opt_id2,.@opt_val2,.@opt_parm2,.@opt_id3,.@opt_val3,.@opt_parm3,.@opt_id4,.@opt_val4,.@opt_parm4,.@opt_id5,.@opt_val5,.@opt_parm5,.@enchantgrade);
+
+		if (!.@claimshare) {
+			next;
+			mes "[ Scholar Management ]";
+			mes "Nothing to claim at this time";
+			close;
+		}
+
+		if (!checkweight2(.@nameid,.@amount)) {
+			next;
+			mes "[ Scholar Management ]";
+			mes "Please free up some space";
+			close;
+		}
+		query_sql("DELETE FROM `transfer` WHERE `char_id`="+getcharid(0));
+		freeloop(1);
+		for (.@i = 0;.@i < .@claimshare;.@i++) {
+			
+			deletearray(.@optionids);
+			deletearray(.@optionvals);
+			deletearray(.@optionparams);
+			for (.@j = 1;.@j <= 5;.@j++) {
+				setarray(.@optionids[.@j-1],getd(".@opt_id"+j+"["+.@i+"]"));
+				setarray(.@optionvals[.@j-1],getd(".@opt_val"+j+"["+.@i+"]"));
+				setarray(.@optionparams[.@j-1],getd(".@opt_parm"+j+"["+.@i+"]"));
+			}
+
+
+			getitem3 .@nameid[.@i],.@amount[.@i],.@identify[.@i],.@refine[.@i],.@attribute[.@i],.@card1[.@i],.@card2[.@i],.@card3[.@i],.@card4[.@i],.@optionids,.@optionvals,.@optionparams;
+
+		}
+		freeloop(0);
+		next;
+		mes "[ Scholar Management ]";
+		mes "Thank you for claiming!";
+		close;
+	} else {
+		.@menu$ = "View Scholar";
+
+		switch(select(.@menu$)) {
+			case 1: // View Worker
+				if (.@count < 1) {
+					next;
+					mes "[ Scholar Management ]";
+					mes "You have no scholar";
+					close;
+				}
+
+				freeloop(1);
+				while (1) {
+					.@menu$ = "";
+					for(.@i = .@last;.@i < .@count;.@i++) {
+						deletearray(.@name$);
+						query_sql("SELECT `name` from `char` WHERE `char_id`="+.@employees[.@i],.@name$);
+						.@menu$ += .@name$+":";
+						if (getstrlen(.@menu$) > 2000) {
+							.@menu$ += "Next Page";
+							.@last = .@i+1;
+							break;
+						}
+					}
+					.@fp = select(.@menu$)-1;
+					.@s += .@fp;
+
+						
+
+					if (.@last && .@s == .@last)  {
+						.@s =.@last;
+						continue;
+					} else {
+						break;
+					}
+
+				}
+				freeloop(0);
+
+
+
+
+
+				deletearray(.@employee$);
+				query_sql("SELECT `name` from `char` WHERE `char_id`="+.@employees[.@s],.@employee$);
+
+
+				switch(select("View Inventory:Claim Share:Claim All")) {
+				case 1:
+					.@nb = query_sql("SELECT `nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3` FROM `inventory` WHERE `char_id`="+.@employees[.@s],.@nameid,.@amount,.@refine,.@card0,.@card1,.@card2,.@card3);
+
+					if (!.@nb) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Player didn't have any item on inventory";
+						close;
+					}
+					next;
+					mes "[ Scholar Management ]";
+					mes "Please check your chatbox.";
+					dispbottom "["+.@employee$+" Item list]";
+					for (.@i = 0;.@i < .@nb;.@i++) {
+						.@item$ = "";
+
+						.@item$ += .@amount[.@i] +" x";
+						.@item$ += " "+getitemname(.@nameid)+"["+.@nameid[.@i]+"]";
+						if (.@refine[.@i])
+							.@item$ += " +"+.@refine[.@i];
+						if (.@card0[.@i])
+							.@item$ += " Cards["+getitemname(.@card0[.@i]);
+						if (.@card0[.@i])
+							.@item$ += ","+getitemname(.@card1[.@i]);
+						if (.@card0[.@i])
+							.@item$ += ","+getitemname(.@card2[.@i]);
+						if (.@card0[.@i])
+							.@item$ += ","+getitemname(.@card3[.@i]);
+						if (.@card0[.@i])
+							.@item$ +="]";
+
+
+						dispbottom .@item$;
+					}
+					close2;
+					end;
+
+				case 2: // Claim Share
+					.@claimshare = query_sql("SELECT `nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` , `expire_time`, `bound`, `unique_id`, `enchantgrade` FROM `transfer` WHERE `char_id`="+getcharid(0)+" AND `sender_id`="+.@employees[.@s],.@nameid,.@amount,.@identify,.@refine,.@attribute,.@card1,.@card2,.@card3,.@card4,.@opt_id1,.@opt_val1,.@opt_parm1,.@opt_id2,.@opt_val2,.@opt_parm2,.@opt_id3,.@opt_val3,.@opt_parm3,.@opt_id4,.@opt_val4,.@opt_parm4,.@opt_id5,.@opt_val5,.@opt_parm5,.@expire_time,.@bound,.@unique_id,.@enchantgrade);
+
+					if (!.@claimshare) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Nothing to claim from this scholar at this time";
+						close;
+					}
+
+					if (!checkweight2(.@nameid,.@amount)) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Please free up some space";
+						close;
+					}
+
+					freeloop(1);
+					for (.@i = 0;.@i < .@claimshare;.@i++) {
+						
+						deletearray(.@optionids);
+						deletearray(.@optionvals);
+						deletearray(.@optionparams);
+						for (.@j = 1;.@j <= 5;.@j++) {
+							setarray(.@optionids[.@j-1],getd(".@opt_id"+j+"["+.@i+"]"));
+							setarray(.@optionvals[.@j-1],getd(".@opt_val"+j+"["+.@i+"]"));
+							setarray(.@optionparams[.@j-1],getd(".@opt_parm"+j+"["+.@i+"]"));
+						}
+
+
+						getitem3 .@nameid[.@i],.@amount[.@i],.@identify[.@i],.@refine[.@i],.@attribute[.@i],.@card1[.@i],.@card2[.@i],.@card3[.@i],.@card4[.@i],.@optionids,.@optionvals,.@optionparams;
+
+					}
+					freeloop(0);
+					query_sql("DELETE FROM `transfer` WHERE `char_id`="+getcharid(0)+" AND `sender_id`="+.@employees[.@s]);
+
+					next;
+					mes "[ Scholar Management ]";
+					mes "Thank you for claiming!";
+					close;
+					
+				case 3: // Claim All
+					.@claimall = query_sql("SELECT `nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` , `expire_time`, `bound`, `unique_id`, `enchantgrade` FROM `transfer` WHERE `char_id`="+getcharid(0),.@nameid,.@amount,.@identify,.@refine,.@attribute,.@card1,.@card2,.@card3,.@card4,.@opt_id1,.@opt_val1,.@opt_parm1,.@opt_id2,.@opt_val2,.@opt_parm2,.@opt_id3,.@opt_val3,.@opt_parm3,.@opt_id4,.@opt_val4,.@opt_parm4,.@opt_id5,.@opt_val5,.@opt_parm5,.@expire_time,.@bound,.@unique_id,.@enchantgrade);
+
+					if (!.@claimall) {
+						next;
+						mes "[ Scholar Management ]";
+						mes "Nothing to claim from this scholar at this time";
+						close;
+					}
+					
+					//debug begin
+						mes "There are " + .@claimall + " items possible to put in marketplace ";
+						next;
+					//debug end
+
+					freeloop(1);
+					for (.@i = 0;.@i < .@claimall;.@i++) {
+						query_sql(sprintf("INSERT INTO `marketplace_inventory` (`account_id`,`nameid`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`option_id1`,`option_val1`,`option_parm1`,`option_id2`,`option_val2`,`option_parm2`,`option_id3`,`option_val3`,`option_parm3`,`option_id4`,`option_val4`,`option_parm4`,`expire_time`,`bound`,`unique_id`,`enchantgrade`,`name_english`,`type`,`nick_name`,`amount`) VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', %d)", getcharid(3), .@nameid[.@i], 1, .@refine[.@i], .@attribute[.@i], .@card1[.@i],.@card2[.@i],.@card3[.@i],.@card4[.@i], .@opt_id1[.@i],.@opt_val1[.@i],.@opt_parm1[.@i],.@opt_id2[.@i],.@opt_val2[.@i],.@opt_parm2[.@i],.@opt_id3[.@i],.@opt_val3[.@i],.@opt_parm3[.@i],.@opt_id4[.@i],.@opt_val4[.@i],.@opt_parm4[.@i],.@opt_id5[.@i],.@opt_val5[.@i],.@opt_parm5[.@i], .@expire_time[.@i], .@bound[.@i], 0, .@enchantgrade[.@i], getitemname(.@nameid[.@i]), 0, escape_sql(strcharinfo(0)), .@amount[.@i]));
+					}
+					freeloop(0);
+					query_sql("DELETE FROM `transfer` WHERE `char_id`="+getcharid(0));
+
+					next;
+					mes "[ Scholar Management ]";
+					mes "Thank you for claiming!";
+					close;
+
+
+
+					case 4: // Send to Worker
+						while(1) 
+						{
+							next;
+							getinventorylist;
+							mes "[ Scholar Management ]";
+							mes "Please select the item you want to send";
+							.@menu$ = "";
+							freeloop(1);
+							for (.@i = 0; .@i < @inventorylist_count;.@i++){
+								.@item$ = "";
+								.@item$ += " "+getitemname(@inventorylist_id[.@i])+"["+@inventorylist_id[.@i]+"]";
+								if (@inventorylist_refine[.@i])
+									.@item$ += " +"+@inventorylist_refine[.@i];
+								if (@inventorylist_card1[.@i])
+									.@item$ += " ["+@inventorylist_card1[.@i];
+								if (@inventorylist_card2[.@i])
+									.@item$ += ","+@inventorylist_card2[.@i];
+								if (@inventorylist_card3[.@i])
+									.@item$ += ","+@inventorylist_card3[.@i];
+								if (@inventorylist_card4[.@i])
+									.@item$ += ","+@inventorylist_card4[.@i];
+
+								if (@inventorylist_card1[.@i])
+									.@item$ +="]";
+
+								.@menu$ += .@item$ + ":";
+							}
+							freeloop(0);
+
+							.@item = select(.@menu$)-1;
+
+
+							if (@inventorylist_bound[.@item] > BOUND_NONE || @inventorylist_expire[.@item] ||  @inventorylist_tradable[.@item] < 1) {
+								next;
+								mes "[ Scholar Management ]";
+								mes "This item is non trade-able";
+								close;
+							}
+							
+							mes "Please input amount of "+getitemname(@inventorylist_id[.@item])+" to send";
+							input(.@amount);
+							next;
+							mes "[ Scholar Management ]";
+							mes "Item to send: "+ getitemname(@inventorylist_id[.@item]);
+							mes "Amount: "+.@amount;
+							mes "Receiver: "+.@employee$;
+							if (select("Proceed:Cancel")==2) {
+								next;
+								continue;
+							}
+							
+							if (countitem2(@inventorylist_id[.@item],@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item]) < .@amount) {
+								next;
+								mes "[ Scholar Management ]";
+								mes "Item(s) not enough. Please be sure to enter a valid amount";
+								close;
+							}
+
+							deletearray(.@optionids);
+							deletearray(.@optionvals);
+							deletearray(.@optionparams);
+							for (.@j = 1;.@j <= 5;.@j++) {
+								setarray(.@optionids[.@j-1],getd("@inventorylist_option_id"+j+"["+.@item+"]"));
+								setarray(.@optionvals[.@j-1],getd("@inventorylist_option_value"+j+"["+.@item+"]"));
+								setarray(.@optionparams[.@j-1],getd("@inventorylist_option_parameter"+j+"["+.@item+"]"));
+							}
+
+
+							delitem3 @inventorylist_id[.@item],.@amount,@inventorylist_identify[.@item],@inventorylist_refine[.@refine],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],.@optionids,.@optionvals,.@optionparams;
+
+
+							.@q$ = sprintf("INSERT INTO `transfer` (`sender_id`,`char_id`,`nameid`,`amount`,`equip`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2` ,`card3` ,`option_id0` ,`option_val0` ,`option_parm0` ,`option_id1` ,`option_val1` ,`option_parm1` ,`option_id2` ,`option_val2` ,`option_parm2` ,`option_id3` ,`option_val3` ,`option_parm3` ,`option_id4` ,`option_val4` ,`option_parm4` ,`expire_time`,`favorite` ,`bound` ,`equip_switch`,`enchantgrade`) VALUES (%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d)", getcharid(0),.@employees[.@s],@inventorylist_id[.@item],.@amount,@inventorylist_equip[.@item],@inventorylist_identify[.@item], @inventorylist_refine[.@item],@inventorylist_attribute[.@item],@inventorylist_card1[.@item],@inventorylist_card2[.@item],@inventorylist_card3[.@item],@inventorylist_card4[.@item],@inventorylist_option_id1[.@item],@inventorylist_option_value1[.@item],@inventorylist_option_parameter1[.@item],@inventorylist_option_id2[.@item],@inventorylist_option_value2[.@item],@inventorylist_option_parameter2[.@item],@inventorylist_option_id3[.@item],@inventorylist_option_value3[.@item],@inventorylist_option_parameter3[.@item],@inventorylist_option_id4[.@item],@inventorylist_option_value4[.@item],@inventorylist_option_parameter4[.@item],@inventorylist_option_id5[.@item],@inventorylist_option_value5[.@item],@inventorylist_option_parameter5[.@item],@inventorylist_expire[.@item],@inventorylist_favorite[.@item], @inventorylist_bound[.@item],0,@inventorylist_enchantgrade[.@item] );
+
+							query_sql(.@q$);
+							next;
+							mes "[ Scholar Management ]";
+							mes "Sent";
+							if (select("Send Another:Close")==2)
+								break;
+
+						}
+						next;
+						mes "[ Scholar Management ]";
+						mes "Thank you for using my service";
+						close;
+				}
+				close;
+
+		}
+		
+	}
+	end;
+
+
+
+OnAccept:
+	if (!@futureboss) {
+		dispbottom "No pending hire request";
+		end;
+	}
+
+	getinventorylist;
+
+	if (@inventorylist_count) {
+		dispbottom "Please clear out your inventory and try again";
+		end;
+	}
+	
+	employer_rid = @futureboss;
+	employer_name$ = @futureboss$;
+	#employer_rid = @futureboss;
+	atcommand "@adjgroup "+.employee_groupid;
+
+	dispbottom employer_name$+" is now your Manager";
+
+	
+	//getmapxy(.@mapname$, .@mapx, .@mapy, BL_PC);
+	//warp "quiz_01",0,0;
+	//warp .@mapname$,.@mapx,.@mapy;
+
+	.@name$ = strcharinfo(0);
+	if (attachrid(employer_rid)) {
+		dispbottom .@name$+" is now your scholar";
+		atcommand "@adjgroup "+.boss_groupid;
+	}
+	end;
+
+OnPCLoginEvent:
+	if (#employer_rid || employer_rid)
+		atcommand "@adjgroup "+.employee_groupid;
+
+	.@count = query_sql("SELECT `char_id` FROM `char_reg_num` WHERE `key`='employer_rid' AND `value`="+getcharid(3),.@employees);
+	if (.@count)
+		atcommand "@adjgroup "+.boss_groupid;
+	end;
+
+
+OnReject:
+	if (!@futureboss) {
+		dispbottom "No pending hire request";
+		end;
+	}
+	
+	dispbottom "You rejected "+@futureboss$+" hire request";
+
+	.@name$ = strcharinfo(0);
+	if (attachrid(@futureboss)) {
+		dispbottom .@name$+" rejected your hire request";
+	}
+	end;
+
+OnJobend:
+	.@name$ = .@atcmd_parameters$[0];
+	if (.@name$ != "") {
+		.@rid = getcharid(3);
+		.@boss_name$ = strcharinfo(0);
+		if (attachrid(getcharid(3,.@name$))) {
+			if (employer_name$ != .@boss_name$){
+				attachrid(.@rid);
+				dispbottom "Player is not your scholar.";
+				end;
+			}
+				
+			if (getgroupid() != .employee_groupid) {
+				attachrid(.@rid);
+				dispbottom "Player is not an scholar";
+				end;
+			}
+
+			.@count = query_sql("SELECT `char_id` FROM `char_reg_num` WHERE `key`='employer_rid' AND `value`="+getcharid(3),.@employees);
+
+			#employer_rid = 0;
+			employer_rid = 0;
+			employer_name$ = "";
+			@futureboss$ = "";
+			@futureboss = 0;
+			atcommand "@adjgroup 0";
+
+			dispbottom .@boss_name$+" has ended your job contract";
+			
+			attachrid(.@rid);
+			dispbottom "Job Contract Ended for "+.@name$;
+
+			
+
+			if (.@count < 2)
+				atcommand "@adjgroup 0";
+			end;
+		} else {
+			dispbottom "Player is offline";
+			end;
+		}
+	} else {
+		dispbottom "Usage: @jobend \"scholar ign\"";
+	}
+	end;
+}

@@ -1,0 +1,43 @@
+prontera,147,102,4	script	Fight Square Reception#pront	105,{
+    if($pvpsquare == 1) {
+    mes "[ Fight Square Reception ]";
+    mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+    close;
+	}
+    mes "[ Fight Square Reception ]";
+    mes "You want to test your power?";
+    next;
+	switch(select("Prontera ["+getmapusers("pvp_y_8-1")+" / 128]:Izlude ["+getmapusers("pvp_y_8-2")+" / 128]:Payon ["+getmapusers("pvp_y_8-3")+" / 128]:Alberta ["+getmapusers("pvp_y_8-4")+" / 128]:Morocc ["+getmapusers("pvp_y_8-5")+" / 128]:Cancel"))  {
+    case 1:
+        warp "pvp_y_8-1",0,0;
+        end;
+    
+    case 2:
+        warp "pvp_y_8-2",0,0;
+        end;
+        
+    case 3:
+        warp "pvp_y_8-3",0,0;
+        end;
+        
+    case 4:
+        warp "pvp_y_8-4",0,0;
+        end;
+        
+    case 5:
+        warp "pvp_y_8-5",0,0;
+        end;
+
+    case 6:
+        end;
+    }
+}
+
+
+morocc,158,97,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#moc	105
+geffen,113,64,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#gef	105
+payon,179,112,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#payon	105
+alberta,106,64,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#alberta	105
+izlude,134,92,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#izlude	105
+aldebaran,132,124,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#alde	105
+comodo,190,153,4	duplicate(Fight Square Reception#pront)	Fight Square Reception#comodo	105

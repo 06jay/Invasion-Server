@@ -1,0 +1,5 @@
+-	script	Autoattack	-1,{
+OnAttack:
+atcommand "@autoattack";
+end;
+}

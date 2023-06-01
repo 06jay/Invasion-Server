@@ -1,0 +1,343 @@
+prontera,147,105,5	script	Token Manager	757,{
+	if($tmanager == 1) {
+		mes "[ Token Manager ]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+
+	if(openbox==1) {
+		mes "[ Token Manager ]";
+		mes "Please relog to access me";
+		close;
+	}
+	
+	query_sql("SELECT CAST(`zeny` AS CHAR(13)) FROM `token_db` WHERE account_id = " + getcharid(3), .@total_zeny$);
+	query_sql("SELECT CAST(`in` AS CHAR(13)) FROM `token_db` WHERE account_id = " + getcharid(3), .@total_in$);
+  	query_sql("SELECT `zeny` FROM `token_db` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_zeny);
+	query_sql("SELECT `in` FROM `token_db` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_in);
+	query_sql("UPDATE `token_db` SET `process_game` = 1 WHERE `account_id` = '"+getcharid(3)+"'");
+	query_sql("SELECT `process_web` FROM `token_db` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@process_web);
+	query_sql("SELECT CAST(`value` AS CHAR(13)) FROM `in_security` WHERE account_id = " + getcharid(3), @INOnHand);
+	query_sql("SELECT `block` FROM `in_security` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@INOnBlock);
+	query_sql("SELECT `value` FROM `in_delay_transact` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @INTransaction);
+
+if(.@process_web == 1){
+	mes "[ Token Manager ]";
+	mes "You can't access me untill your withdrawal transaction is failed/reject/cancel.";
+	close;
+}
+
+  mes "[ Token Manager ]";
+	mes "Marketplace Token System";
+  mes "You have "+.@total_zeny$+" $Zeny Token";
+  mes "You have "+.@total_in$+" ^8a2be2$IN^000000 Token";
+  mes "In your Marketplace";
+  next;
+  switch(prompt("$Zeny -> Withdraw / Deposit:^8a2be2$IN^000000 -> Withdraw / Deposit:^8a2be2$IN^000000 -> Cashpoints")){
+    case 1:
+					mes "[ Token Manager ]";
+					mes "^ff0000Deposit^000000";
+					mes "You can deposit your zeny from in-game in to Marketplace";
+					mes "^0000ffWithdraw^000000";
+					mes "You can withdraw your zeny from Marketplace in to in-game";
+					next;
+					mes "[ Token Manager ]";
+					mes "You have "+.@total_zeny$+" $Zeny Token";
+					next;
+			switch(prompt("Deposit Zeny",	"Withdraw Zeny")) {
+				case 1:
+					input .@amount, 0, Zeny;
+					if (.@amount < 100) {
+						mes "[ Token Manager ]";
+						mes "You cant deposit less than 100 Zeny.";
+					}
+					else if ((5000000000 - .@total_zeny) < .@amount) {
+						mes "[ Token Manager ]";
+						mes "Your bank can't hold that much of Zeny.";
+						mes "Max Deposit: 5B";
+					}
+					else {
+						mes "[ Token Manager ]";
+						mes "You have deposited "+F_InsertComma(.@amount)+" Zeny.";
+						next;
+						mes "[ Token Manager ]";
+						mes "Please wait while we are processing your request...";
+						sleep2 1000;
+						Zeny -= .@amount;
+						query_sql("INSERT INTO `token_db` (`account_id`,`zeny`) VALUES ('"+getcharid(3)+"'," + .@amount + ") ON DUPLICATE KEY UPDATE `zeny` = `zeny` + "+.@amount+";");
+						query_sql("INSERT INTO `token_db_log` (`account_id`,`char_name`, `currency`,`type`,`amount`,`previous_balance`) VALUES ('"+getcharid(3)+"', '" + strcharinfo(0) + "' , 'Zeny' , 'Deposit', '"+.@amount+"', '"+.@total_zeny$+"');");
+						mes "Complete...";
+					}
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;
+				case 2:
+					input .@amount, 0, min(.@total_zeny, MAX_ZENY);
+					if (.@amount <= 0) {
+						mes "[ Token Manager ]";
+						mes "You cant withdraw 0 Zeny.";
+					}
+					else if ((MAX_ZENY - Zeny) < .@amount) {
+						mes "[ Token Manager ]";
+						mes "You can't hold that much of Zeny.";
+						mes "Max Zeny: 2B";
+					}
+					else {
+						mes "[ Token Manager ]";
+						mes "You have withdraw "+F_InsertComma(.@amount)+" Zeny.";
+						next;
+						mes "[ Token Manager ]";
+						mes "Please wait while we are processing your request...";
+						sleep2 1000;
+						Zeny += .@amount;
+						query_sql("INSERT INTO `token_db` (`account_id`,`zeny`) VALUES ('"+getcharid(3)+"'," + .@amount + ") ON DUPLICATE KEY UPDATE `zeny` = `zeny` - "+.@amount+";");
+						query_sql("INSERT INTO `token_db_log` (`account_id`,`char_name`,`currency`,`type`,`amount`) VALUES ('"+getcharid(3)+"' , '" + strcharinfo(0) + "' , 'Zeny' , 'Withdraw', '"+.@amount+"');");
+						mes "Complete...";
+					}
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;
+
+				case 255:
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					end;
+
+				default: 
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;	
+			}
+			close;
+
+		case 2:
+				if (.@INOnBlock > 0 ) {
+					mes "[ Token Manager ]";
+					mes "Your account block on ^8a2be2$IN^000000 transaction";
+					mes "^ffffff_^000000";
+					mes "^ff0000Please contact the administrator^000000";
+					close;
+				}
+				if(@INTransaction > gettimetick(2)){
+				mes "[ Token Manager ]";
+				mes "^ff0000Note^000000: For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+				mes "--";
+				mes "You need to wait "+Time2Str(@INTransaction)+" before you can do another transaction.";
+				close;
+				}
+				.@weight = 100 * Weight / MaxWeight;
+				.@cid = getcharid(0);
+				.@aid = getcharid(3);
+				.@s = query_sql("SELECT `char_id` FROM `char` WHERE `account_id` = '"+.@aid+"'",.@sqlcid);
+				for(.@i = 0; .@i < .@s; .@i++){
+						query_sql("SELECT SUM(`amount`) FROM `inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@inv);
+						query_sql("SELECT SUM(`amount`) FROM `cart_inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@cinv);
+						.@total += .@inv + .@cinv;
+				}
+				query_sql("SELECT SUM(`amount`) FROM `storage` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@stinv);
+				query_sql("SELECT SUM(`amount`) FROM `marketplace_inventory` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@binv);
+				.@total += .@stinv + .@binv;
+				if(.@total != @INOnHand){
+						mes "[ Token Manager ]";
+						mes "Your account block on ^8a2be2$IN^000000 transaction because your total ^8a2be2$IN^000000 on hand isn't same on the ^8a2be2$IN^000000 you received.";
+						sleep2 5000;
+						query_sql("INSERT INTO `in_security` (`account_id`,`key`,`block`) VALUES ('"+getcharid(3)+"','@INOnHand',1) ON DUPLICATE KEY UPDATE `block` = 1;");
+						close;
+				}
+					mes "[ Token Manager ]";
+					mes "^ff0000Note^000000:";
+					mes "For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+					next;
+					mes "[ Token Manager ]";
+					mes "^ff0000Deposit^000000";
+					mes "You can deposit your ^8a2be2$IN^000000 from in-game in to Marketplace";
+					mes "^0000ffWithdraw^000000";
+					mes "You can withdraw your ^8a2be2$IN^000000 from Marketplace in to in-game";
+					next;
+					mes "[ Token Manager ]";
+					mes "You have "+.@total_in$+" ^8a2be2$IN^000000 Token";
+					next;
+			switch(prompt("Deposit ^8a2be2$IN^000000",	"Withdraw ^8a2be2$IN^000000")) {
+				case 1:
+					input .@amount;
+					if (.@amount < 1) {
+						mes "[ Token Manager ]";
+						mes "You cant deposit less than 1 ^8a2be2$IN^000000.";
+					}
+					else if (countitem(35371) < .@amount ) {
+						mes "[ Token Manager ]";
+						mes "Sorry you dont have enough of ^8a2be2$IN^000000";
+					}
+					else if ((50000000 - .@total_in) < .@amount) {
+						mes "[ Token Manager ]";
+						mes "Your bank can't hold that much of ^8a2be2$IN^000000.";
+						mes "Max Deposit: 100M";
+					}
+					else {
+						mes "[ Token Manager ]";
+						mes "You have deposited "+F_InsertComma(.@amount)+" ^8a2be2$IN^000000.";
+						next;
+						//#TCGOnHand -= .@amount;
+						.ttime$ = gettimetick(2)+900;
+						mes "[ Token Manager ]";
+						mes "Please wait while we are processing your request...";
+						sleep2 1000;
+						query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',"+ .@amount +") ON DUPLICATE KEY UPDATE `value` = `value` - "+.@amount+";");
+						query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+						delitem 35371,.@amount;
+						query_sql("INSERT INTO `token_db` (`account_id`,`in`) VALUES ('"+getcharid(3)+"'," + .@amount + ") ON DUPLICATE KEY UPDATE `in` = `in` + "+.@amount+";");
+						query_sql("INSERT INTO `token_db_log` (`account_id`,`char_name`, `currency`,`type`,`amount`) VALUES ('"+getcharid(3)+"', '" + strcharinfo(0) + "' , 'IN' , 'Deposit', '"+.@amount+"');");
+						dispbottom "Your "+F_InsertComma( .@amount )+" ^8a2be2$IN^000000 is on Marketplace now.";
+						mes "Complete...";
+					}
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;
+				case 2:
+					input .@amount;
+					if (.@amount <= 0) {
+						mes "[ Token Manager ]";
+						mes "^ff0000What happened^000000?";
+						mes "Maybe you tried to withdraw 0 amount?";
+						mes "Maybe there is no balance in your marketplace?";
+						mes "Check first so we can do a smooth transaction";
+					}
+					else if (.@total_in < .@amount ) {
+						mes "[ Token Manager ]";
+						mes "I don't think you have enough ^8a2be2$IN^000000 in your Marketplace.";
+					}
+					else if((countitem(35371) + .@amount) > 30000 || (.@amount) > 30000 ){
+						mes "[ Token Manager ]";
+						mes "I don't think you can handle item more than 30,000 pieces.";
+					}
+					else if( 50 <= .@weight ) {
+						mes "[ Token Manager ]";
+						mes "You are currently at 50% percent of your maximum weight."; 
+					}else {
+						mes "[ Token Manager ]";
+						mes "You have withdraw "+F_InsertComma(.@amount)+" ^8a2be2$IN^000000.";
+						next;
+						//#TCGOnHand += .@amount;
+						.ttime$ = gettimetick(2)+900;
+						mes "[ Token Manager ]";
+						mes "Please wait while we are processing your request...";
+						sleep2 1000;
+						query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',"+ .@amount +") ON DUPLICATE KEY UPDATE `value` = `value` + "+.@amount+";");
+						getitem 35371,.@amount;
+						query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+						query_sql("INSERT INTO `token_db` (`account_id`,`in`) VALUES ('"+getcharid(3)+"'," + .@amount + ") ON DUPLICATE KEY UPDATE `in` = `in` - "+.@amount+";");
+						query_sql("INSERT INTO `token_db_log` (`account_id`,`char_name`,`currency`,`type`,`amount`) VALUES ('"+getcharid(3)+"' , '" + strcharinfo(0) + "' , 'IN' , 'Withdraw', '"+.@amount+"');");
+						dispbottom "Your got "+F_InsertComma( .@amount )+" ^8a2be2$IN^000000 from your Marketplace.";
+						mes "Complete...";
+					}
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;
+				case 255:
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					end;
+
+				default: 
+					query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;	
+			}
+			close;
+
+		case 3:
+			if (.@INOnBlock > 0 ) {
+			mes "[ Token Manager ]";
+			mes "Your account block on ^8a2be2$IN^000000 transaction";
+			mes "^ffffff_^000000";
+			mes "^ff0000Please contact the administrator^000000";
+			close;
+		}
+			if(@INTransaction > gettimetick(2)){
+			mes "[ Token Manager ]";
+			mes "^ff0000Note^000000: For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+			mes "--";
+			mes "You need to wait "+Time2Str(@INTransaction)+" before you can do another transaction.";
+			close;
+			}
+			.@cid = getcharid(0);
+			.@aid = getcharid(3);
+			.@s = query_sql("SELECT `char_id` FROM `char` WHERE `account_id` = '"+.@aid+"'",.@sqlcid);
+			for(.@i = 0; .@i < .@s; .@i++){
+					query_sql("SELECT SUM(`amount`) FROM `inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@inv);
+					query_sql("SELECT SUM(`amount`) FROM `cart_inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@cinv);
+					.@total += .@inv + .@cinv;
+			}
+			query_sql("SELECT SUM(`amount`) FROM `storage` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@stinv);
+			query_sql("SELECT SUM(`amount`) FROM `marketplace_inventory` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@binv);
+			.@total += .@stinv + .@binv;
+			if(.@total != @INOnHand){
+					mes "[ Token Manager ]";
+					mes "Your account block on ^8a2be2$IN^000000 transaction because your total ^8a2be2$IN^000000 on hand isn't same on the ^8a2be2$IN^000000 you received.";
+					sleep2 5000;
+					query_sql("INSERT INTO `in_security` (`account_id`,`key`,`block`) VALUES ('"+getcharid(3)+"','@INOnHand',1) ON DUPLICATE KEY UPDATE `block` = 1;");
+					close;
+			}
+			mes "[ Token Manager ]";
+			mes "^ff0000Note^000000:";
+			mes "For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+			next;
+			mes "[ Token Manager ]";
+			mes "How many you want to exchange?";
+			mes "^ff0000Note^000000:";
+			mes"1 ^8a2be2$IN^000000 equal to 10 Cash Point";
+			next;
+			input .@count;
+			if (.@count == 0) {
+				mes "[ Token Manager ]";
+				mes "You cant exchange less than 1 ^8a2be2$IN^000000.";
+				query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+				close;
+			}
+			if (countitem(35371) < .@count*1) {
+			mes "[ Token Manager ]";
+			mes "Sorry you dont have enough of ^8a2be2$IN^000000";
+			query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+			close;
+			}
+			.ttime$ = gettimetick(2)+900;
+			mes "[ Token Manager ]";
+			mes "Please wait while we are processing your request...";
+			sleep2 1000;
+			query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-"+ .@count +") ON DUPLICATE KEY UPDATE `value` = `value` - "+.@count+";");
+			//#token_coin_ref += .@count;
+			query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+			query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',"+.@count+") ON DUPLICATE KEY UPDATE `value` = `value` + "+.@count+";");
+			delitem 35371,.@count*1;
+			set #CASHPOINTS, #CASHPOINTS + ( .@count*10 );
+			dispbottom "Gained "+.@count*10+" cash points. Total "+#CASHPOINTS+" points.";  
+			query_sql("INSERT INTO `in_total_consume` (`account_id`,`char_name`,`intkn`,`transaction`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '"+.@count+"', 'Cash Points');");
+			// allocate 55% on AIN
+			query_sql("INSERT INTO `mapreg` (`varname`, `index`, `value`) VALUES ('$AIN$', 0, 0.5500*"+.@count+") ON DUPLICATE KEY UPDATE `value` = `value` + 0.5500*"+.@count+";");
+			// allocate 45% on SIN
+			query_sql(
+				"INSERT INTO `in_shard_audit` (`id`, `shard_actvs_pool_db`, `shard_boss_pool_db`, " +
+				"`shard_evens_pool_db`, `shard_tpvps_pool_db2`, `shard_wobs_pool_db`, `shard_woes_pool_db2`, `shard_mvp_pool_db`) " +
+				" VALUES (1, 0.0225, 0.075, 0.0675, 0.045, 0.045, 0.135, 0.06) ON DUPLICATE KEY UPDATE " +
+				" `shard_actvs_pool_db` = `shard_actvs_pool_db` + 0.0225, " +
+				" `shard_boss_pool_db` = `shard_boss_pool_db` + 0.075, " +
+				" `shard_evens_pool_db` = `shard_evens_pool_db` + 0.0675, " +
+				" `shard_tpvps_pool_db2` = `shard_tpvps_pool_db2` + 0.045, " +
+				" `shard_wobs_pool_db` = `shard_wobs_pool_db` + 0.045, " +
+				" `shard_woes_pool_db2` = `shard_woes_pool_db2` + 0.135, " +
+				" `shard_mvp_pool_db` = `shard_mvp_pool_db` + 0.06, " +
+				" `update_date` = CURRENT_TIMESTAMP"
+			);
+			query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+			callfunc "shards_price_update";
+			close;
+
+		case 255:
+				query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+				end;
+
+			default: 
+				query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+				break;	
+
+
+OnPCLogoutEvent:
+		query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+		set openbox,0;
+	}
+}
+
+new_1-1,66,109,3	duplicate(Token Manager)	Token Manager#new	757

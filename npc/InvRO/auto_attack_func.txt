@@ -1,0 +1,28 @@
+-	script	AutoattackCheck1	,{
+OnAttackCheck1:
+set autoatk,1;
+end;
+}
+
+-	script	AutoattackCheck	,{
+OnAttackCheck:
+set autoatk,0;
+end;
+}
+
+-	script	LoginAutoattackCheck	,{
+	OnPCLoginEvent:
+		if(autoatk==1) {
+			set autoatk,0;
+			end;
+		}
+		end;
+
+	OnPCDieEvent:
+		if(autoatk==1) {
+			atcommand "@autoattack";
+			set autoatk,0;
+			end;
+		}
+		end;
+}

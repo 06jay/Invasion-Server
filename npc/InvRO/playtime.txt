@@ -1,0 +1,50 @@
+-	script	hourly_point_main	-1,{
+	
+	OnInit:
+		.max_minute = 60;
+		bindatcmd "playtime",strnpcinfo(3)+"::OnAtcommand";
+		.npc_name$ = strnpcinfo(3);
+		end;
+		
+	OnAtcommand:
+		if(BaseLevel < 55) {
+			dispbottom "The Playtime Reward System is only for level 56 and above. If you are level 56 you only need to relogin to activate the Playtime System on your character";
+			end;
+		}
+		dispbottom "Next playtime reward "+#daily_minute_count+" / "+.max_minute+" minute(s)";
+		end;
+		
+	OnClock0000:
+		query_sql( "DELETE FROM acc_reg_num` WHERE `key` = '#daily_minute_count' AND `account_id` IN ( SELECT `account_id` FROM `char` WHERE `login` = 0 GROUP BY `account_id` ) " );
+		addrid(0);
+		#daily_minute_count = -1;
+		
+	OnUpdate:
+		if(BaseLevel < 55) {
+			dispbottom "The Playtime Reward System is only for level 56 and above. If you are level 56 you only need to relogin to activate the Playtime System on your character";
+			end;
+		}
+		deltimer .npc_name$+"::OnUpdate";
+		#daily_minute_count++;
+		switch ( #daily_minute_count ) {
+			default:
+				break;
+			case 60:
+				set #PLAYTIMEPOINTS, #PLAYTIMEPOINTS + 1;
+				#daily_minute_count = 0;
+				break;
+		}
+		
+	OnPCLoginEvent:
+		//dispbottom "Your next playtime reward "+#daily_minute_count+" / "+.max_minute+" minute(s)";
+		if(BaseLevel < 55) {
+			dispbottom "The Playtime Reward System is only for level 56 and above. If you are level 56 you only need to relogin to activate the Playtime System on your character";
+			end;
+		}
+		if ( #daily_minute_count < .max_minute ) {
+			addtimer ( 60 * 1000 ), .npc_name$+"::OnUpdate";
+		}
+		skill "NV_AUTOATTACK",1,SKILL_PERM;
+		end;
+
+}

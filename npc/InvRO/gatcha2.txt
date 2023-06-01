@@ -1,0 +1,127 @@
+prontera,125,125,3	script	Gacha Machine 2	562,{
+	if($gachama3 == 1) {
+    mes "[ Gatcha Machine 3 ]";
+    mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+    close;
+	}
+	mes "[ Gatcha Machine 3 ]";
+	mes "Hello Sir! Are you out";
+	mes "shopping in the city?!";
+	next;
+	
+switch(select("Play Gatcha:Information")){
+	case 1:
+		mes "[ Gatcha Machine 3 ]";
+		mes "I'm Gatcha Machine! I'll exchange ";
+		mes "cool random prizes for every";
+		mes "^ff0000700,000 ^000000zeny.";
+        mes "^ff000014^000000 cashpoints.";
+		next;
+		mes "[ Gatcha Machine 3 ]";
+		mes "You can still get random item";
+		mes "if you failed to get the grand";
+		mes "prize and special prizes.";
+		next;
+		mes "[ Gatcha Machine 3 ]";
+		mes "you will get ^ff00001^000000 Life Insurance as bonus for every roll";
+		next;
+        .@weight = 100 * Weight / MaxWeight; 
+        if( 70 <= .@weight ) {	
+        mes "[ Gatcha Machine 3 ]";
+        mes "You are currently at 70% percent of your maximum weight."; 
+        close;  
+        }
+	switch(select("Roll:No")){
+		case 1:
+			if (Zeny < 700000 || #CASHPOINTS < 14 ) {
+			mes "[ Gatcha Machine]";
+			mes "You do not have enough zeny or cashpoints.";
+			close;
+			}
+			next;	
+			.@gancho = rand(1,100),{
+			if (.@gancho <= 1) setarray .@duca[0],18539,1;           //1 1% - skull cap
+			else if(.@gancho <=15) setarray .@duca[0],12209,20;       // 2-15 14% - insurance
+			else if(.@gancho <=30) setarray .@duca[0],35385,20;       // 16-30 15% - LG White potion
+			else if(.@gancho <=45) setarray .@duca[0],35386,20;       // 31-45 15% - LG blue potion
+			else if(.@gancho <=60) setarray .@duca[0],985,1;       // 46-60 15% - Elunium
+			else if(.@gancho <=75) setarray .@duca[0],984,1;       // 61-75 15% - Oridecon
+			else if(.@gancho <=84) setarray .@duca[0],603,1;       // 76-84 8% - OBB
+			else if(.@gancho <=87) setarray .@duca[0],617,1;       //  85-87 3% - OVB
+			else if(.@gancho <=91) setarray .@duca[0],35003,1;       //   	88-91 refine protection ticket 4%
+			else if(.@gancho <=95) setarray .@duca[0],5470,1;       // 		92-95 Eye Of Darkness [0] 4%
+			else if(.@gancho <=97) setarray .@duca[0],5156,1;       // 		96-97 Father's Mask [0] 2%
+			else if(.@gancho <=99) setarray .@duca[0],19147,1;       // 	98-99 Drops Balloon 2%
+			else if(.@gancho <=100) setarray .@duca[0],18600,1;       // 	100 Cat Ear Beret [1] 1%
+			mes "[ Gatcha Machine 3 ]";
+			progressbar "0x11CC99",3; 
+			specialeffect2 EF_REMOVETRAP;
+			getitem .@duca[0],.@duca[1];
+			set Zeny, Zeny-700000;
+            set #CASHPOINTS, #CASHPOINTS-14;
+			mes " You draw ^ff0000"+.@gancho+"^000000 out of ^0000ff100^000000" ;
+			mes " You win ^0000ff"+.@duca[1]+"^000000x ^ff0000"+getitemname(.@duca[0])+"^000000 " ;
+			if(.@gancho <= 100 && .@gancho > 88 )
+			announce "Congratulations! "+strcharinfo(0)+" just received "+ .@duca[1] +"x "+ getitemname(.@duca[0]) +" from [ Gacha Machine 1 ] draw "+.@gancho+" out of 100 (prontera 122 110)!",0,0xFF3399;
+			end;
+			}
+			
+		case 2:
+			mes "[ Gatcha Machine 3 ]";
+			mes "Alright..";
+			close;
+			}
+			
+
+	case 2:
+		mes "[ Gatcha Machine 3 ]";
+		mes "this gacha is limited version only";
+		mes "for every change of gacha machine.";
+		mes "it will increase per roll by 40%";
+		next;
+		mes "but dont worry....";
+		mes "it will announce in game and post in on our facebook page 1 to 2 weeks prior notice before we change ";
+		next;	
+		mes "[ Gatcha Machine 3 ]";
+		mes "the following information contains prize list";
+		mes "__________________________________";
+		next;
+		mes "[ Gatcha Machine 3 ]";
+        mes  "per draw you will get random number between 1 and 100.";
+        mes "__________________________________";
+        mes  "if you get";
+        mes  "1 skull cap [1] ";
+        mes  "2 to 15 life insurance (15)";
+        mes  "16 to 30 low grade white potion (20)";
+        mes  "31 to 45 Low grade blue potion";
+        mes  "46 to 60 elunium";
+        mes  "61 to 75 oridecon";
+        mes  "76 to 84 old blue box";
+        next;
+        mes "[ Gatcha Machine 3 ]";
+        mes  "85 to 87 old purple box";
+        mes  "88 to 91 P. Ticket";
+        mes  "92 to 95 Eye Of Darkness [0]";
+        mes  "96 to 97 Father's Mask [0]";
+        mes  "98 to 99 Drops Balloon";
+        mes  "100 Cat Ear Beret [1] ";
+
+
+        next ;
+        mes "[ Gatcha Machine 3 ]";
+        mes "skull cap (1) is 1%" ;
+        mes "life insurance (1) is 14%" ;
+        mes "low grade white potion (1)is 15%" ;
+        mes "low grade blue potion (1) is 15%" ;
+        mes "elunium (1) is 15%" ;
+        mes "OBB (1) is 9%" ;
+        mes "Old Purple Box is 3%" ;
+        mes "P. Ticket 4%" ;
+        mes "Eye Of Darkness [0] is 4%" ;
+        mes "Father's Mask [0] is 2%" ;
+        mes "Drops Balloon is 2%" ;
+        mes "Cat Ear Beret [1] is 1%" ;
+      
+        close;
+     }
+}	

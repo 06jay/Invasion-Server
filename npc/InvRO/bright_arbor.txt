@@ -1,0 +1,29 @@
+prontera,152,192,4	script	Bright Arbor	871,{
+
+	mes "[ Bright Arbor ]";
+	if (agitcheck() || agitcheck2()) { mes "WoE is currently still in progress."; close; }
+	mes "Please select a castle:";
+	next;
+	for(set .@i,0; .@i<1; set .@i,.@i+1)
+		set .@menu$, .@menu$+getcastlename(.Castles$[.@i])+":";
+	set .@i, select(.@menu$)-1;
+	mes "[ Bright Arbor ]";
+	if (getcastledata(.Castles$[.@i],1) != getcharid(2)) { mes "You aren't the owner of this castle."; close; }
+	if (getguildmasterid(getcharid(2)) != getcharid(0)) { mes "Only the guild master can claim the reward."; close; }
+	if ($castle_claimed&(1<<.@i)) { mes "You've already claimed this castle's reward!"; close; }
+	mes "Here's your reward for conquering "+getcastlename(.Castles$[.@i])+".";
+	set $castle_claimed, $castle_claimed | (1<<.@i);
+	//getitem 7227,50;  //Set your prize here!
+    query_sql("INSERT INTO `woe_s2_points` (`account_id`,`points`) VALUES ("+getcharid(3)+",3) ON DUPLICATE KEY UPDATE `points` = `points` + 3");
+    dispbottom "You have been rewarded 3 WoE Points for conquering Bright Arbor.";
+	close;
+
+OnAgitEnd:
+	set $castle_claimed, 0;
+	end;
+
+OnInit:
+	setarray .Castles$[0],
+		"payg_cas01";
+	end;
+} 

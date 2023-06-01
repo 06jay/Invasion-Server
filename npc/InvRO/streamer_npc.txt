@@ -1,0 +1,241 @@
+//__________    _____    ________  __________________________________   ____
+//\______   \  /  _  \  /  _____/ /   _____/\_   _____/\______   \   \ /   /
+// |       _/ /  /_\  \/   \  ___ \_____  \  |    __)_  |       _/\   Y   / 
+// |    |   \/    |    \    \_\  \/        \ |        \ |    |   \ \     /  
+// |____|_  /\____|__  /\______  /_______  //_______  / |____|_  /  \___/   
+//        \/         \/        \/        \/         \/         \/           
+//Website: www.ragserv.com
+//Discord Support: -R#9305
+//Facebook: https://www.facebook.com/RagServPH/
+//RAGSERV SUPPORT || RAGSERV PH";
+//====================================================
+//	Gifting NPC v1                                   |
+//	By : -R (KazumaSatou on rAthena)                 |
+//====================DESCRIPTION=====================
+//	Gifting NPC made for Invasion Ragnarok Online.   |
+//	This is the only way to transfer Items on        |
+//	Invasion Ragnarok Online.                        |
+//=======================POLICY=======================
+//	You must not claim my work as yours.             |
+//	You must not resell my work.                     |
+//	You must not share in any form to others.        |
+//	You can use my works on your future owned servers|
+//====================================================
+/*
+CREATE TABLE `streamer_npc` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `sender_name` varchar(100) NOT NULL DEFAULT '',
+  `receiver_name` varchar(100) NOT NULL DEFAULT '',
+  `nameid` int(11) unsigned NOT NULL DEFAULT 0,
+  `amount` int(11) unsigned NOT NULL DEFAULT 0,
+  `refine` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `card0` int(10) unsigned NOT NULL DEFAULT 0,
+  `card1` int(10) unsigned NOT NULL DEFAULT 0,
+  `card2` int(10) unsigned NOT NULL DEFAULT 0,
+  `card3` int(10) unsigned NOT NULL DEFAULT 0,
+  `message` varchar(256) NOT NULL DEFAULT '',
+  `sent_date` DATETIME NULL DEFAULT '19000101',
+  `received_date` DATETIME NULL DEFAULT '19000101',
+  `status` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+*/
+-	shop	gifting_shop	-1,909:100
+prontera,110,98,5	script	Streamer NPC	102,{
+
+	if($StreamerNPC == 1) {
+			mes "[^000088Streamer NPC^000000]";
+			mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+			close;
+		}
+	.@weight = 100 * Weight / MaxWeight;
+	.n$ = "[^000088Streamer NPC^000000]";
+	mes .n$;
+	mes "What would you like to do?";
+	next;
+	.@s = query_sql("SELECT `id`,`sender_name`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`message`,`sent_date` FROM `streamer_npc` WHERE `receiver_name` = '"+strcharinfo(0)+"' AND `status` = '0'",.@id,.@sender$,.@nameid,.@amt,.@refine,.@card0,.@card1,.@card2,.@card3,.@message$,.@sentdate$);
+	switch(select(
+		(countitem(35421) > 0 )?"Send Give Away":"",
+		(.@s) ?"Claim Give Away" : "",
+		"History"
+		)){
+		case 1:
+			//if(getgroupid() < 1){
+			if(countitem(35421) < 1){
+				mes .n$;
+				mes "I'm sorry you are not streamer. Go away!";
+				close;
+			}
+			mes .n$;
+			mes "Please enter the name of the player who you want to send your Give Away:";
+			next;
+			input .@pName$;
+			query_sql("SELECT `name`,`online` FROM `char` WHERE `name` = '"+.@pName$+"'",.@pNamesql$,.@pOnlinesql);
+			if(.@pName$ == strcharinfo(0)){
+				mes .n$;
+				mes "You can't send Give Away to yourself.";
+				close;
+			}
+			if(.@pNamesql$ == ""){
+				mes .n$;
+				mes "The character name "+.@pName$+" does not exist.";
+				mes "Please double check your entries.";
+				close;
+			//}
+			//if(!.@pOnlinesql){
+			//	mes .n$;
+			//	mes "Player "+.@pName$+" is currently offline.";
+			//	mes "Ask him to get online to send your give away.";
+			//	close;
+			} else {
+				getinventorylist;
+				.@i = 0;
+				while ( .@i < @inventorylist_count ) {
+
+					/* Filter only items that is not bound */
+					if (!@inventorylist_bound[.@i] && @inventorylist_expire[.@i] < 1 && !@inventorylist_equip[.@i] && @inventorylist_tradable){
+						.@itemname$ = callfunc( "getitemname2", @inventorylist_id[.@i], @inventorylist_identify[.@i], @inventorylist_refine[.@i], @inventorylist_attribute[.@i], @inventorylist_card1[.@i], @inventorylist_card2[.@i], @inventorylist_card3[.@i], @inventorylist_card4[.@i], @inventorylist_bound[.@i]);
+						.@menu$ = .@menu$ + @itemname2_info$ + .@itemname$;
+					}
+					.@menu$ = .@menu$ + ":";
+					.@i++;
+				}
+				.@s = select(.@menu$) -1;
+			}
+			if(countitem(@inventorylist_id[.@s]) > 1){
+				mes "How many "+getitemname(@inventorylist_id[.@s])+" you want to send as a give away.?";
+				next;
+				input .@giftamt;
+			} else 
+				.@giftamt = 1;
+			if(.@giftamt == 0) close;
+			if(countitem(@inventorylist_id[.@s]) < .@giftamt){
+				mes "You don't have enough "+getitemname(@inventorylist_id[.@s])+" in your inventory based on your input.";
+				close;
+			} else {
+				mes .n$;
+				mes "Enter message for the receiver of "+getitemname(@inventorylist_id[.@s])+" :";
+				next;
+				input .@message$;
+				if(.@message$ == ""){
+					mes .n$;
+					mes "Please enter message to the receiver.";
+					close;
+				}
+				mes .n$;
+				mes "Please confirm the data:";
+				mes "Receiver Name : "+.@pName$;
+				mes "Give Away to Send : "+getitemname(@inventorylist_id[.@s]);
+				mes "Amount : "+.@giftamt;
+				if(@inventorylist_refine[.@s] > 0)
+					mes "Refine : "+@inventorylist_refine[.@s];
+				if(@inventorylist_card1[.@s] > 1){
+					mes "Card Slot 1 : "+getitemname(@inventorylist_card1[.@s]);
+					if(@inventorylist_card2[.@s])
+						mes "Card Slot 2 : "+getitemname(@inventorylist_card2[.@s]);
+					if(@inventorylist_card3[.@s])
+						mes "Card Slot 3 : "+getitemname(@inventorylist_card3[.@s]);
+					if(@inventorylist_card4[.@s])
+						mes "Card Slot 4 : "+getitemname(@inventorylist_card4[.@s]);
+				}
+				mes "Message : "+.@message$;
+				next;
+				switch(select("Confirm:Leave")){
+					case 1:
+						mes .n$;
+						mes "Your Give Away has been sent successfully.";
+						.@sql$ = "INSERT INTO `streamer_npc`"
+								+" (`sender_name`,`receiver_name`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`message`,`sent_date`,`received_date`,`status`)"
+								+" VALUES"
+								+" ('"+strcharinfo(0)+"','"+.@pName$+"','"+@inventorylist_id[.@s]+"','"+.@giftamt+"','"+@inventorylist_refine[.@s]+"','"+@inventorylist_card1[.@s]+"','"+@inventorylist_card2[.@s]+"','"+@inventorylist_card3[.@s]+"','"+@inventorylist_card4[.@s]+"','"+.@message$+"',NOW(),'19000101','0')";
+						query_sql(.@sql$);
+						announce "Streamer NPC "+strcharinfo(0)+" has sent a x"+.@giftamt+" [ +"+@inventorylist_refine[.@s]+" "+getitemname(@inventorylist_id[.@s])+" ] to "+.@pName$+" with a message of : "+.@message$+".",1,0xbba2f7;
+						//announce "[GM Box]:    "+strcharinfo(0)+" has sent a x"+.@giftamt+" [ +"+@inventorylist_refine[.@s]+" "+getitemname(@inventorylist_id[.@s])+" ] to "+.@pName$+" Reason: "+.@message$+".",bc_all;
+						delitem @inventorylist_id[.@s],.@giftamt;
+						close;
+						break;
+					case 2:
+						mes .n$;
+						mes "Have a nice day!";
+						close;
+				}
+			}
+			break;
+		
+		case 2:
+			if(!.@s){
+				mes .n$;
+				mes "You don't have unclaimed give away.";
+				close;
+			}
+			if( 50 <= .@weight ) {
+				mes .n$;
+				mes "You are currently at 50% percent of your maximum weight."; 
+				close;
+			}
+			mes .n$;
+			mes "Someone has sent you a give away.";
+			next;
+			for(@i = 0; @i < .@s; @i = @i+1)
+				.@menu$ = .@menu$ +":"+ .@sender$[@i] +" sent"+((.@refine[@i]>1) ? " +"+.@refine[@i]+" ":"")+" "+((.@amt[@i] > 1) ? .@amt[@i]+"x ":"")+""+getitemname(.@nameid[@i])+".";
+				.@select = select(.@menu$) - 2;
+			mes .n$;
+			mes "Player "+.@sender$[.@select]+" sent you "+.@amt[.@select]+"x "+getitemname(.@nameid[.@select])+" on "+.@sentdate$[.@select]+".";
+			if(!checkweight(.@nameid[.@select],.@amt[.@select])){
+				mes "Please clean your inventory first before claiming your give away.";
+				mes "Its either you don't have enough space in your inventory or you have reached more than 30,000 item in total after you receive your give away.";
+				close;
+			} else {
+				mes "Message : "+.@message$[.@select];
+				getitembound2 .@nameid[.@select],.@amt[.@select],1,.@refine[.@select],0,.@card0[.@select],.@card1[.@select],.@card2[.@select],.@card3[.@select],1;
+				query_sql("UPDATE `streamer_npc` SET `received_date` = NOW(), `status` = '1' WHERE `id` = '"+.@id[.@select]+"'");
+				close;
+			}
+			close;
+
+		case 3:
+			.@sql$ = "SELECT `sender_name`,`receiver_name`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`message`,`sent_date`,`received_date`,`status` FROM `streamer_npc` WHERE `sender_name` = '"+strcharinfo(0)+"' OR `receiver_name` = '"+strcharinfo(0)+"'";
+			query_sql(.@sql$,.@sender$,.@receiver$,.@nameid,.@amount,.@refine,.@card0,.@card1,.@card2,.@card3,.@message$,.@sentdate$,.@receivedate$,.@status);
+			mes .n$;
+			if(!getarraysize(.@sender$)){
+				mes "I can't find any records named to you.";
+				close;
+			} else {
+				for(.@i = 0; .@i < getarraysize(.@sender$); .@i++){
+					mes "Record No. "+(.@i+1)+".";
+					mes "Sender Name: "+.@sender$[.@i];
+					mes "Receiver Name: "+.@receiver$[.@i];
+					mes "Give Away: "+getitemname(.@nameid[.@i]);
+					mes "Amount: "+.@amount[.@i]+"x";
+					if(.@refine[.@i] > 0)
+						mes "Refine : +"+.@refine[.@i];
+					if(.@card0[.@i] > 1){
+						mes "Card Slot 1 : "+getitemname(.@card0[.@i]);
+						if(.@card1[.@i])
+							mes "Card Slot 2 : "+getitemname(.@card1[.@i]);
+						if(.@card2[.@i])
+							mes "Card Slot 3 : "+getitemname(.@card2[.@i]);
+						if(.@card3[.@i])
+							mes "Card Slot 4 : "+getitemname(.@card3[.@i]);
+					}
+					mes "Message: "+.@message$[.@i];
+					mes "Sent Date: "+.@sentdate$[.@i];
+					if(.@receivedate$[.@i] > .@sentdate$[.@i])
+						mes "Received Date: "+.@receivedate$[.@i];
+					if(.@status[.@i] == 0)
+						.@status$ = "^FF0000Unclaimed^000000";
+					else
+						.@status$ = "^008800Claimed^000000";
+					mes "Status: "+.@status$;
+					mes "________________________";
+				}
+				close;
+			}
+			break;
+	}
+
+OnInit:
+	// list of card that cant be used to exchange/get.
+	.blacklisted_items$ = "|4142|4003|4069|";
+	.shop_npc_name$ = "gifting_shop";
+}

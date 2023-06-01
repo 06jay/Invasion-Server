@@ -1,0 +1,177 @@
+prontera,123,76,3	script	$IN Gifting	4_CAT_ADV1,{
+	query_sql("SELECT CAST(`value` AS CHAR(13)) FROM `in_security` WHERE account_id = " + getcharid(3), @INOnHand);
+	query_sql("SELECT `block` FROM `in_security` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@INOnBlock);
+	query_sql("SELECT `value` FROM `in_delay_transact` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @INTransaction);
+	.n$ = "[^000088 $IN Gifting ^000000]";
+	.@weight = 100 * Weight / MaxWeight;
+	if($ingifting == 1) {
+	mes .n$;
+	mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+	close;
+	}
+
+	if(openbox==1) {
+		mes "[ $IN Gifting ]";
+		mes "Please relog to access me";
+		close;
+	}
+	if (.@INOnBlock > 0 ) {
+		mes .n$;
+		mes "Your account block on ^8a2be2$IN^000000 transaction";
+		mes "^ffffff_^000000";
+		mes "^ff0000Please contact the administrator^000000";
+		close;
+	}
+	if(@INTransaction > gettimetick(2)){
+	mes .n$;
+	mes "^ff0000Note^000000: For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+	mes "--";
+	mes "You need to wait "+Time2Str(@INTransaction)+" before you can do another transaction.";
+	close;
+	}
+	.@cid = getcharid(0);
+	.@aid = getcharid(3);
+	.@s = query_sql("SELECT `char_id` FROM `char` WHERE `account_id` = '"+.@aid+"'",.@sqlcid);
+	for(.@i = 0; .@i < .@s; .@i++){
+			query_sql("SELECT SUM(`amount`) FROM `inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@inv);
+			query_sql("SELECT SUM(`amount`) FROM `cart_inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@cinv);
+			.@total += .@inv + .@cinv;
+	}
+	query_sql("SELECT SUM(`amount`) FROM `storage` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@stinv);
+	query_sql("SELECT SUM(`amount`) FROM `marketplace_inventory` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@binv);
+	.@total += .@stinv + .@binv;
+	if(.@total != @INOnHand){
+			mes .n$;
+			mes "Your account block on ^8a2be2$IN^000000 transaction because your total ^8a2be2$IN^000000 on hand isn't same on the ^8a2be2$IN^000000 you received.";
+			sleep2 5000;
+			query_sql("INSERT INTO `in_security` (`account_id`,`key`,`block`) VALUES ('"+getcharid(3)+"','@INOnHand',1) ON DUPLICATE KEY UPDATE `block` =  1;");
+			close;
+	}
+	mes .n$;
+	mes "What would you like to do?";
+	next;
+	.@s = query_sql("SELECT `id`,`sender_name`,`amount_sent`,`sent_date` FROM `tcg_trader` WHERE `receiver_name` = '"+strcharinfo(0)+"' AND `status` = '0'",.@id,.@sName$,.@aSent,.@sDate$);
+	switch(select("Send Gift:History"+((.@s) ? ":Claim Gift" : ""))){
+		case 1:
+			mes .n$;
+			mes "Please enter the name of the player who you want to send your ^8a2be2$IN^000000:";
+			next;
+			input .@pName$;
+			query_sql("SELECT `name` FROM `char` WHERE `name` = '"+.@pName$+"'",.@pNamesql$);
+			if(.@pName$ == strcharinfo(0)){
+				mes .n$;
+				mes "You can't send ^8a2be2$IN^000000 to yourself.";
+				close;
+			}
+			if(.@pNamesql$ == ""){
+				mes .n$;
+				mes "The character name "+.@pName$+" does not exist.";
+				mes "Please double check your entries.";
+				close;
+			} else {
+				mes .n$;
+				mes "How many ^8a2be2$IN^000000 you want to send to "+.@pName$+"?";
+				next;
+				input .@tcgamt;
+				if(.@tcgamt == 0) close;
+				if(countitem(35371) < .@tcgamt){
+					mes .n$;
+					mes "You don't have enough ^8a2be2$IN^000000 in your inventory based on your input.";
+					close;
+				} else {
+					mes .n$;
+					mes "Please confirm the data:";
+					mes "Receiver Name : "+.@pName$;
+					mes "^8a2be2$IN^000000 Amount to Send : "+.@tcgamt;
+					next;
+					switch(select("Confirm:Leave")){
+						case 1:
+							.@sql$ = "INSERT INTO `tcg_trader`"
+									+" (`sender_name`,`receiver_name`,`amount_sent`,`sent_date`,`received_date`,`status`)"
+									+" VALUES"
+									+" ('"+strcharinfo(0)+"','"+.@pName$+"','"+.@tcgamt+"',NOW(),'19000101','0')";
+							query_sql(.@sql$);
+							//#TCGOnHand -= .@tcgamt;
+							.ttime$ = gettimetick(2)+900;
+							mes .n$;
+							mes "Please wait while we are processing your request...";
+							query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',"+ .@tcgamt +") ON DUPLICATE KEY UPDATE `value` = `value` - "+.@tcgamt+";");
+							delitem 35371,.@tcgamt;
+							query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+							mes "Complete...";
+							next;
+							mes .n$;
+							mes "Your ^8a2be2$IN^000000 has been sent successfully.";
+							close;
+							break;
+						case 2:
+							mes .n$;
+							mes "Have a nice day!";
+							close;
+					}
+				}
+			}
+			break;
+		case 2:
+			.@sql$ = "SELECT `sender_name`,`receiver_name`,`amount_sent`,`sent_date`,`received_date`,`status` FROM `tcg_trader` WHERE `sender_name` = '"+strcharinfo(0)+"' OR `receiver_name` = '"+strcharinfo(0)+"'";
+			query_sql(.@sql$,.@sName$,.@rName$,.@aSent,.@sDate$,.@rDate$,.@status);
+			mes .n$;
+			if(!getarraysize(.@sName$)){
+				mes "I can't find any records named to you.";
+				close;
+			} else {
+				for(.@i = 0; .@i < getarraysize(.@sName$); .@i++){
+					mes "Record No. "+(.@i+1)+".";
+					mes "Receiver Name: "+.@rName$[.@i];
+					mes "Amount Sent: "+.@aSent[.@i];
+					mes "Sent Date: "+.@sDate$[.@i];
+					if(.@rDate$[.@i] > .@sDate$[.@i])
+						mes "Received Date: "+.@rDate$[.@i];
+					if(.@status[.@i] == 0)
+						.@status$ = "Unclaimed.";
+					else
+						.@status$ = "Claimed.";
+					mes "Status: "+.@status$;
+					mes "________________________";
+				}
+				close;
+			}
+			break;
+		case 3:
+			if(!.@s){
+				mes .n$;
+				mes "You don't have unclaimed gift.";
+				close;
+			}
+			mes .n$;
+			mes "Someone has sent you a gift.";
+			next;
+			for(@i = 0; @i < .@s; @i = @i+1)
+				.@menu$ = .@menu$ +":"+ .@sName$[@i] +" sent "+.@aSent[@i]+" ^8a2be2$IN^000000.";
+				.@select = select(.@menu$) - 2;
+			mes .n$;
+			mes "Player "+.@sName$[.@select]+" sent you "+.@aSent[.@select]+" ^8a2be2$IN^000000 on "+.@sDate$[.@select]+".";
+			next;
+			if((countitem(35371)+.@aSent[.@select]) > 30000 || !checkweight(35371,1)){
+				mes .n$;
+				mes "Please clean your inventory first before claiming your gift.";
+				mes "Its either you don't have enough space in your inventory or you have reached more than 30,000 item in total after you receive your gift.";
+				close;
+			} 
+			else if( 50 <= .@weight ) {
+				mes .n$;
+				mes "You are currently at 50% percent of your maximum weight."; 
+			}else {
+				.ttime$ = gettimetick(2)+900;
+				mes .n$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',"+ .@aSent[.@select] +") ON DUPLICATE KEY UPDATE `value` = `value` + "+.@aSent[.@select]+";");		
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				getitem 35371,.@aSent[.@select];
+				query_sql("UPDATE `tcg_trader` SET `received_date` = NOW(), `status` = '1' WHERE `id` = '"+.@id[.@select]+"'");
+				close;
+			}
+			close;
+	}
+}

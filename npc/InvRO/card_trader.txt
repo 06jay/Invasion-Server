@@ -1,0 +1,260 @@
+prontera,135,125,5	script	Card Trader	4_F_01,{
+query_sql("SELECT CAST(`points` AS CHAR(13)) FROM `in_card_trade` WHERE account_id = " + getcharid(3), .@points);
+.@weight = 100 * Weight / MaxWeight;
+.@item_id_mvp = F_Rand(4174,4241,4054,4047,4145,4236,4359,4425,4372,4147,4168,4386,4142,4134,4137,4123,4330,4441,4324,4408,4128,4363,4365,4430,4263,4403,4318,4419,4376,4357,4276,4146,4132,4131,4143,4135,4144,4148,4121,4342,4367,4302,4399,4305,4407,4374,4361,4352);
+
+.@item_id_mini = F_Rand(4428,4426,4290,4300,4169,4179,4266,4451,4250,4423,4354,4163,4384,4431,4197,4198,4203,4207,4440,4392,4238,4237,4391,4429,4393,4406,4394,4427,4398,4395,4396,4254,4306,4183);
+
+.@item_id_normal = F_Rand(4001,4002,4003,4004,4005,4006,
+4007,4008,4009,4010,4011,4012,4013,4014,4015,4016,4017,4018,4019,4020,4021,4022,4023,4024,4025,4026,4027,4028,4029,4030,4031,4032,4033,4034,4035,4036,4037,4038,4039,4040,4041,4042,4043,4044,4045,4046,
+4048,4049,4050,4051,4052,4053,4055,4056,4057,4058,4060,4061,4062,4063,4064,4065,4066,4067,4068,4069,4070,4071,4072,4073,4074,4075,4076,4077,4078,4079,4080,4081,4082,4083,4084,4085,4086,4087,4088,4089,
+4090,4091,4092,4093,4094,4095,4096,4097,4098,4099,4100,4101,4102,4103,4104,4105,4106,4107,4108,4109,4110,4111,4112,4113,4114,4115,4116,4117,4118,4119,4120,4122,4124,4125,4126,4127,4129,4133,4136,4138,
+4139,4140,4141,4149,4150,4151,4152,4153,4154,4155,4156,4157,4158,4159,4160,4161,4162,4164,4165,4166,4167,4170,4172,4173,4175,4176,4177,4178,4180,4181,4182,4184,4185,4186,4187,4188,4189,4190,4191,4192,
+4193,4194,4195,4196,4199,4200,4201,4202,4204,4205,4206,4208,4209,4210,4211,4212,4213,4214,4215,4216,4217,4218,4219,4220,4221,4222,4223,4224,4225,4226,4227,4228,4229,4230,4231,4232,4233,4234,4235,4239,
+4240,4242,4244,4245,4246,4247,4248,4249,4251,4252,4253,4255,4256,4257,4258,4259,4260,4261,4262,4264,4265,4267,4268,4269,4270,4271,4272,4273,4274,4275,4277,4278,4279,4280,4281,4282,4283,4284,4285,4286,
+4287,4288,4289,4291,4292,4293,4294,4295,4296,4297,4298,4299,4301,4303,4304,4307,4308,4309,4310,4311,4312,4313,4314,4315,4316,4317,4319,4320,4321,4322,4323,4325,4326,4327,4328,4329,4331,4332,4333,4334,
+4335,4336,4337,4338,4339,4340,4341,4343,4344,4345,4346,4347,4348,4349,4350,4351,4353,4355,4356,4358,4360,4362,4364,4366,4368,4369,4370,4371,4373,4375,4377,4378,4379,4380,4381,4382,4383,4385,4387,4388,
+4389,4390,4397,4400,4401,4402,4404,4405,4409,4410,4411,4412,4413,4414,4415,4416,4417,4418,4420,4421,4422,4424,4432,4433,4434,4435,4436,4437,4438,4439,4442,4443,4444,4445,4447,4448,4449,4450,4452,4453,4018);
+	disable_items;
+	setarray .@card1[0], 4001,4006,4009,4019,4075,4033,4012,4016,4026,4022,
+				4027,4028,4038,4025,4021,4050,4079,4081,4090,4094,
+				4101,4104,4110,4114,4119,4108,4095,4231,4280,4008,
+				4011,4013,4014,4015,4020,4032,4037,4039,4041,4045,
+				4046,4010,4023,4029,4052,4048,4056,4071,4093,4031,
+				4036,4034,4042,4055,4061,4087,4096,4116,4122,4170,
+				4215,4220,4228,4226,4212,4227,4267,4257,4278,4286,
+				4287,4292,4311,4315,4319,4322,4084,4078,4113,4149,
+				4153,4196,4240,4247,4256,4057,4066,4067,4112,4150,
+				4152,4186,4187,4181,4173,4167,4162,4176,4195,4193,
+				4200,4223,4194,4190,4189,4192,4224,4244,4248,4261,
+				4260,4259,4274,4275,4313,4299,4304,4294,4076,4127,
+				4154,4157,4156,4213,4214,4225,4235;
+	setarray .@card2[0], 4293,4297,4288,4283,4295,4307,4308,4309,4132,4326,
+				4341,4335,4337,4345,4344,4331,4333,4332,4089,4161,
+				4177,4178,4180,4184,4191,4206,4199,4273,4282,4268,
+				4289,4321,4316,4343,4339,4369,4377,4385,4383,4382,
+				4380,4381,4378,4379,4390,4389,4388,4391,4405,4400,
+				4401,4402,4404,4002,4003,4004,4005,4007,4017,4024,
+				4030,4035,4040,4043,4044,4049,4051,4053,4058,4060,
+				4062,4063,4064,4065,4068,4069,4070,4072,4073,4074,
+				4077,4080,4082,4083,4085,4086,4088,4091,4092,4097,
+				4098,4099,4100,4102,4103,4106,4107,4109,4111,4115,
+				4117,4118,4120,4124,4125,4126,4138,4139,4141,4151,
+				4158,4164,4165,4182,4185,4159,4160,4166,4172,4175,
+				4188,4201,4202,4204,4205,4208,4209;
+	setarray .@card3[0], 4120,4216,4217,4219,4221,4222,4230,4234,4233,4232,
+				4237,4238,4242,4243,4245,4246,4249,4252,4255,4258,
+				4262,4264,4276,4270,4271,4218,4239,4251,4253,4269,
+				4334,4105,4133,4136,4229,4272,4277,4279,4281,4284,
+				4285,4290,4296,4298,4301,4310,4314,4317,4325,4327,
+				4328,4329,4338,4340,4346,4347,4348,4349,4350,4351,
+				4353,4354,4355,4356,4358,4360,4362,4364,4366,4368,
+				4370,4371,4373,4375,4387,4406,4129,4155,4291,4392,
+				4393,4394,4409,4410,4411,4412,4413,4414,4415,4416,
+				4417,4418,4420,4421,4422,4423,4424,4427,4427,4428,
+				4429,4431,4432,4433,4434,4435,4436,4437,4438,4439,
+				4440,4442,4443,4444,4445,4447,4448,4449,4450,4452,
+				4453;
+	setarray .@size_card[1],  getarraysize(.@card1), getarraysize(.@card2), getarraysize(.@card3);
+	//.@points = oversea_event9;
+	if (!.@points) {
+		mes "[ Card Trader ]";
+		mes "Hi there.";
+		mes "I don't know if I can be";
+		mes "of any assistance, but I";
+		mes "am trying to help older veterans";
+		mes "by exchaning the cards that";
+		mes "they are no longer using.";
+		next;
+		switch(select("Ask for more information!","I don't have any cards right now.")) {
+		case 1:
+			mes "[ Card Trader ]";
+			mes "I am giving 1 point for each card that you bring me.";
+			mes "The points can be used to exchange for items that I have.";
+			next;
+			mes "[ Card Trader ]";
+			mes "For ^CC00001200 points^000000: ^0000CC1 MVP Boss Card^000000.";
+			mes "For ^CC0000200 points^000000: ^0000CC1 Mini Boss Card^000000.";
+			mes "For ^CC00005 point^000000: ^0000CC1 Normal Card^000000.";
+			next;
+			break;
+		case 2:
+			mes "[ Card Trader ]";
+			mes "Well, remember this offer!";
+			close;
+		}
+	} else {
+		mes "[ Card Trader ]";
+		mes "Welcome back!";
+		mes "I see you already have some";
+		mes "trading points. Actually, you currently have ^00cc00" + .@points + "^000000.";
+		next;
+		mes "[ Card Trader ]";
+		mes "You would like to exchange more cards?";
+		next;
+	}
+	switch(select("I would like to exchange cards.","I would like to roll cards")) {
+	case 1:
+		mes "[ Card Trader ]";
+		mes "Please tell me what card you want to exchange.";
+		next;
+		input .@i$;
+		.@input$ = "_"+.@i$;
+		freeloop(1);
+		for(.@j = 1; .@j<4; .@j++) {
+			for(.@i = 0; .@i<.@size_card[.@j]; .@i++)
+				if (compare(.@input$,"_"+getitemname(getd(".@card"+.@j+"["+.@i+"]")))) {
+					.@card = getd(".@card"+.@j+"["+.@i+"]");
+					break;
+				}
+			sleep2 10; // For good measure
+			if (.@card) break;
+		}
+		freeloop(0);
+		mes "[ Card Trader ]";
+		if (!.@card) mes "Please, come back here if you want to exchange a monster card.";
+		else {
+			.@count = countitem(.@card);
+			if (!.@count) {
+				mes "You don't have any ^0055FF"+callfunc("F_GetPlural",getitemname(.@card))+"^000000 with you!";
+				close;
+			}
+			mes "You've got ^0055FF"+callfunc("F_InsertPlural",.@count,getitemname(.@card))+"^000000.";
+			mes " ";
+			mes "Would you like to exchange 1 point for each of them?";
+			next;
+			switch(select("Yes, please!","No, thank you.")) {
+				case 1:
+					delitem .@card,.@count;
+					//oversea_event9 = (.@points+.@count);
+                    query_sql("INSERT INTO `in_card_trade` (`account_id`,`points`) VALUES ("+getcharid(3)+","+.@count+") ON DUPLICATE KEY UPDATE `points` = `points` + "+.@count+"");
+					mes "[ Card Trader ]";
+					mes "Alright, you have received ^CC0000"+.@count+"^000000 points.";
+					break;
+				case 2:
+					mes "[ Card Trader ]";
+					mes "Okay, let me know if I can help you with something else.";
+					break;
+			}
+		}
+        close;
+     case 2:
+        mes "[ Card Trader ]";
+        mes "^ff0000Note:^000000";
+        mes "^0000ffAngeling Card^000000";
+        mes "^0000ffArchangeling Card^000000";
+        mes "^0000ffDeviling Card^000000";
+        mes "^0000ffGhostring Card^000000";
+        mes "Move to ^ff0000MVP Boss Card^000000 Category";
+        next;
+        mes "[ Card Trader ]";
+        mes "Roll Random Cards";
+        mes "For ^CC00001200 points^000000: ^0000CC1 MVP Boss Card^000000.";
+        mes "For ^CC0000200 points^000000: ^0000CC1 Mini Boss Card^000000.";
+        mes "For ^CC00005 point^000000: ^0000CC1 Normal Card^000000.";
+        next;
+        switch(select("MVP Boss Card:Mini Boss Card:Normal Card:Cancel")){
+            case 1:
+                mes "[ Card Trader ]";
+                mes "Roll Random MVP Boss Cards";
+                mes "For ^CC00001200 points^000000: ^0000CC1 MVP Boss Card^000000.";
+                next;
+                switch(select("Roll:Cancel")){
+                    case 1:
+                        if (.@points < 1200 ) {
+                        mes "[ Card Trader ]";
+                        mes "I don't think you have enough Points.";
+                        close;
+                        }
+                        if( 50 <= .@weight ) {
+                        mes "[ Card Trader ]";
+                        mes "You are currently at 50% percent of your maximum weight.";
+                        close;
+                        }
+                        progressbar "0x11CC99",3; 
+			            specialeffect2 EF_REMOVETRAP;
+                        mes "[ Card Trader ]";
+                        getitem .@item_id_mvp, 1;
+                        query_sql("INSERT INTO `in_card_trade` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-1200) ON DUPLICATE KEY UPDATE `points` = `points` - 1200;");
+                        announce "["+strcharinfo(0)+"] has just roll a ["+getitemname( .@item_id_mvp )+"] from Card Trader.",0,0xb73e25;
+                        mes "Thank you!";
+                        close;
+						
+					case 2:
+						 mes "[ Card Trader ]";
+						 mes "Have a nice day";
+						 close;
+						 }
+
+            case 2:
+                mes "[ Card Trader ]";
+                mes "Roll Random Mini Boss Cards";
+                mes "For ^CC0000200 points^000000: ^0000CC1 Mini Boss Card^000000.";
+                next;
+                switch(select("Roll:Cancel")){
+                    case 1:
+                        if (.@points < 200 ) {
+                        mes "[ Card Trader ]";
+                        mes "I don't think you have enough Points.";
+                        close;
+                        }
+                        if( 50 <= .@weight ) {
+                        mes "[ Card Trader ]";
+                        mes "You are currently at 50% percent of your maximum weight.";
+                        close;
+                        }
+                        progressbar "0x11CC99",3; 
+			            specialeffect2 EF_REMOVETRAP;
+                        mes "[ Card Trader ]";
+                        getitem .@item_id_mini, 1;
+                        query_sql("INSERT INTO `in_card_trade` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-200) ON DUPLICATE KEY UPDATE `points` = `points` - 200;");
+                        announce "["+strcharinfo(0)+"] has just roll a ["+getitemname( .@item_id_mini )+"] from Card Trader.",0,0xe20e50;
+                        mes "Thank you!";
+                        close;
+						
+					case 2:
+						 mes "[ Card Trader ]";
+						 mes "Have a nice day";
+						 close;
+						 }
+
+            case 3:
+                mes "[ Card Trader ]";
+                mes "Roll Random Normal Cards";
+                mes "For ^CC00005 points^000000: ^0000CC1 Normal Card^000000.";
+                next;
+                switch(select("Roll:Cancel")){
+                    case 1:
+                        if (.@points < 5 ) {
+                        mes "[ Card Trader ]";
+                        mes "I don't think you have enough Points.";
+                        close;
+                        }
+                        if( 50 <= .@weight ) {
+                        mes "[ Card Trader ]";
+                        mes "You are currently at 50% percent of your maximum weight.";
+                        close;
+                        }
+                        progressbar "0x11CC99",3; 
+			            specialeffect2 EF_REMOVETRAP;
+                        mes "[ Card Trader ]";
+                        getitem .@item_id_normal,1;
+                        query_sql("INSERT INTO `in_card_trade` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-5) ON DUPLICATE KEY UPDATE `points` = `points` - 5;");
+                        announce "["+strcharinfo(0)+"] has just roll a ["+getitemname( .@item_id_normal )+"] from Card Trader.",0,0xffebcd;
+                        mes "Thank you!";
+                        close;
+						
+					case 2:
+						 mes "[ Card Trader ]";
+						 mes "Have a nice day";
+						 close;
+						 }
+
+            case 4:
+                mes "[ Card Trader ]";
+                mes "Have a nice day";
+                close;
+        }
+    }
+}
+

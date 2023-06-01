@@ -1,0 +1,60 @@
+35801,PH_Nation,Philippines,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35802,THA_Nation,Thailand,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35803,Ind_Nation,Indonesia,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35804,MySG_Nation,MySG,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35805,Purple_Megs,Purple Megs,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35806,Red_Megs,Red Megs,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35807,WhiteMegs,White Megs,12,0,,0,,,,0,0xFFFFFFFF,7,2,1048576,,1,1,,{},{},{}
+35808,Santa_Bag_,Santa Bag,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ callfunc "santabox"; },{},{}
+35809,Cheque,Cheque,0,50,,,,,,,0xFFFFFFFF,7,2,,,,,,{  if (Zeny >= 1800000000){ dispbottom "Sorry seems like you are almost full of zeny."; getitem 35809,1; end; } Zeny += 200000000; dispbottom "You received 200M Zeny"; },{},{}
+35810,30 Day Premium Ticket_,30 Day Premium Ticket,0,50,,70,,,,,0xFFFFFFFF,7,2,,,,,,{ if (getgroupid()>6) { dispbottom "Sorry,GM staff can't use this."; getitem 35810,1; end; } atcommand "@vip +1m "+strcharinfo(0)+""; getitem 20504,1; },{},{}
+35000,Dust_Card_Pouch,Dust Card Pouch,18,20,,1,,,,,0xFFFFFFFF,7,2,,,,,,{ getitembound 35001,rand(1,5),1; },{},{}
+35001,Dust_Card_,Dust Card,3,0,,0,,,,,,,,,,,,,{},{},{}
+35002,Adventure_Handbook,Adventure Handbook,11,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ callfunc "AHandbook"; end; },{},{}
+35347,Hairstyle_Coupon,Hairstyle Coupon,3,0,,0,,,,,,,,,,,,,{},{},{}
+35003,Protection_Ticket,Protection Ticket,3,0,,0,,,,,,,,,,,,,{},{},{}
+35004,Dungeon_Ticket,Dungoen Ticket,3,0,,0,,,,,,,,,,,,,{},{},{}
+35005,Red_Potion_Box(100),Red Potion Box(100),18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitembound 35005,1,1; end;  } getitembound 501,100,1; },{},{}
+35006,Orange_Potion_Box(100),Orange Potion Box(100),18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitembound 35006,1,1; end;  } getitembound 502,100,1; },{},{}
+35007,White_Potion_Box(100),White Potion Box(100),18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitembound 35007,1,1; end;  } getitembound 504,100,1; },{},{}
+35343,Amonra_Staff,Mystogan Staff,4,1000,,500,,2,,0,0xFFFFFFFF,7,2,2048,,0,1,2285,{bonus bMdef,3;bonus bAllStats,1;},{},{}
+35344,Migration_Package,Migration Package,2,1000,,1,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35344,1; end;  }getitembound 35289,1,4; getitembound 7776,5,1; getitembound 12210,10,1; getitembound 12208,20,1;getitembound 14592,20,1;getitembound 35306,20,1; getitembound 12215,10,1; getitembound 12216,10,1; },{},{}
+35345,Mystogan_Set,Mystogan Set,2,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{.@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35345,1; end;  }getitem 35343,1; getitem 31396,1; getitem 31395,1; getitem 35198,1; },{},{}
+35346,Tradable_Elite_Siege_Supply_Box,Tradable Elite Siege Supply Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35306,1; end;  } getitem 11503,100; getitem 11504,50; },{},{}
+35198,ROGUERELIC,Mystogan Robe ,4,0,,0,,0,,0,0xFFFFFFFF,63,2,8192,,1,0,80,{bonus bAddMaxWeight,10000;bonus bMaxHP,200;bonus bMaxSP,200; },{},{}
+31395,C_Book_Of_Magic,Mystogan Book,4,0,,500,,0,,0,0xFFFFFFFF,63,2,4096,,1,0,1691,{bonus bDef,2;},{},{}
+31396,C_Sorcerer_Hood,Mystogan Hood,4,0,,500,,0,,0,0xFFFFFFFF,63,2,1024,,1,0,1692,{bonus bMdef,2; },{},{}
+35293,Winter_Edition_Chest,Winter Edition Chest,2,10000,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35293,1; end;  }callfunc "winterchest"; },{},{}
+35294,Daily_Ticket,Daily Ticket,3,0,,10,,,,,,,,,,,,,{},{},{}
+35295,_Red_Slim_Potion,Condensed Red Potion,0,150,,20,,,,,0xFFFFFFFF,7,2,,,,,,{ itemheal rand(45,65),0; },{},{}
+35296,_Box_Of_Thunder,Box of Thunder,2,1000,,200,,,,,0xFFFFFFFF,7,2,,,,,,{ sc_start SC_SPEEDUP0,20000,25; },{},{}
+35297,_Gloomy_Box,Box of Gloom,11,1000,,200,,,,,0xFFFFFFFF,7,2,,,,,,{ itemskill "AC_CONCENTRATION",1; },{},{}
+35298,_Box_Of_Grudge,Box of Resentment,2,1000,,200,,,,,0xFFFFFFFF,7,2,,,,,,{ sc_start SC_ATKPOTION,60000,20; },{},{}
+35299,_Sleepy_Box,Box of Drowsiness,2,1000,,200,,,,,0xFFFFFFFF,7,2,,,,,,{ sc_start SC_MATKPOTION,60000,20; },{},{}
+35008,Arrow_Quiver_Box,Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35008,1; end;  }getitem 12004,5; },{},{}
+35009,Silver_Arrow_Quiver_Box,Silver Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35009,1; end;  }getitem 12009,5; },{},{}
+35010,Fire_Arrow_Quiver_Box,Fire Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{.@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35010,1; end;  } getitem 12008,5; },{},{}
+35011,Wind_Arrow_Quiver_Box,Wind Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35011,1; end;  }getitem 12010,5; },{},{}
+35012,Crystal_Arrow_Quiver_Box,Crystal Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{.@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35012,1; end;  } getitem 12012,5; },{},{}
+35013,Stone Arrow_Quiver_Box,Stone Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35013,1; end;  }getitem 12011,5; },{},{}
+35014,Steel_Arrow_Quiver_Box,Steel Arrow Quiver Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{.@weight = 100 * Weight / MaxWeight; if( 80 <= .@weight ) {	dispbottom "You are currently at 80% percent of your maximum weight."; getitem 35014,1; end;  } getitem 12006,5; },{},{}
+35306,Bound_Elite_Siege_Supply_Box,Bound Elite Siege Supply Box,18,20,,10,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35306,1; end;  } getitem 11503,100; getitem 11504,50; },{},{}
+35340,Aurum_Two_Handed_Axe,Aurum Two-Handed Axe,5,55000,,2500,230,,1,1,0x000444A2,7,2,34,3,50,1,7,{},{},{}
+35339,Aurum_Katar,Aurum_Katar,5,41000,,1200,185,,1,1,0x00001000,7,2,34,3,50,1,16,{ bonus bDex,2; },{},{}
+35338,Aurum_Tail_Whip,Aurum Tail Whip,5,41000,,700,130,,2,1,0x00080000,7,0,2,3,50,1,14,{ bonus bLuk,6; },{},{}
+35337,Aurum_Harp,Aurum_Harp,5,62000,,900,142,,1,1,0x00080000,7,1,2,3,50,1,13,{ bonus bInt,4; },{},{}
+35336,Aurum_Claw,Aurum_Claw,5,67000,,500,107,,1,1,0x00008100,7,2,2,3,50,1,12,{ bonus bStr,4; },{},{}
+35335,Aurum_Repeating_CrossBow,Aurum_Repeating Crossbow,5,89000,,2000,120,,9,1,0x00020840,7,2,34,3,65,1,11,{},{},{}
+35334,Aurum_Hunter_Bow,Aurum_Hunter Bow,5,64000,,1500,155,,5,0,0x00000800,7,2,34,3,50,1,11,{},{},{}
+35333,Aurum_Survival_Rod,Aurum_Survivor's Rod,5,85000,,1000,60,,1,0,0x00818314,7,2,2,3,50,1,10,{ bonus bDex,4; bonus bMatkRate,20; bonus bMaxHP,600; },{},{}
+35332,Aurum_Survival_Rod2,Aurum_Survivor's Rod,5,85000,,1000,60,,1,0,0x00818314,7,2,2,3,50,1,10,{ bonus bInt,4; bonus bMatkRate,20; bonus bMaxHP,600; },{},{}
+35331,Aurum_Stunner,Aurum_Stunner,5,60000,,2000,175,,1,0,0x00008110,7,2,2,3,50,1,8,{ bonus2 bAddEff,Eff_Stun,2000; },{},{}
+35330,Aurum_Halberd,Aurum_Halberd,5,54000,,2500,205,,3,1,0x00004082,7,2,34,3,50,1,5,{},{},{}
+35329,Aurum_Broad_Sword,Aurum_Broad Sword,5,65000,,2000,175,,1,1,0x00004082,7,2,34,3,50,1,3,{ bonus bDef,10; bonus bUnbreakableWeapon; },{},{}
+35328,Aurum_Flamberge,Aurum Flamberge,5,60000,,1500,190,,1,0,0x00004080,7,2,2,3,50,1,2,{},{},{}
+35327,Aurum_Coward,Aurum Cowardice Blade,5,52000,,700,100,,1,1,0x02021040,7,2,2,3,50,1,1,{ bonus bDef,10; },{},{}
+35310,Gift_Box_,Gift Box,2,1000,,20,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35310,1; end;  }getitembound 11503,20,1; getitembound 11504,10,1;     },{},{}
+35311,1 Day Premium Ticket_,1 Day Premium Ticket,0,50,,70,,,,,0xFFFFFFFF,7,2,,,,,,{ if (getgroupid()>6) { dispbottom "Sorry,GM staff can't use this."; getitem 35311,1; end; } atcommand "@vip +1d "+strcharinfo(0)+""; },{},{}
+35315,Grind_Coupon,Grind Coupon,3,0,,50,,,,,,,,,,,,,{},{},{}
+35316,Grind_Coupon_Box20,Grind Coupon Box(20),0,20,,200,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35316,1; end;  }getitem 35315,20; },{},{}
+35317,Grind_Coupon_Box30,Grind Coupon Box(30),0,20,,300,,,,,0xFFFFFFFF,7,2,,,,,,{ .@weight = 100 * Weight / MaxWeight; if( 50 <= .@weight ) {	dispbottom "You are currently at 50% percent of your maximum weight."; getitem 35317,1; end;  }getitem 35315,30; },{},{}

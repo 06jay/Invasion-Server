@@ -1,0 +1,28 @@
+function	script	HitView	{
+		mes "[ Hand Book ]";
+		mes "Here's the hit list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+if(a2211 == 1) { mes "^ff0000"+getitemname(2211)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2211)+" + 1(Default)^000000"; }
+if(a2216 == 1) { mes "^ff0000"+getitemname(2216)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2216)+" + 1(Default)^000000"; }
+if(a5065 == 1) { mes "^ff0000"+getitemname(5065)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5065)+" + 1(Default)^000000"; }
+if(a2233 == 1) { mes "^ff0000"+getitemname(2233)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2233)+" + 1(Default)^000000"; }
+if(a5163 == 1) { mes "^ff0000"+getitemname(5163)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5163)+" + 1(Default)^000000"; }
+if(a5075 == 1) { mes "^ff0000"+getitemname(5075)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5075)+" + 1(Default)^000000"; }
+if(a2297 == 1) { mes "^ff0000"+getitemname(2297)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2297)+" + 1(Default)^000000"; }
+if(a2224 == 1) { mes "^ff0000"+getitemname(2224)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2224)+" + 1(Default)^000000"; }
+if(a2225 == 1) { mes "^ff0000"+getitemname(2225)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2225)+" + 1(Default)^000000"; }
+if(a2246 == 1) { mes "^ff0000"+getitemname(2246)+" + 5(Default)^000000"; } else { mes "^0000FF"+getitemname(2246)+" + 5(Default)^000000"; }
+if(a5021 == 1) { mes "^ff0000"+getitemname(5021)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5021)+" + 1(Default)^000000"; }
+if(a5127 == 1) { mes "^ff0000"+getitemname(5127)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5127)+" + 1(Default)^000000"; }
+if(a2288 == 1) { mes "^ff0000"+getitemname(2288)+" + 5(Default)^000000"; } else { mes "^0000FF"+getitemname(2288)+" + 5(Default)^000000"; }
+if(a2270 == 1) { mes "^ff0000"+getitemname(2270)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2270)+" + 1(Default)^000000"; }
+if(a2236 == 1) { mes "^ff0000"+getitemname(2236)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2236)+" + 1(Default)^000000"; }
+if(a5085 == 1) { mes "^ff0000"+getitemname(5085)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5085)+" + 1(Default)^000000"; }
+if(a5351 == 1) { mes "^ff0000"+getitemname(5351)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5351)+" + 1(Default)^000000"; }
+if(a2201 == 1) { mes "^ff0000"+getitemname(2201)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2201)+" + 1(Default)^000000"; }
+if(a5088 == 1) { mes "^ff0000"+getitemname(5088)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5088)+" + 1(Default)^000000"; }
+
+		close;
+	}

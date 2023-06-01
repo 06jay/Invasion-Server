@@ -1,0 +1,51 @@
+function	script	MAttackView	{
+		mes "[ Hand Book ]";
+		mes "Here's the mdef list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+if(a5086 == 1) { mes "^ff0000"+getitemname(5086)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5086)+" + 3(Default)^000000"; }
+if(a5042 == 1) { mes "^ff0000"+getitemname(5042)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5042)+" + 3(Default)^000000"; }
+if(a5040 == 1) { mes "^ff0000"+getitemname(5040)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5040)+" + 3(Default)^000000"; }
+if(a2214 == 1) { mes "^ff0000"+getitemname(2214)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2214)+" + 3(Default)^000000"; }
+if(a31207 == 1) { mes "^ff0000"+getitemname(31207)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(31207)+" + 2(new)^000000"; }
+if(a31575 == 1) { mes "^ff0000"+getitemname(31575)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(31575)+" + 2(new)^000000"; }
+if(a31569 == 1) { mes "^ff0000"+getitemname(31569)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(31569)+" + 2(new)^000000"; }
+if(a31417 == 1) { mes "^ff0000"+getitemname(31417)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(31417)+" + 2(new)^000000"; }
+if(a2226 == 1) { mes "^ff0000"+getitemname(2226)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2226)+" + 3(Default)^000000"; }
+if(a2249 == 1) { mes "^ff0000"+getitemname(2249)+" + 20(Default)^000000"; } else { mes "^0000FF"+getitemname(2249)+" + 20(Default)^000000"; }
+if(a20377 == 1) { mes "^ff0000"+getitemname(20377)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(20377)+" + 2(new)^000000"; }
+if(a31167 == 1) { mes "^ff0000"+getitemname(31167)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(31167)+" + 2(new)^000000"; }
+if(a31055 == 1) { mes "^ff0000"+getitemname(31055)+" + 5(new)^000000"; } else { mes "^0000FF"+getitemname(31055)+" + 5(new)^000000"; }
+if(a5165 == 1) { mes "^ff0000"+getitemname(5165)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5165)+" + 3(Default)^000000"; }
+if(a2283 == 1) { mes "^ff0000"+getitemname(2283)+" + 20(Default)^000000"; } else { mes "^0000FF"+getitemname(2283)+" + 20(Default)^000000"; }
+if(a5339 == 1) { mes "^ff0000"+getitemname(5339)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(5339)+" + 2(new)^000000"; }
+if(a2265 == 1) { mes "^ff0000"+getitemname(2265)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2265)+" + 3(Default)^000000"; }
+if(a5346 == 1) { mes "^ff0000"+getitemname(5346)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(5346)+" + 2(new)^000000"; }
+if(a35121 == 1) { mes "^ff0000"+getitemname(35121)+" + 5(new)^000000"; } else { mes "^0000FF"+getitemname(35121)+" + 5(new)^000000"; }
+if(a5128 == 1) { mes "^ff0000"+getitemname(5128)+" + 20(Default)^000000"; } else { mes "^0000FF"+getitemname(5128)+" + 20(Default)^000000"; }
+if(a5007 == 1) { mes "^ff0000"+getitemname(5007)+" + 20(Default)^000000"; } else { mes "^0000FF"+getitemname(5007)+" + 20(Default)^000000"; }
+if(a2220 == 1) { mes "^ff0000"+getitemname(2220)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2220)+" + 3(Default)^000000"; }
+if(a5001 == 1) { mes "^ff0000"+getitemname(5001)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5001)+" + 3(Default)^000000"; }
+if(a35136 == 1) { mes "^ff0000"+getitemname(35136)+" + 4(new)^000000"; } else { mes "^0000FF"+getitemname(35136)+" + 4(new)^000000"; }
+if(a5027 == 1) { mes "^ff0000"+getitemname(5027)+" + 20(Default)^000000"; } else { mes "^0000FF"+getitemname(5027)+" + 20(Default)^000000"; }
+if(a5073 == 1) { mes "^ff0000"+getitemname(5073)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5073)+" + 3(Default)^000000"; }
+if(a2264 == 1) { mes "^ff0000"+getitemname(2264)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2264)+" + 3(Default)^000000"; }
+if(a5117 == 1) { mes "^ff0000"+getitemname(5117)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5117)+" + 3(Default)^000000"; }
+if(a5060 == 1) { mes "^ff0000"+getitemname(5060)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5060)+" + 3(Default)^000000"; }
+if(a5337 == 1) { mes "^ff0000"+getitemname(5337)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(5337)+" + 2(new)^000000"; }
+if(a2287 == 1) { mes "^ff0000"+getitemname(2287)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2287)+" + 3(Default)^000000"; }
+if(a35169 == 1) { mes "^ff0000"+getitemname(35169)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(35169)+" + 2(new)^000000"; }
+if(a35200 == 1) { mes "^ff0000"+getitemname(35200)+" + 4(new)^000000"; } else { mes "^0000FF"+getitemname(35200)+" + 4(new)^000000"; }
+if(a5388 == 1) { mes "^ff0000"+getitemname(5388)+" + 5(new)^000000"; } else { mes "^0000FF"+getitemname(5388)+" + 5(new)^000000"; }
+if(a5062 == 1) { mes "^ff0000"+getitemname(5062)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(5062)+" + 3(Default)^000000"; }
+if(a2245 == 1) { mes "^ff0000"+getitemname(2245)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2245)+" + 3(Default)^000000"; }
+if(a18505 == 1) { mes "^ff0000"+getitemname(18505)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(18505)+" + 2(new)^000000"; }
+if(a35275 == 1) { mes "^ff0000"+getitemname(35275)+" + 4(new)^000000"; } else { mes "^0000FF"+getitemname(35275)+" + 4(new)^000000"; }
+if(a18612 == 1) { mes "^ff0000"+getitemname(18612)+" + 2(new)^000000"; } else { mes "^0000FF"+getitemname(18612)+" + 2(new)^000000"; }
+if(a2252 == 1) { mes "^ff0000"+getitemname(2252)+" + 3(Default)^000000"; } else { mes "^0000FF"+getitemname(2252)+" + 3(Default)^000000"; }
+
+
+
+		close;
+	}

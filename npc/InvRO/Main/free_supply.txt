@@ -1,0 +1,97 @@
+prontera,157,196,3	script	iFree Supply	123,{
+query_sql("SELECT `value` FROM `in_delay_rfsupply` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @FreeRedPotion);
+query_sql("SELECT `value` FROM `in_delay_afsupply` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @FreeArrow);
+if($Actex == 1) {
+	mes "[ Free Supply ]";
+	mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+	close;
+}
+mes "[ Free Supply ]";
+mes "I can give you an arrow and a potion for free";
+mes "^ff0000Note^000000:";
+mes "Maximum: 100 Red Potion and 300 Arrow per claim";
+next;
+switch(select("Free Red Potion:Free Arrow:Remove Supply:Cancel")){
+case 1:
+if(@FreeRedPotion > gettimetick(2)){
+	mes "[ Free Supply ]";
+	mes "^ff0000Note^000000:";
+	mes "You need to wait "+Time2Str(@FreeRedPotion)+" before you claim again.";
+	close;
+	}
+
+	input .@amount;
+	if(.@amount < 1 ) {
+		mes "[ Free Supply ]";
+		mes "Invalid value";
+		close;
+	}
+	if((countitem(501) + .@amount) > 101 || (.@amount) > 100 ) {
+		mes "[ Free Supply ]";
+		mes "Maximum 100 Red Potion every claim";
+		close;
+	}
+		getitembound 501,.@amount,1;
+		.ftime$ = gettimetick(2)+1800;
+		query_sql("INSERT INTO `in_delay_rfsupply` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@FreeRedPotion','"+.ftime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ftime$+";");
+		end;
+
+
+case 2:
+if(@FreeArrow > gettimetick(2)){
+	mes "[ Free Supply ]";
+	mes "^ff0000Note^000000:";
+	mes "You need to wait "+Time2Str(@FreeArrow)+" before you claim again.";
+	close;
+	}
+	input .@amount;
+	if(.@amount < 1 ) {
+		mes "[ Free Supply ]";
+		mes "Invalid value";
+		close;
+	}
+	if((countitem(1750) + .@amount) > 301 || (.@amount) > 300 ) {
+		mes "[ Free Supply ]";
+		mes "Maximum 300 Arrow every claim";
+		close;
+	}
+		getitembound 1750,.@amount,1;
+		.atime$ = gettimetick(2)+1800;
+		query_sql("INSERT INTO `in_delay_afsupply` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@FreeArrow','"+.atime$+"') ON DUPLICATE KEY UPDATE `value` = "+.atime$+";");
+		end;
+
+case 3:
+		mes "[ Free Supply ]";
+		mes "Which one? you want to remove?";
+		next;
+		switch(select("The Potion:The Arrow")) {
+			case 1:
+				input .@amount;
+				if(.@amount < 0 ) {
+					mes "[ Free Supply ]";
+					mes "Invalid value";
+					close;
+				}
+					delitem 501,.@amount;
+					end;
+
+			case 2:
+				input .@amount;
+				if(.@amount < 0 ) {
+					mes "[ Free Supply ]";
+					mes "Invalid value";
+					close;
+				}
+					delitem 1750,.@amount;
+					end;
+				}
+
+		}
+}
+
+morocc,164,110,3	duplicate(iFree Supply)	Free Supply#moc	123
+geffen,126,104,3	duplicate(iFree Supply)	Free Supply#gef	123
+payon,162,179,3	duplicate(iFree Supply)	Free Supply#pay	123
+alberta,73,69,3	duplicate(iFree Supply)	Free Supply#alb	123
+izlude,123,119,5	duplicate(iFree Supply)	Free Supply#izlude	123
+aldebaran,147,131,3	duplicate(iFree Supply)	Free Supply#alde	123

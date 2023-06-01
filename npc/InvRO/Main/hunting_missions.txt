@@ -1,0 +1,386 @@
+//===== rAthena Script =======================================
+//= Hunting Missions
+//===== By: ==================================================
+//= Euphy
+//===== Current Version: =====================================
+//= 1.4
+//===== Compatible With: ===================================== 
+//= rAthena Project
+//===== Description: =========================================
+//= Random hunting missions.
+//= Rewards are based on quest difficulty.
+//= 
+//= NOTE: Requires SQL mob database.
+//===== Additional Comments: =================================
+//= 1.0 Initial script.
+//= 1.1 Small improvements and fixes.
+//= 1.2 Added party support and replaced blacklists with an
+//=     SQL query, both thanks to AnnieRuru.
+//= 1.3 Re-added a blacklist adapted for the SQL query.
+//= 1.3a Added mission reset options.
+//= 1.3b Function updates.
+//= 1.4 Check for deleted characters, thanks to AnnieRuru.
+//=     Syntax updates and style cleaning.
+//============================================================
+
+prontera,166,91,4	script	Activity Missions	123,{
+if($Actmis == 1) {
+			mes "[Activity Missions]";
+			mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+			close;
+	}
+function Chk;
+	mes "[Activity Missions]";
+	mes "Hello, " + strcharinfo(0) + "!";
+	if (!#Mission_Delay) {
+		next;
+		mes "[Activity Missions]";
+		mes "I can't find any records...";
+		mes "You must be new here!";
+		emotion ET_HUK;
+		next;
+		callsub Mission_Info;
+		emotion ET_GO;
+		#Mission_Delay = 1;
+		close;
+	}
+	mes F_Rand("Working hard, as always...", "Not slacking, I hope...");
+	mes "Is there anything I can help";
+	mes "you with?";
+	next;
+	mes "[Activity Missions]";
+	mes "^777777~ You have ^000000 ^0055FF" + #ACTIVITY_POINTS + "^000000 Activity Points.";
+	mes "^777777~ You've completed " + F_InsertPlural(Mission_Total,"mission",0,"^0055FF%d^777777 %s") + ". ~^000000";
+	next;
+	switch(select(
+		((!Mission0) ? " ~ New Mission::" : ": ~ Mission Status: ~ Abandon Mission") +
+		": ~ Information: ~ View Top Hunters: ~ ^777777Cancel^000000"
+	)) {
+	case 1:
+		mes "[Activity Missions]";
+		if (#Mission_Count) {
+			mes "You've started a mission";
+			mes "on another character.";
+			if (!@hm_char_del_check) {  // check for deleted character
+				query_sql("SELECT 1 FROM `char_reg_num` WHERE `key` = 'Mission0' AND `char_id` IN(SELECT `char_id` FROM `char` WHERE `account_id` = " + getcharid(3) + ")", .@i);
+				if (!.@i) {
+					next;
+					mes "[Activity Missions]";
+					mes "I can't seem to find any records";
+					mes "for that character, though...";
+					mes "One moment, please.";
+					emotion ET_SCRATCH;
+					#Mission_Count = 0;
+				}
+				@hm_char_del_check = true;
+			}
+			close;
+		}
+		if (#Mission_Delay > gettimetick(2) && .Delay) {
+			mes "I'm afraid you'll have to wait " + Time2Str(#Mission_Delay) + " before taking another mission.";
+			close;
+		}
+		mes "You must hunt:";
+		query_sql("SELECT ID FROM `" + .mob_db$ + "` WHERE left(name_aegis, 4) != 'meta' AND left(name_aegis, 2) != 'E_' AND base_exp > 0 AND job_exp > 0 AND (class != 'boss' OR class is null) AND (drop3_item like '%_card' OR drop4_item like '%_card' OR drop5_item like '%_card' OR drop6_item like '%_card' OR drop7_item like '%_card' OR drop8_item like '%_card' OR drop9_item like '%_card' OR drop10_item like '%_card') AND ID < 2000 AND instr('"+.Blacklist$+"',ID) = 0 ORDER BY rand() LIMIT " + .Quests, .@mob);
+		
+		for (.@i = 0; .@i < .Quests; .@i++) {
+			setd "Mission" + .@i, .@mob[.@i];
+			setd "Mission" + .@i +"_", 0;
+		}
+		#Mission_Count = rand(.Count[0], .Count[1]);
+		callsub Mission_Status;
+		next;
+		mes "[Activity Missions]";
+		mes "Report back when";
+		mes "you've finished.";
+		mes "Good luck!";
+		close;
+	case 2:
+		mes "[Activity Missions]";
+		mes "Mission status:";
+		callsub Mission_Status;
+		close;
+	case 3:
+		mes "[Activity Missions]";
+		mes "Do you really want to";
+		mes "abandon your mission?";
+		if (.Reset < 0 && .Delay)
+			mes "Your delay time will not be reset.";
+		else if (.Reset > 0)
+			mes "It will cost " + F_InsertComma(.Reset) + " Zeny.";
+		next;
+		switch(select(" ~ Abandon...: ~ ^777777Cancel^000000")) {
+		case 1:
+			if (.Reset > 0) {
+				if (Zeny < .Reset) {
+					mes "[Activity Missions]";
+					mes "You don't have enough";
+					mes "Zeny to drop this mission.";
+					emotion ET_SORRY;
+					close;
+				}
+				Zeny -= .Reset;
+				emotion ET_MONEY;
+			}
+			mes "[Activity Missions]";
+			mes "Alright, I've dropped";
+			mes "your current mission.";
+			specialeffect2 EF_STORMKICK4;
+			for (.@i = 0; .@i < .Quests; .@i++) {
+				setd "Mission"+.@i, 0;
+				setd "Mission"+.@i+"_", 0;
+			}
+			#Mission_Count = 0;
+			if (.Reset < 0 && .Delay)
+				#Mission_Delay = gettimetick(2) + (.Delay * 3600);
+			close;
+		case 2:
+			mes "[Activity Missions]";
+			mes "I knew you were kidding!";
+			mes "Keep up the good work.";
+			emotion ET_SMILE;
+			close;
+		}
+	case 4:
+		callsub Mission_Info;
+		close;
+	case 5:
+		mes "[Activity Missions]";
+		mes "The top hunters are:";
+		query_sql("SELECT char_id AS id, (SELECT `name` FROM `char` WHERE char_id = id),`value` FROM `char_reg_num` WHERE `key` = 'Mission_Total' ORDER BY CAST(`value` AS SIGNED) DESC LIMIT 5", .@id, .@name$, .@val);
+		for (.@i = 0; .@i < 5; .@i++)
+			mes "  [Rank " + (.@i+1) + "]  " + ((.@name$[.@i] == "") ? "^777777none" : "^0055FF" + .@name$[.@i]+"^000000 : ^FF0000" + .@val[.@i] + " pt.") + "^000000";
+		close;
+	case 6:
+		mes "[Activity Missions]";
+		mes "Nothing? Okay...";
+		emotion ET_SCRATCH;
+		close;
+	}
+	end;
+
+Mission_Status:
+	@f = false;
+	deletearray .@j[0], getarraysize(.@j);
+	for (.@i = 0; .@i < .Quests; .@i++) {
+		.@j[.@i] = getd("Mission" + .@i);
+		.@j[.Quests] = .@j[.Quests] + strmobinfo(3,.@j[.@i]);
+		.@j[.Quests+1] = .@j[.Quests+1] + strmobinfo(6,.@j[.@i]); // / (getbattleflag("base_exp_rate") / 100) * .Modifier[0]);
+		.@j[.Quests+2] = .@j[.Quests+2] + strmobinfo(7,.@j[.@i]); // / (getbattleflag("job_exp_rate") / 100) * .Modifier[1]);
+		mes " > "+Chk(getd("Mission"+.@i+"_"),#Mission_Count) + strmobinfo(1,.@j[.@i]) + " (" + getd("Mission"+.@i+"_") + "/" + #Mission_Count + ")^000000";
+	}
+
+	// Reward formulas:
+	.@ACTIVITY_POINTS = 3 + (.@j[.Quests] / .Quests / 6);
+	.@Base_Exp = #Mission_Count * .@j[.Quests+1] / 5;
+	.@Job_Exp = #Mission_Count * .@j[.Quests+2] / 5;
+	//.@Zeny = #Mission_Count * .Quests * .@j[.@i] * .Modifier[2];
+
+	next;
+	mes "[Activity Missions]";
+	mes "Mission rewards:";
+	mes " > Activity Points: ^0055FF" + .@ACTIVITY_POINTS + "^000000";
+	//mes " > Base Experience: ^0055FF" + F_InsertComma(.@Base_Exp) + "^000000";
+	//mes " > Job Experience: ^0055FF" + F_InsertComma(.@Job_Exp) + "^000000";
+	//mes " > Zeny: ^0055FF" + F_InsertComma(.@Zeny) + "^000000";
+	if (@f) {
+		@f = false;
+		return;
+	}
+	next;
+	mes "[Activity Missions]";
+	mes "Oh, you're done!";
+	mes "Good work.";
+	mes "Here's your reward.";
+	emotion ET_BEST;
+	specialeffect2 EF_ANGEL;
+	specialeffect2 EF_TRUESIGHT;
+	#ACTIVITY_POINTS += .@ACTIVITY_POINTS;
+	//BaseExp += .@Base_Exp;
+	//JobExp += .@Job_Exp;
+	//Zeny += .@Zeny;
+	for (.@i = 0; .@i < .Quests; .@i++) {
+		setd "Mission" + .@i, 0;
+		setd "Mission" + .@i+"_", 0;
+	}
+	#Mission_Count = 0;
+	if (.Delay)
+		#Mission_Delay = gettimetick(2) + (.Delay * 3600);
+	Mission_Total++;
+	if (Mission_Total == 1)
+		query_sql("INSERT INTO `char_reg_num` (`char_id`,`key`,`index`,`value`) VALUES (" + getcharid(0) + ",'Mission_Total','0',1)");
+	else
+		query_sql("UPDATE `char_reg_num` SET `value` = " + Mission_Total + " WHERE `char_id` = " + getcharid(0) + " AND `key` = 'Mission_Total'");
+	close;
+
+Mission_Info:
+	mes "[Activity Missions]";
+	mes "If you so choose, I can assign";
+	mes "you a random hunting quest.";
+	mes "Some are easier than others, but";
+	mes "the rewards increase with difficulty.";
+	next;
+	mes "[Activity Missions]";
+	mes "Missions points are shared";
+	mes "amongst all your characters.";
+	if (.Delay)
+		mes "Delay time is, too.";
+	mes "You can't take missions on";
+	mes "multiple characters at once.";
+	next;
+	mes "[Activity Missions]";
+	mes "You can start a quest";
+	mes (.Delay ? "every " + ((.Delay == 1) ? "hour." : .Delay + " hours.") : "whenever you want.");
+	mes "That's everything~";
+	return;
+
+function Chk {
+	if (getarg(0) < getarg(1)) {
+		@f = true;
+		return "^FF0000";
+	} else
+		return "^00FF00";
+}
+
+OnNPCKillEvent:
+	if (!getcharid(1) || !.Party) {
+		if (!#Mission_Count || !Mission0) end;
+		for (.@i = 0; .@i < .Quests; .@i++) {
+			if (strmobinfo(1,killedrid) == strmobinfo(1,getd("Mission" + .@i))) {
+				if (getd("Mission" + .@i + "_") < #Mission_Count) {
+					dispbottom "[Hunting Mission] Killed " + (set(getd("Mission" + .@i + "_"),getd("Mission" + .@i + "_") + 1)) +
+					           " of " + #Mission_Count + " " + strmobinfo(1,killedrid) + ".";
+					end;
+				}
+			}
+		}
+	} else if (.Party) {
+		.@mob = killedrid;
+		getmapxy(.@map1$,.@x1,.@y1);
+		getpartymember getcharid(1),1;
+		getpartymember getcharid(1),2;
+		for (.@i = 0; .@i < $@partymembercount; .@i++) {
+			if (isloggedin($@partymemberaid[.@i], $@partymembercid[.@i])) {
+				set .@Mission_Count, getvar(#Mission_Count, $@partymembercid[.@i]);
+				set .@Mission0, getvar(Mission0, $@partymembercid[.@i]);
+				set .@HP, readparam(HP, $@partymembercid[.@i]);
+
+				if (.@Mission_Count && .@Mission0 && .@HP > 0) {
+					getmapxy(.@map2$,.@x2,.@y2,BL_PC,rid2name($@partymemberaid[.@i]));
+					if ((.@map1$ == .@map2$ || .Party == 1) && (distance(.@x1,.@y1,.@x2,.@y2) <= 30 || .Party < 3)) {
+						for (.@j = 0; .@j < .Quests; .@j++) {
+							.@my_mob_id = getvar( getd("Mission"+.@j),$@partymembercid[.@i] );
+							.@my_count = getvar( getd("Mission"+.@j+"_"), $@partymembercid[.@i] );
+							if (strmobinfo(1,.@mob) == strmobinfo(1,.@my_mob_id)) {
+								if (.@my_count < .@Mission_Count) {
+									setd "Mission"+.@j+"_", (.@my_count+1), $@partymembercid[.@i];
+									dispbottom "[Hunting Mission] Killed " + (.@my_count+1) + " of " + .@Mission_Count + " " + strmobinfo(1,.@mob) + ".", 0x777777, $@partymembercid[.@i];
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	end;
+
+OnInit:
+	.Delay = 24;            // Quest delay, in hours (0 to disable).
+	.Quests = 4;            // Number of subquests per mission (increases rewards).
+	.Party = 3;             // Party options: 0 (exclude party kills), 1 (include party kills), 2 (same map only), 3 (screen area only)
+	.Reset = -1;            // Reset options: -1 (abandoning mission sets delay time), 0 (no delay time), [Zeny] (cost to abandon mission, no delay time)
+	setarray .Count[0],     // Min and max monsters per subquest (increases rewards).
+		40,70;
+	setarray .Modifier[0],  // Multipliers for Base Exp, Job Exp, and Zeny rewards.
+		getbattleflag("base_exp_rate")/10000,getbattleflag("job_exp_rate")/10000,1;
+	.mob_db$ =              // Table name of SQL mob database
+		(checkre(0))?"mob_db_re":"mob_db";
+
+	.Blacklist$ =           // Blacklisted mob IDs.
+		"1062,1088,1183,1186,1200,1212,1220,1221,1234,1235,"+
+		"1244,1245,1250,1268,1290,1293,1294,1296,1298,1299,"+
+		"1300,1301,1303,1304,1305,1306,1308,1309,1311,1313,"+
+		"1515,1588,1618,1676,1677,1678,1679,1796,1797,1974,"+
+		"1975,1976,1977,1978,1979,1025,1038,1039,1046,1047,"+
+		"1056,1059,1063,1064,1074,1078,1079,1080,1081,1082,"+
+		"1083,1084,1085,1086,1087,1088,1089,1090,1091,1092,"+
+		"1093,1100,1112,1115,1120,1147,1148,1150,1155,1156,"+
+		"1157,1159,1160,1162,1164,1174,1186,1187,1190,1198,"+
+		"1200,1202,1203,1204,1205,1219,1232,1235,1238,1244,"+
+		"1245,1247,1251,1252,1254,1255,1259,1262,1270,1272,"+
+		"1274,1278,1279,1283,1285,1286,1287,1288,1289,1292,"+
+		"1293,1294,1295,1297,1298,1299,1301,1302,1303,1305,"+
+		"1306,1307,1308,1309,1311,1312,1313,1317,1320,1321,"+
+		"1322,1324,1325,1326,1327,1328,1329,1330,1331,1332,"+
+		"1333,1334,1335,1336,1337,1338,1339,1340,1341,1342,"+
+		"1343,1344,1345,1346,1347,1348,1349,1350,1351,1352,"+
+		"1353,1354,1355,1356,1357,1358,1359,1360,1361,1362,"+
+		"1363,1367,1371,1372,1373,1379,1383,1386,1387,1388,"+
+		"1389,1395,1396,1397,1398,1399,1400,1401,1402,1403,"+
+		"1404,1405,1406,1408,1409,1412,1413,1416,1418,1430,"+
+		"1445,1447,1449,1454,1456,1465,1466,1468,1482,1484,"+
+		"1485,1486,1487,1948,1967,2308,2056,1898,2012,1864,"+
+		"1713,1716,1757,1759,1769,1786,1818,1521,2060,1735,"+
+		"1739,1736,1740,1737,1746,1511,1748,1699,1522,1593,"+
+		"2019,1567,1568,1766,1852,1627,2066,2067,1523,2016,"+
+		"2050,1668,1684,1900,1654,1660,1641,1647,1800,1806,"+
+		"1785,1882,2034,1524,1518,1630,1689,1996,1867,1868,"+
+		"1848,1897,2051,1729,1905,1906,1525,1819,2054,1873,"+
+		"1874,1494,1633,1603,1820,1598,1526,1569,1795,1507,"+
+		"1914,1934,1520,2068,1904,1611,1830,2024,2049,1692,"+
+		"1839,1949,1950,1742,1987,1999,1861,1741,1607,1825,"+
+		"1962,1519,1631,1513,1528,1527,1860,1901,1738,1745,"+
+		"1937,1992,1570,2057,1877,1951,1952,1953,1954,2079,"+
+		"2080,2074,1514,1609,2031,1985,1605,2052,2015,2048,"+
+		"2023,2027,1529,1698,1983,1821,1728,1719,1817,1571,"+
+		"1582,1767,1853,1730,1822,1928,1669,1670,1671,1672,"+
+		"1673,2053,1506,2059,1731,1966,2013,2014,1530,1721,"+
+		"1846,1572,2063,1781,1493,1504,2018,1913,1770,1787,"+
+		"1879,1573,1574,1957,1635,1655,1661,1531,2004,2039,"+
+		"1532,1871,2001,1714,1717,1758,1760,1869,1575,1910,"+
+		"1909,2032,1594,1823,1887,1753,1762,1533,1783,1791,"+
+		"1592,1932,1933,1597,1606,1824,1888,1778,1681,1590,"+
+		"1576,2011,1604,2159,1599,1503,1768,1534,1535,1536,"+
+		"1537,1538,1577,1539,1840,2033,1540,1885,1816,1929,"+
+		"1541,1687,1632,1907,1908,1828,1990,1636,2071,1600,"+
+		"1872,1866,1626,2030,1643,1649,1802,1808,1645,1651,"+
+		"1804,1810,1629,1680,1989,1998,1773,2158,1578,1579,"+
+		"1720,1756,1813,1512,1612,1510,2069,1777,1788,1789,"+
+		"1832,1837,1492,1542,1918,1919,1920,1921,1922,1923,"+
+		"1924,1925,1516,1580,2055,1772,2072,1722,1926,1543,"+
+		"1544,1833,1835,1639,1896,1656,1662,1733,1734,1893,"+
+		"1838,1545,1546,1547,1548,1587,1691,1779,1980,1688,"+
+		"1549,1586,1881,1517,1912,1550,1505,1892,1640,1646,"+
+		"1799,1805,1876,1994,2160,1509,1812,1591,1726,1637,"+
+		"2043,2044,2045,2046,1836,2064,1856,2000,1589,1859,"+
+		"1969,1595,1857,1972,1889,1551,1862,1884,1886,1749,"+
+		"1793,1613,2065,1585,2058,1614,2028,2029,1552,1851,"+
+		"1628,1674,1814,1854,1610,1780,1553,1826,1743,2025,"+
+		"2041,1993,2047,1956,1870,1988,1911,1963,2022,1964,"+
+		"1554,2035,1715,1718,1620,1970,1700,1615,1686,1850,"+
+		"1982,1849,2010,1500,1555,1501,1601,1664,1665,1666,"+
+		"1667,1683,1724,2021,1930,1947,1995,1915,2070,2082,"+
+		"1616,1858,1693,1694,1695,1696,1697,2005,2006,2007,"+
+		"1855,1556,2062,1619,1625,1502,1725,1847,1973,1894,"+
+		"1508,1790,1865,2017,1657,1663,1935,1750,1682,1702,"+
+		"2020,1815,1557,1782,1794,1623,2026,1981,1831,1834,"+
+		"1558,1827,1916,1727,1559,1774,1634,1895,2076,2077,"+
+		"2078,1984,1638,1723,1701,1878,1560,2042,1776,1754,"+
+		"1755,1763,1764,1752,1761,1561,1811,1747,1841,1842,"+
+		"1843,1844,1644,1650,1803,1809,1775,1792,1703,1562,"+
+		"1602,1690,1863,2002,1784,2061,1495,1496,1968,2081,"+
+		"1829,1899,1584,1596,1583,1986,1997,1622,1991,1563,"+
+		"1708,1705,1710,1707,1712,1706,1711,1704,1709,1890,"+
+		"1608,1960,1961,1959,1958,2040,2073,1845,1902,1903,"+
+		"1732,1798,1938,1939,1940,1941,1942,1943,1944,1945,"+
+		"1946,1955,1875,1883,1971,2075,1765,1891,1751,2036,"+
+		"2037,2038,1771,1675,1621,1685,1581,1617,1624,1653,"+
+		"1659,1927,2003,1642,1648,1801,1807,1564,1565,1744,"+
+		"1965,1931,1880,1497,2008,2009,1499,1498,1917,1566,"+
+		"1936,1652,1658,";
+		end;
+
+}
+

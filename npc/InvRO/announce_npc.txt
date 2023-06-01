@@ -1,0 +1,228 @@
+prontera,105,81,5	script	Announce NPC	857,{
+	.@sql$ = "SELECT `date`,`char_name`,`title`,`message`,`fullinfo`,`astatus` FROM `in_announce` WHERE `id` = '1'";
+	query_sql(.@sql$,.@date$,.@char_name$,.@title$,.@message$,.@fullinfo$,.@astatus$);
+	query_sql("SELECT `value` FROM `in_news_notify` WHERE `account_id` = " + getcharid(3) + " LIMIT 1", .@value);
+	query_sql("SELECT `astatus` FROM `in_announce` WHERE `id` = 1 LIMIT 1", .@astatus);
+	.@name$ = "[ Announcement ]";
+	if(getgroupid() == 5 || getgroupid() < 3 ){
+	mes .@name$;
+	if (.@astatus < 1 ) {
+	mes "Dont have any announcement";
+	} else {
+	mes "^0000ffDate^000000: ^ff0000"+.@date$[.@i]+"^000000";
+	mes "^0000ffAuthor^000000: ^ff0000"+.@char_name$+"^000000";
+	mes "^0000ffTitle^000000: ^ff0000"+.@title$[.@i]+"^000000";
+	mes "^0000ffMessage^000000: "+.@message$[.@i];
+	mes "^0000ffFull Information^000000: <URL>Click Here<INFO>"+.@fullinfo$+"</INFO></URL>";
+	}
+	next;
+	mes .@name$;
+	if (.@value > 0 ) {
+	mes "Auto Popup Status: ^ff0000Disable^000000";
+	mes "^ffffff_^000000";
+	mes "Would you like to ^00ff00enable^000000 your auto popup announce?";
+	next;
+	switch(select("Yes:No")){
+		case 1:
+			mes .@name$;
+			mes "Auto Popup Status: ^00ff00Enable^000000";
+			query_sql("INSERT INTO `in_news_notify` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','.@value', 0 ) ON DUPLICATE KEY UPDATE `value` = 0;");
+			close;
+
+		case 2:
+			mes .@name$;
+			mes "Okay have a nice day";
+			close;
+	}
+	} else {
+	mes "Auto Popup Status: ^00ff00Enable^000000";
+	mes "^ffffff_^000000";
+	mes "Would you like to ^ff0000disable^000000 your auto popup announce?";
+	next;
+	switch(select("Yes:No")){
+		case 1:
+			mes .@name$;
+			mes "Auto Popup Status: ^ff0000Disable^000000";
+			query_sql("INSERT INTO `in_news_notify` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','.@value', 1 ) ON DUPLICATE KEY UPDATE `value` = 1;");
+			close;
+
+		case 2:
+			mes .@name$;
+			mes "Okay have a nice day";
+			close;
+	}
+	}
+	close;
+	}
+	if (.@astatus < 1 ) {
+	mes .@name$;
+	mes "You dont have any announcement";
+	} else {
+	mes .@name$;
+	mes "^0000ffDate^000000: ^ff0000"+.@date$[.@i]+"^000000";
+	mes "^0000ffAuthor^000000: ^ff0000"+.@char_name$[.@i]+"^000000";
+	mes "^0000ffTitle^000000: ^ff0000"+.@title$[.@i]+"^000000";
+	mes "^0000ffMessage^000000: "+.@message$[.@i];
+	mes "^0000ffFull Information^000000: <URL>Click Here<INFO>"+.@fullinfo$+"</INFO></URL>";
+	}
+	next;
+	switch(select(
+        (.@astatus == 0 ) ?"Add News":"",
+        (.@astatus == 1 ) ?"Clear News":"",
+        "Setting",
+        "Nothing"
+        )){
+		case 1:
+			mes .@name$;
+			mes "Input the Title";
+			input .@title$;
+			next;
+			mes .@name$;
+			mes "Input the Message";
+			input .@message$;
+			next;
+			mes .@name$;
+			mes "Input the Full Info Shortlinks";
+			mes "Start with ^0000ffhttp://^000000 or ^0000ffhttps://^000000";
+			input .@fullinfo$;
+			next;
+			mes .@name$;
+			mes "^0000ffDate^000000: ^ff0000"+.@date$[.@i]+"^000000";
+			mes "^0000ffAuthor^000000: ^ff0000"+.@char_name$[.@i]+"^000000";
+			mes "^0000ffTitle^000000: ^ff0000"+.@title$[.@i]+"^000000";
+			mes "^0000ffMessage^000000: "+.@message$[.@i];
+			mes "^0000ffFull Information^000000: <URL>Click Here<INFO>"+.@fullinfo$+"</INFO></URL>";
+			next;
+			switch(select("Confirm:Cancel")){
+				case 1:
+					mes .@name$;
+					mes "Add announcement succesfully";
+					query_sql("INSERT INTO `in_announce` (`id`,`char_name`,`title`,`message`,`fullinfo`,`astatus`) VALUES ( 1, '"+strcharinfo(0)+"','"+.@title$+"','"+.@message$+"','"+.@fullinfo$+"', 1) ON DUPLICATE KEY UPDATE `id` = 1, `char_name` = '"+strcharinfo(0)+"',`title` = '"+.@title$+"',`message` = '"+.@message$+"',`fullinfo` = '"+.@fullinfo$+"', `astatus` = 1;");
+					close;
+
+				case 2:
+					mes .@name$;
+					mes "Okay have a nice day";
+					close;
+			}
+
+		case 2:
+			mes .@name$;
+			mes "^0000ffDate^000000: ^ff0000"+.@date$[.@i]+"^000000";
+			mes "^0000ffAuthor^000000: ^ff0000"+.@char_name$+"^000000";
+			mes "^0000ffTitle^000000: ^ff0000"+.@title$[.@i]+"^000000";
+			mes "^0000ffMessage^000000: "+.@message$[.@i];
+			mes "^0000ffFull Information^000000: <URL>Click Here<INFO>"+.@fullinfo$+"</INFO></URL>";
+			next;
+			switch(select("Clear:Nothing")){
+				case 1:
+					mes .@name$;
+					mes "Announcement cleared";
+					query_sql("INSERT INTO `in_announce` (`id`,`char_name`,`title`,`message`,`fullinfo`,`astatus`) VALUES ( 1, '','','','', 1) ON DUPLICATE KEY UPDATE `id` = 1, `char_name` = '',`title` = '',`message` = '',`fullinfo` = '', `astatus` = 0;");
+					close;
+
+				case 2:
+					mes .@name$;
+					mes "Okay have a nice day";
+					close;
+			}
+
+		case 3:
+			mes .@name$;
+			if (.@value > 0 ) {
+			mes "Auto Popup Status: ^ff0000Disable^000000";
+			mes "^ffffff_^000000";
+			mes "Would you like to ^00ff00enable^000000 your auto popup announce?";
+			next;
+			switch(select("Yes:No")){
+				case 1:
+					mes .@name$;
+					mes "Auto Popup Status: ^00ff00Enable^000000";
+					query_sql("INSERT INTO `in_news_notify` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','.@value', 0 ) ON DUPLICATE KEY UPDATE `value` = 0;");
+					close;
+
+				case 2:
+					mes .@name$;
+					mes "Okay have a nice day";
+					close;
+			}
+			} else {
+			mes "Auto Popup Status: ^00ff00Enable^000000";
+			mes "^ffffff_^000000";
+			mes "Would you like to ^ff0000disable^000000 your auto popup announce?";
+			next;
+			switch(select("Yes:No")){
+				case 1:
+					mes .@name$;
+					mes "Auto Popup Status: ^ff0000Disable^000000";
+					query_sql("INSERT INTO `in_news_notify` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','.@value', 1 ) ON DUPLICATE KEY UPDATE `value` = 1;");
+					close;
+
+				case 2:
+					mes .@name$;
+					mes "Okay have a nice day";
+					close;
+			}
+			}
+		case 4:
+			mes .@name$;
+			mes "Okay have a nice day";
+			close;
+	}
+	close;
+
+}
+
+
+-	script	asdasd	-1,{
+OnPCLoginEvent:
+	query_sql("SELECT `astatus` FROM `in_announce` WHERE `id` = 1 LIMIT 1", .@astatus);
+	query_sql("SELECT `value` FROM `in_news_notify` WHERE `account_id` = " + getcharid(3) + " LIMIT 1", .@value);
+	.@sql$ = "SELECT `date`,`char_name`,`title`,`message`,`fullinfo`,`astatus` FROM `in_announce` WHERE `id` = '1'";
+	query_sql(.@sql$,.@date$,.@char_name$,.@title$,.@message$,.@fullinfo$,.@astatus$);
+
+	//query_sql("SELECT `id`,`date`,`char_name`,`title`,`message`,`fullinfo`,`astatus` FROM `in_announce` WHERE `id` = '1'",.@id,.@date$,.@char_name,.@title$,.@message$,.@fullinfo$,.@astatus$);
+
+
+	if (.@value < 1 ) {
+		if (.@astatus > 0 ) {
+			.@name$ = "[ Announcement ]";
+			mes .@name$;
+			mes "^0000ffDate^000000: ^ff0000"+.@date$[.@i]+"^000000";
+			mes "^0000ffAuthor^000000: ^ff0000"+.@char_name$+"^000000";
+			mes "^0000ffTitle^000000: ^ff0000"+.@title$[.@i]+"^000000";
+			mes "^0000ffMessage^000000: "+.@message$[.@i];
+			mes "^0000ffFull Information^000000: <URL>Click Here<INFO>"+.@fullinfo$+"</INFO></URL>";
+			next;
+			switch(select("Setting:Nothing")){
+				case 1:
+					mes .@name$;
+					mes "Auto Popup Status: ^00ff00Enable^000000";
+					mes "Would you like to ^ff0000disable^000000 your auto popup announce?";
+					mes "You can still ^00ff00enable^000000 it with the Announcement NPC";
+					next;
+					switch(select("Yes:No")) {
+						case 1:
+							mes .@name$;
+							mes "Auto Popup Status: ^ff0000Disable^000000";
+							query_sql("INSERT INTO `in_news_notify` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','.@value', 1 ) ON DUPLICATE KEY UPDATE `value` = 1;");
+							close;
+
+						case 2:
+							mes .@name$;
+							mes "Okay have a nice day";
+							close;
+					}
+							
+
+				case 2:
+					mes .@name$;
+					mes "Okay have a nice day";
+					close;
+			}
+			close;
+		}
+		end;
+	}
+	end;
+}

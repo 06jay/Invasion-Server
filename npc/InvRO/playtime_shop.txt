@@ -1,0 +1,57 @@
+-	script	Playtime_Shop	-1,{
+
+if($PlaytimeS == 1) {
+		mes "[^0000FF Playtime Shop ^000000]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+	.playtimePoints$ = callfunc("F_InsertComma", #PLAYTIMEPOINTS);
+
+	mes "[^0000FF Playtime Shop ^000000]";
+	mes "What do you want to purchase?";
+	mes "Next playtime points  reward:";
+	mes "^ff0000"+#daily_minute_count+"^000000 / ^ff000060^000000 minute(s)";
+	mes "--";
+	mes "You currenlty have:";
+	mes "^FF0000"+#PLAYTIMEPOINTS+" Playtime Points^000000";
+	next;
+	switch(select("> Supplies", "> C Garment", "> C Upper Headgear", "> C Middle Headgear", "> C Lower Headgear", "> ^FF0000Exit^000000")) {
+		case 1:
+			callshop "PlaytimeSupplies", 4;
+			end;
+		case 2:
+			callshop "PlaytimeCostumeGarment", 4;
+			end;
+		case 3:
+			callshop "PlaytimeCostumeUpper", 4;
+			end;
+		case 4:
+			callshop "PlaytimeCostumeMiddle", 4;
+			end;
+		case 5:
+			callshop "PlaytimeCostumeLower", 4;
+			end;
+		case 6:
+			end;
+	}
+
+}
+
+-	pointshop	PlaytimeSupplies	FAKE_NPC,#PLAYTIMEPOINTS,14533:7,7776:50,12209:2,12221:15,12114:2,12115:2,12116:2,12117:2
+-	pointshop	PlaytimeCostumeGarment	FAKE_NPC,#PLAYTIMEPOINTS,20504:1500,20502:1500
+-	pointshop	PlaytimeCostumeUpper	FAKE_NPC,#PLAYTIMEPOINTS,19599:750,19537:750,31046:750,20052:300,19518:400,19519:400,19520:400,19834:500
+-	pointshop	PlaytimeCostumeMiddle	FAKE_NPC,#PLAYTIMEPOINTS,19510:300,19611:350,19769:500,19609:325,19810:600
+-	pointshop	PlaytimeCostumeLower	FAKE_NPC,#PLAYTIMEPOINTS,19584:300,19726:500,20280:300,19605:400,19952:500
+
+// Duplicate NPC
+//-- Prontera
+prontera,114,103,5	duplicate(Playtime_Shop)	Playtime Shop#prontera	860
+morocc,150,104,4	duplicate(Playtime_Shop)	Playtime Shop#morocc	860
+geffen,115,69,5	duplicate(Playtime_Shop)	Playtime Shop#geffen	860
+payon,151,178,4	duplicate(Playtime_Shop)	Playtime Shop#payon	860
+alberta,113,68,5	duplicate(Playtime_Shop)	Playtime Shop#alberta	860
+izlude,134,95,4	duplicate(Playtime_Shop)	Playtime Shop#izlude	860
+aldebaran,137,119,4	duplicate(Playtime_Shop)	Playtime Shop#aldebaran	860
+
+new_1-1,63,107,4	duplicate(Playtime_Shop)	Playtime Shop#new	860

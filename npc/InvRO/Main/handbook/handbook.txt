@@ -1,0 +1,1054 @@
+function	script	AHandbook	{
+	mes "[ Hand Book ]";
+	mes "Welcome!!";
+	mes "this is your collector hanbook";
+	mes "collect headgears and card to make your character stronger!!";
+	next;
+switch(select("Information:Deposit/Pullout:Total stats added:Guide List:View All (Headgears/Card)")){
+	case 1:
+		mes "[ Hand Book ]";
+		mes "there is 2m zeny fee for every deposit you made.. ";
+		mes "you can pull out your headgear or card anytime ";
+		mes "Reminder: fee is not refundable!!";
+		close;
+		
+	case 2:
+		mes "[ Hand Book ]";
+		mes "What do you want to do?";
+		next;
+	switch(select("Headgear Deposit:Card Deposit")){
+		case 1:
+			mes "[ Hand Book ]";
+			mes "We dont accept deposit when";				
+			mes "you have card or card compound";								
+			mes "to your equipment/inventory";								
+			mes "Make sure there is no card";								
+			mes "in your equipment/inventory";								
+			mes "If there is, put it in the cart or storage first";	
+			next;
+			mes "[ Hand Book ]";								
+			mes "We dont accept equipment with";								
+			mes "refine. Make sure there is no";								
+			mes "refined equipment in your inventory.";								
+			mes "If there is, put it in the cart or storage first";	
+			next;
+			mes "[ Hand Book ]";
+			mes "Which headgear collection?";
+			next;
+		switch(select("Headgear (default):Headgear (new)")){
+			case 1:		
+			next;
+			callfunc "headgear1Menu";
+			end;
+			
+			case 2:
+				
+			callfunc "nhg1menu";
+				close;
+				}
+			
+		case 2:
+			mes "[ Hand Book ]";
+			mes "Which card collection?";
+			next;
+		switch(select("Card Collection(default):new card release")){
+			case 1:
+			next;
+			callfunc "C1Menu";
+			end;
+			
+			case 2:
+				mes "[ Hand Book ]";
+			callfunc "NC1Menu";
+				close;
+				}
+			}
+
+
+	case 3:
+		mes "[ Hand Book ]";
+		mes "deposit stat summary";
+		next;
+		mes "[ Hand Book ]";
+		mes "^0000FFAtk:^000000 "+hbattack+"               ^0000FFMagic Atk:^000000 "+hbmatack+"";
+		mes "^0000FFDef:^000000 "+hbdef+"                ^0000FFMagic Def:^000000 "+hbmdef+"";		
+		mes "^0000FFHit:^000000 "+hbhit+"                 ^0000FFFlee:^000000 "+hbflee+""; 
+		mes "^0000FFHP:^000000 "+hbhp+"              ^0000FFSP:^000000 "+hbsp+"";
+		mes "^0000FFCrit:^000000 "+hbcrit+"";
+		mes "^0000FFAtk%:^000000 "+hbAtkRate+"               ^0000FFM.Atk%:^000000 "+hbMAtkRate+"";
+		close;
+		
+	case 4:
+		mes "[ Hand Book ]";
+		mes "Note: you can search where to obtain all default headgears & default cards in ^0000FFratemyserver.com^000000";
+		next;
+		mes "[ Hand Book ]";		
+		mes "Which status would you like to check";
+		next;
+	switch(select("Headgear Collection:Card Collection")){
+		case 1:
+			mes "[ Hand Book ]";
+			mes "Which stats?";
+			next;
+		switch(select("Attack:Critical:Deffense:Flee:Hit:HP:Magic Attack:Magic Deffense:SP:m.attack/attack %")){
+			case 1:
+				next;
+				callfunc "AttackView";
+				end;
+				
+			case 2:
+				next;
+				callfunc "CriticalView";
+				end;
+				
+			case 3:
+				next;
+				callfunc "DeffenseView";
+				end;
+				
+			case 4:
+				next;
+				callfunc "FleeView";
+				end;
+				
+			case 5:
+				next;
+				callfunc "HitView";
+				end;
+				
+			case 6:
+				next;
+				callfunc "HPView";
+				end;
+				
+			case 7:
+				next;
+				callfunc "MAttackView";
+				end;
+				
+			case 8:
+				next;
+				callfunc "MADeffenseView";
+				end;
+				
+			case 9:
+				next;
+				callfunc "SPView";
+				end;
+			case 10:
+				next;
+				callfunc "SpecialView";
+				end;
+
+				}
+				
+		case 2:
+			mes "[ Hand Book ]";
+			mes "Which stats?";
+			next;
+		switch(select("Attack:Critical:Deffense:Flee:Hit:HP:Magic Attack:Magic Deffense:SP")){
+			case 1:
+				next;
+				callfunc "CAttackView";
+				end;
+				
+			case 2:
+				next;
+				callfunc "CCriticalView";
+				end;
+				
+			case 3:
+				next;
+				callfunc "CDeffenseView";
+				end;
+				
+			case 4:
+				next;
+				callfunc "CFleeView";
+				end;
+				
+			case 5:
+				next;
+				callfunc "CHitView";
+				end;
+				
+			case 6:
+				next;
+				callfunc "CHPView";
+				end;
+				
+			case 7:
+				next;
+				callfunc "CMAttackView";
+				end;
+				
+			case 8:
+				next;
+				callfunc "CMADeffenseView";
+				end;
+				
+			case 9:
+				next;
+				callfunc "CSPView";
+				end;
+				}
+			}
+
+
+
+	case 5:
+		mes "[ Hand Book ]";
+		mes "Note: you can search where to obtain all default headgears & default cards in ^0000FFratemyserver.com^000000";
+		next;
+
+	switch(select("Headgears:Cards")){
+
+	case 1:
+				mes "[ Hand Book ]";
+				mes "for view only";
+
+				{ callfunc "qshop",17,18;
+				end;}
+	
+	case 2:
+				mes "[ Hand Book ]";
+				mes "for view only";
+				{ callfunc "qshop",19,20;
+				end;}
+	}
+	}
+}
+
+
+
+-	script	1232131	-1,{
+OnPCStatCalcEvent:
+//default headgears
+
+if(a5011==1) { bonus bMdef,2;}
+if(a5086==1) { bonus bMatk,3;}
+if(a5074==1) { bonus bDef,2;}
+if(a2254==1) { bonus bMaxHp,200;}
+if(a5125==1) { bonus bCritical,1;}
+if(a2276==1) { bonus bDef,2;}
+if(a5113==1) { bonus bDef,2;}
+if(a5089==1) { bonus bAtk2,3;}
+if(a2284==1) { bonus bMdef,2;}
+if(a2285==1) { bonus bDef,2;}
+if(a2261==1) { bonus bMdef,2;}
+if(a5096==1) { bonus bMaxSp,10;}
+if(a5174==1) { bonus bMdef,2;}
+if(a5110==1) { bonus bMaxHp,25;}
+if(a5116==1) { bonus bMaxHp,25;}
+if(a2211==1) { bonus bHit,1;}
+if(a5042==1) { bonus bMatk,3;}
+if(a5076==1) { bonus bFlee,1;}
+if(a5172==1) { bonus bMdef,2;}
+if(a2244==1) { bonus bMaxHp,25;}
+if(a5348==1) { bonus bCritical,1;}
+if(a2296==1) { bonus bMaxSp,10;}
+if(a2216==1) { bonus bHit,1;}
+if(a2217==1) { bonus bDef,2;}
+if(a5057==1) { bonus bCritical,1;}
+if(a2295==1) { bonus bCritical,1;}
+if(a5065==1) { bonus bHit,1;}
+if(a5052==1) { bonus bMaxHp,25;}
+if(a5040==1) { bonus bMatk,3;}
+if(a2279==1) { bonus bFlee,1;}
+if(a5398==1) { bonus bMaxSp,10;}
+if(a5017==1) { bonus bMaxHp,25;}
+if(a5162==1) { bonus bAtk2,10;}
+if(a5016==1) { bonus bMaxSp,50;}
+if(a5349==1) { bonus bDef,4;}
+if(a5169==1) { bonus bMaxHp,25;}
+if(a5114==1) { bonus bMaxSp,10;}
+if(a5120==1) { bonus bMaxHp,25;}
+if(a5034==1) { bonus bFlee,1;}
+if(a2214==1) { bonus bMatk,3;}
+if(a5024==1) { bonus bFlee,1;}
+if(a5028==1) { bonus bMaxSp,10;}
+if(a2226==1) { bonus bMatk,3;}
+if(a2227==1) { bonus bMdef,2;}
+if(a5175==1) { bonus bMaxSp,10;}
+if(a5026==1) { bonus bAtk2,3;}
+if(a2267==1) { bonus bFlee,1;}
+if(a2232==1) { bonus bMaxSp,10;}
+if(a2233==1) { bonus bHit,1;}
+if(a2262==1) { bonus bMaxHp,25;}
+if(a5092==1) { bonus bMaxHp,25;}
+if(a5093==1) { bonus bMaxSp,10;}
+if(a2249==1) { bonus bMatk,20;}
+if(a5019==1) { bonus bMaxHp,200;}
+if(a5163==1) { bonus bHit,1;}
+if(a5075==1) { bonus bHit,1;}
+if(a5048==1) { bonus bMaxSp,10;}
+if(a5036==1) { bonus bMdef,2;}
+if(a5080==1) { bonus bMdef,2;}
+if(a5081==1) { bonus bMdef,2;}
+if(a2235==1) { bonus bMaxHp,200;}
+if(a5165==1) { bonus bMatk,3;}
+if(a5107==1) { bonus bMaxSp,10;}
+if(a2250==1) { bonus bMaxHp,25;}
+if(a5808==1) { bonus bFlee,5;}
+if(a5104==1) { bonus bAtk2,10;}
+if(a5091==1) { bonus bMaxHp,25;}
+if(a5082==1) { bonus bMaxHp,25;}
+if(a5038==1) { bonus bMdef,2;}
+if(a2205==1) { bonus bDef,2;}
+if(a2273==1) { bonus bAtk2,3;}
+if(a5058==1) { bonus bMaxHp,25;}
+if(a2283==1) { bonus bMatk,20;}
+if(a5015==1) { bonus bDef,2;}
+if(a2286==1) { bonus bMdef,2;}
+if(a5068==1) { bonus bMaxSp,10;}
+if(a2255==1) { bonus bAtk2,3;}
+if(a2212==1) { bonus bMaxHp,25;}
+if(a2207==1) { bonus bAtk2,3;}
+if(a5170==1) { bonus bMaxHp,25;}
+if(a5018==1) { bonus bMdef,2;}
+if(a5014==1) { bonus bAtk2,3;}
+if(a2215==1) { bonus bMaxHp,25;}
+if(a5061==1) { bonus bMaxHp,25;}
+if(a2218==1) { bonus bFlee,1;}
+if(a5124==1) { bonus bCritical,1;}
+if(a2290==1) { bonus bAtk2,3;}
+if(a5111==1) { bonus bDef,2;}
+if(a2265==1) { bonus bMatk,3;}
+if(a5005==1) { bonus bDef,2;}
+if(a2243==1) { bonus bMaxSp,10;}
+if(a2230==1) { bonus bDef,2;}
+if(a2231==1) { bonus bMaxHp,200;}
+if(a2274==1) { bonus bMaxSp,10;}
+if(a5063==1) { bonus bMaxHp,25;}
+if(a2203==1) { bonus bMaxHp,25;}
+if(a5090==1) { bonus bDef,2;}
+if(a2297==1) { bonus bHit,1;}
+if(a2224==1) { bonus bHit,1;}
+if(a2225==1) { bonus bHit,1;}
+if(a5128==1) { bonus bMatk,20;}
+if(a2246==1) { bonus bHit,5;}
+if(a5159==1) { bonus bMdef,2;}
+if(a2241==1) { bonus bMaxSp,10;}
+if(a5007==1) { bonus bMatk,20;}
+if(a2298==1) { bonus bAtk2,3;}
+if(a5021==1) { bonus bHit,1;}
+if(a5176==1) { bonus bMaxHp,25;}
+if(a2210==1) { bonus bMaxSp,10;}
+if(a2282==1) { bonus bMaxSp,10;}
+if(a5022==1) { bonus bCritical,5;}
+if(a2220==1) { bonus bMatk,3;}
+if(a2221==1) { bonus bMdef,2;}
+if(a5353==1) { bonus bMaxHp,200;}
+if(a5001==1) { bonus bMatk,3;}
+if(a5041==1) { bonus bMdef,2;}
+if(a5025==1) { bonus bAtk2,10;}
+if(a2228==1) { bonus bMdef,2;}
+if(a2229==1) { bonus bMaxHp,200;}
+if(a5094==1) { bonus bMaxSp,10;}
+if(a5097==1) { bonus bFlee,1;}
+if(a5070==1) { bonus bMaxSp,10;}
+if(a5072==1) { bonus bDef,2;}
+if(a5010==1) { bonus bMaxHp,25;}
+if(a5071==1) { bonus bMaxSp,10;}
+if(a2266==1) { bonus bDef,2;}
+if(a2271==1) { bonus bMdef,2;}
+if(a5002==1) { bonus bMaxHp,200;}
+if(a5003==1) { bonus bMaxSp,10;}
+if(a5069==1) { bonus bFlee,1;}
+if(a2213==1) { bonus bMdef,2;}
+if(a5084==1) { bonus bMaxHp,25;}
+if(a5006==1) { bonus bMaxSp,10;}
+if(a5027==1) { bonus bMatk,20;}
+if(a5045==1) { bonus bFlee,5;}
+if(a5173==1) { bonus bFlee,1;}
+if(a5122==1) { bonus bMaxHp,25;}
+if(a2256==1) { bonus bAtk2,10;}
+if(a5160==1) { bonus bMaxHp,200;}
+if(a5399==1) { bonus bDef,2;}
+if(a5141==1) { bonus bAtk2,3;}
+if(a2291==1) { bonus bDef,2;}
+if(a5031==1) { bonus bMaxSp,10;}
+if(a2260==1) { bonus bDef,2;}
+if(a2259==1) { bonus bMaxSp,10;}
+if(a5073==1) { bonus bMatk,3;}
+if(a2251==1) { bonus bMaxHp,25;}
+if(a5158==1) { bonus bDef,3;}
+if(a2239==1) { bonus bMaxHp,25;}
+if(a5126==1) { bonus bAtk2,3;}
+if(a5127==1) { bonus bHit,1;}
+if(a2288==1) { bonus bHit,5;}
+if(a2278==1) { bonus bMaxHp,25;}
+if(a2264==1) { bonus bMatk,3;}
+if(a5167==1) { bonus bMaxSp,10;}
+if(a5117==1) { bonus bMatk,3;}
+if(a5177==1) { bonus bMdef,2;}
+if(a5055==1) { bonus bAtk2,3;}
+if(a2277==1) { bonus bMaxHp,25;}
+if(a5037==1) { bonus bMdef,2;}
+if(a2281==1) { bonus bMaxSp,10;}
+if(a5043==1) { bonus bMaxHp,25;}
+if(a2299==1) { bonus bAtk2,3;}
+if(a5157==1) { bonus bCritical,1;}
+if(a5004==1) { bonus bFlee,1;}
+if(a5030==1) { bonus bMaxHp,25;}
+if(a5023==1) { bonus bAtk2,3;}
+if(a5060==1) { bonus bMatk,3;}
+if(a5012==1) { bonus bAtk2,3;}
+if(a5347==1) { bonus bAtk2,2;}
+if(a2268==1) { bonus bDef,5;}
+if(a2287==1) { bonus bMatk,3;}
+if(a5350==1) { bonus bFlee,1;}
+if(a5087==1) { bonus bFlee,1;}
+if(a2289==1) { bonus bMaxHp,25;}
+if(a5035==1) { bonus bMaxHp,25;}
+if(a2293==1) { bonus bFlee,1;}
+if(a5134==1) { bonus bMaxHp,25;}
+if(a5118==1) { bonus bMaxHp,25;}
+if(a2242==1) { bonus bAtk2,2;}
+if(a5033==1) { bonus bDef,2;}
+if(a5109==1) { bonus bMaxHp,25;}
+if(a5083==1) { bonus bMaxHp,25;}
+if(a5108==1) { bonus bFlee,1;}
+if(a2208==1) { bonus bAtk2,3;}
+if(a2209==1) { bonus bMaxHp,25;}
+if(a2269==1) { bonus bMaxSp,10;}
+if(a2247==1) { bonus bMaxHp,25;}
+if(a2270==1) { bonus bHit,1;}
+if(a5009==1) { bonus bDef,2;}
+if(a2280==1) { bonus bMaxSp,10;}
+if(a2236==1) { bonus bHit,1;}
+if(a5078==1) { bonus bDef,2;}
+if(a5243==1) { bonus bAtk2,3;}
+if(a5085==1) { bonus bHit,1;}
+if(a5064==1) { bonus bMaxSp,10;}
+if(a5067==1) { bonus bMaxSp,10;}
+if(a5053==1) { bonus bCritical,1;}
+if(a5166==1) { bonus bMdef,2;}
+if(a2258==1) { bonus bMaxSp,50;}
+if(a5161==1) { bonus bFlee,1;}
+if(a5029==1) { bonus bFlee,1;}
+if(a2294==1) { bonus bMdef,2;}
+if(a2272==1) { bonus bMaxHp,25;}
+if(a5062==1) { bonus bMatk,3;}
+if(a5049==1) { bonus bMaxHp,25;}
+if(a5066==1) { bonus bAtk2,3;}
+if(a5032==1) { bonus bAtk2,3;}
+if(a2253==1) { bonus bMaxSp,10;}
+if(a5351==1) { bonus bHit,1;}
+if(a2201==1) { bonus bHit,1;}
+if(a5119==1) { bonus bMaxHp,25;}
+if(a5088==1) { bonus bHit,1;}
+if(a2245==1) { bonus bMatk,3;}
+if(a5059==1) { bonus bMdef,2;}
+if(a2234==1) { bonus bDef,5;}
+if(a5164==1) { bonus bMaxHp,25;}
+if(a5077==1) { bonus bFlee,1;}
+if(a2222==1) { bonus bMaxHp,25;}
+if(a2223==1) { bonus bDef,2;}
+if(a5123==1) { bonus bMaxSp,10;}
+if(a2257==1) { bonus bMdef,2;}
+if(a5171==1) { bonus bAtk2,3;}
+if(a2206==1) { bonus bMaxHp,25;}
+if(a2292==1) { bonus bDef,2;}
+if(a2248==1) { bonus bMdef,2;}
+if(a2252==1) { bonus bMatk,3;}
+if(a5050==1) { bonus bDef,2;}
+if(a5079==1) { bonus bMaxSp,10;}
+if(a5121==1) { bonus bAtk2,3;}
+if(a2263==1) { bonus bMaxHp,25;}
+
+// default cards
+
+if(a4140==1) { bonus bHit,1;}
+if(a4409==1) { bonus bMatk,2;}
+if(a4244==1) { bonus bDef,2;}
+if(a4253==1) { bonus bHit,1;}
+if(a4401==1) { bonus bMdef,2;}
+if(a4402==1) { bonus bDef,2;}
+if(a4400==1) { bonus bMaxHp,40;}
+if(a4252==1) { bonus bAtk2,2;}
+if(a4245==1) { bonus bFlee,1;}
+if(a4032==1) { bonus bDef,2;}
+if(a4236==1) { bonus bMaxHp,40;}
+if(a4062==1) { bonus bMaxSp,10;}
+if(a4387==1) { bonus bAtk2,2;}
+if(a4248==1) { bonus bMatk,2;}
+if(a4249==1) { bonus bMdef,2;}
+if(a4043==1) { bonus bMaxHp,25;}
+if(a4013==1) { bonus bMaxHp,40;}
+if(a4018==1) { bonus bMdef,2;}
+if(a4054==1) { bonus bAtk2,4;}
+if(a4234==1) { bonus bMatk,2;}
+if(a4344==1) { bonus bMaxHp,25;}
+if(a4243==1) { bonus bMatk,4;}
+if(a4138==1) { bonus bMdef,2;}
+if(a4242==1) { bonus bMdef,2;}
+if(a4443==1) { bonus bMaxSp,15;}
+if(a4241==1) { bonus bDef,2;}
+if(a4371==1) { bonus bMaxSp,10;}
+if(a4094==1) { bonus bMdef,2;}
+if(a4240==1) { bonus bAtk2,2;}
+if(a4114==1) { bonus bMaxSp,15;}
+if(a4075==1) { bonus bMdef,2;}
+if(a4347==1) { bonus bMaxHp,25;}
+if(a4359==1) { bonus bMaxHp,200;}
+if(a4246==1) { bonus bHit,1;}
+if(a4247==1) { bonus bMdef,2;}
+if(a4425==1) { bonus bDef,10;}
+if(a4023==1) { bonus bMaxHp,25;}
+if(a4233==1) { bonus bMdef,2;}
+if(a4438==1) { bonus bHit,1;}
+if(a4450==1) { bonus bMaxHp,40;}
+if(a4129==1) { bonus bMatk,2;}
+if(a4147==1) { bonus bDef,10;}
+if(a4391==1) { bonus bMatk,4;}
+if(a4119==1) { bonus bMdef,3;}
+if(a4307==1) { bonus bMdef,2;}
+if(a4356==1) { bonus bAtk2,2;}
+if(a4145==1) { bonus bDef,10;}
+if(a4074==1) { bonus bAtk2,2;}
+if(a4215==1) { bonus bMatk,2;}
+if(a4327==1) { bonus bFlee,1;}
+if(a4320==1) { bonus bMaxHp,40;}
+if(a4214==1) { bonus bHit,1;}
+if(a4379==1) { bonus bMaxHp,25;}
+if(a4212==1) { bonus bHit,1;}
+if(a4428==1) { bonus bMaxHp,40;}
+if(a4390==1) { bonus bMaxHp,25;}
+if(a4213==1) { bonus bMdef,2;}
+if(a4426==1) { bonus bMaxSp,15;}
+if(a4063==1) { bonus bAtk2,2;}
+if(a4288==1) { bonus bMaxHp,25;}
+if(a4290==1) { bonus bMdef,3;}
+if(a4289==1) { bonus bMaxHp,25;}
+if(a4368==1) { bonus bMaxHp,25;}
+if(a4447==1) { bonus bDef,2;}
+if(a4452==1) { bonus bMaxHp,25;}
+if(a4284==1) { bonus bAtk2,2;}
+if(a4300==1) { bonus bMdef,3;}
+if(a4285==1) { bonus bMaxHp,25;}
+if(a4009==1) { bonus bMaxSp,10;}
+if(a4235==1) { bonus bMdef,2;}
+if(a4299==1) { bonus bMaxHp,25;}
+if(a4262==1) { bonus bMaxSp,10;}
+if(a4041==1) { bonus bMaxHp,25;}
+if(a4015==1) { bonus bMaxHp,25;}
+if(a4293==1) { bonus bMaxSp,10;}
+if(a4448==1) { bonus bFlee,1;}
+if(a4061==1) { bonus bMdef,2;}
+if(a4153==1) { bonus bMaxSp,10;}
+if(a4296==1) { bonus bDef,2;}
+if(a4040==1) { bonus bAtk2,2;}
+if(a4298==1) { bonus bMaxHp,40;}
+if(a4297==1) { bonus bMaxHp,25;}
+if(a4392==1) { bonus bMdef,3;}
+if(a4170==1) { bonus bDef,2;}
+if(a4169==1) { bonus bHit,1;}
+if(a4168==1) { bonus bMatk,10;}
+if(a4171==1) { bonus bMaxHp,40;}
+if(a4449==1) { bonus bHit,1;}
+if(a4388==1) { bonus bMaxHp,25;}
+if(a4173==1) { bonus bHit,1;}
+if(a4082==1) { bonus bMatk,2;}
+if(a4397==1) { bonus bFlee,1;}
+if(a4386==1) { bonus bMaxHp,200;}
+if(a4125==1) { bonus bMdef,2;}
+if(a4174==1) { bonus bMaxHp,40;}
+if(a4122==1) { bonus bDef,2;}
+if(a4182==1) { bonus bDef,2;}
+if(a4370==1) { bonus bMdef,2;}
+if(a4181==1) { bonus bMdef,2;}
+if(a4098==1) { bonus bMaxSp,10;}
+if(a4398==1) { bonus bHit,1;}
+if(a4142==1) { bonus bFlee,5;}
+if(a4444==1) { bonus bAtk2,4;}
+if(a4134==1) { bonus bMaxHp,200;}
+if(a4385==1) { bonus bMaxSp,10;}
+if(a4179==1) { bonus bMaxSp,10;}
+if(a4178==1) { bonus bMdef,2;}
+if(a4069==1) { bonus bMdef,2;}
+if(a4137==1) { bonus bMdef,10;}
+if(a4180==1) { bonus bAtk2,2;}
+if(a4004==1) { bonus bMaxHp,25;}
+if(a4421==1) { bonus bMaxHp,25;}
+if(a4177==1) { bonus bMatk,2;}
+if(a4176==1) { bonus bMaxHp,40;}
+if(a4154==1) { bonus bAtk2,2;}
+if(a4056==1) { bonus bMdef,2;}
+if(a4279==1) { bonus bHit,1;}
+if(a4118==1) { bonus bAtk2,2;}
+if(a4410==1) { bonus bMdef,2;}
+if(a4266==1) { bonus bMatk,4;}
+if(a4123==1) { bonus bAtk2,10;}
+if(a4070==1) { bonus bMdef,2;}
+if(a4346==1) { bonus bMaxHp,25;}
+if(a4251==1) { bonus bMaxSp,10;}
+if(a4052==1) { bonus bAtk2,2;}
+if(a4217==1) { bonus bMaxSp,10;}
+if(a4451==1) { bonus bMatk,4;}
+if(a4360==1) { bonus bDef,2;}
+if(a4349==1) { bonus bMaxHp,25;}
+if(a4141==1) { bonus bMdef,2;}
+if(a4258==1) { bonus bHit,1;}
+if(a4330==1) { bonus bDef,10;}
+if(a4250==1) { bonus bFlee,1;}
+if(a4267==1) { bonus bDef,2;}
+if(a4002==1) { bonus bMaxHp,25;}
+if(a4441==1) { bonus bHit,4;}
+if(a4316==1) { bonus bMdef,2;}
+if(a4020==1) { bonus bAtk2,2;}
+if(a4026==1) { bonus bMatk,2;}
+if(a4160==1) { bonus bDef,2;}
+if(a4439==1) { bonus bMatk,4;}
+if(a4080==1) { bonus bMdef,2;}
+if(a4319==1) { bonus bAtk2,2;}
+if(a4088==1) { bonus bMatk,4;}
+if(a4405==1) { bonus bMaxHp,25;}
+if(a4151==1) { bonus bMatk,2;}
+if(a4152==1) { bonus bMdef,2;}
+if(a4423==1) { bonus bMdef,3;}
+if(a4149==1) { bonus bMdef,2;}
+if(a4418==1) { bonus bMatk,4;}
+if(a4354==1) { bonus bFlee,1;}
+if(a4352==1) { bonus bMaxHp,200;}
+if(a4280==1) { bonus bMaxHp,25;}
+if(a4047==1) { bonus bMaxSp,15;}
+if(a4110==1) { bonus bMdef,2;}
+if(a4271==1) { bonus bMatk,2;}
+if(a4270==1) { bonus bMaxHp,25;}
+if(a4303==1) { bonus bAtk2,4;}
+if(a4278==1) { bonus bMaxHp,25;}
+if(a4087==1) { bonus bMdef,2;}
+if(a4165==1) { bonus bMatk,2;}
+if(a4408==1) { bonus bMaxSp,50;}
+if(a4150==1) { bonus bMdef,2;}
+if(a4157==1) { bonus bFlee,1;}
+if(a4060==1) { bonus bMatk,2;}
+if(a4155==1) { bonus bMdef,2;}
+if(a4156==1) { bonus bDef,2;}
+if(a4378==1) { bonus bDef,2;}
+if(a4128==1) { bonus bDef,10;}
+if(a4072==1) { bonus bMdef,2;}
+if(a4161==1) { bonus bMatk,2;}
+if(a4283==1) { bonus bMaxSp,10;}
+if(a4381==1) { bonus bMaxHp,25;}
+if(a4373==1) { bonus bAtk2,2;}
+if(a4355==1) { bonus bMaxSp,10;}
+if(a4162==1) { bonus bMdef,2;}
+if(a4377==1) { bonus bMaxHp,25;}
+if(a4163==1) { bonus bFlee,1;}
+if(a4164==1) { bonus bMaxSp,10;}
+if(a4325==1) { bonus bMaxHp,25;}
+if(a4323==1) { bonus bHit,1;}
+if(a4324==1) { bonus bDef,10;}
+if(a4331==1) { bonus bMdef,2;}
+if(a4437==1) { bonus bMaxHp,25;}
+if(a4232==1) { bonus bHit,1;}
+if(a4322==1) { bonus bDef,2;}
+if(a4363==1) { bonus bAtk2,10;}
+if(a4365==1) { bonus bDef,10;}
+if(a4345==1) { bonus bDef,2;}
+if(a4453==1) { bonus bMaxHp,25;}
+if(a4081==1) { bonus bMdef,2;}
+if(a4413==1) { bonus bFlee,1;}
+if(a4343==1) { bonus bAtk2,2;}
+if(a4045==1) { bonus bMdef,3;}
+if(a4019==1) { bonus bMaxSp,10;}
+if(a4103==1) { bonus bMatk,4;}
+if(a4362==1) { bonus bMaxHp,25;}
+if(a4115==1) { bonus bMatk,2;}
+if(a4035==1) { bonus bMaxSp,15;}
+if(a4384==1) { bonus bMaxHp,40;}
+if(a4321==1) { bonus bMaxHp,25;}
+if(a4417==1) { bonus bMaxHp,40;}
+if(a4430==1) { bonus bFlee,4;}
+if(a4433==1) { bonus bMdef,3;}
+if(a4269==1) { bonus bHit,1;}
+if(a4268==1) { bonus bFlee,1;}
+if(a4239==1) { bonus bMaxSp,10;}
+if(a4412==1) { bonus bAtk2,2;}
+if(a4116==1) { bonus bMdef,2;}
+if(a4109==1) { bonus bMaxHp,40;}
+if(a4265==1) { bonus bMdef,2;}
+if(a4139==1) { bonus bDef,2;}
+if(a4065==1) { bonus bAtk2,4;}
+if(a4287==1) { bonus bMaxHp,25;}
+if(a4286==1) { bonus bDef,2;}
+if(a4431==1) { bonus bFlee,1;}
+if(a4366==1) { bonus bMaxHp,25;}
+if(a4351==1) { bonus bMdef,2;}
+if(a4136==1) { bonus bAtk2,2;}
+if(a4403==1) { bonus bMaxSp,50;}
+if(a4301==1) { bonus bMaxHp,25;}
+if(a4434==1) { bonus bAtk2,2;}
+if(a4292==1) { bonus bMdef,2;}
+if(a4091==1) { bonus bMdef,3;}
+if(a4291==1) { bonus bMatk,2;}
+if(a4295==1) { bonus bMaxHp,25;}
+if(a4419==1) { bonus bAtk2,10;}
+if(a4027==1) { bonus bMdef,2;}
+if(a4394==1) { bonus bAtk2,4;}
+if(a4376==1) { bonus bDef,10;}
+if(a4350==1) { bonus bMatk,2;}
+if(a4184==1) { bonus bFlee,1;}
+if(a4195==1) { bonus bHit,1;}
+if(a4188==1) { bonus bMdef,2;}
+if(a4191==1) { bonus bMatk,4;}
+if(a4357==1) { bonus bMatk,10;}
+if(a4276==1) { bonus bMaxSp,50;}
+if(a4445==1) { bonus bMaxHp,40;}
+if(a4193==1) { bonus bDef,2;}
+if(a4006==1) { bonus bMaxHp,25;}
+if(a4395==1) { bonus bMaxHp,40;}
+if(a4432==1) { bonus bMaxSp,10;}
+if(a4076==1) { bonus bDef,2;}
+if(a4201==1) { bonus bDef,2;}
+if(a4050==1) { bonus bMdef,2;}
+if(a4030==1) { bonus bMaxHp,25;}
+if(a4079==1) { bonus bFlee,1;}
+if(a4202==1) { bonus bMdef,3;}
+if(a4105==1) { bonus bHit,1;}
+if(a4112==1) { bonus bAtk2,4;}
+if(a4364==1) { bonus bHit,1;}
+if(a4196==1) { bonus bMdef,2;}
+if(a4055==1) { bonus bDef,2;}
+if(a4084==1) { bonus bMaxSp,10;}
+if(a4113==1) { bonus bMdef,2;}
+if(a4095==1) { bonus bMatk,2;}
+if(a4046==1) { bonus bMdef,2;}
+if(a4197==1) { bonus bMdef,3;}
+if(a4361==1) { bonus bMaxSp,50;}
+if(a4097==1) { bonus bAtk2,4;}
+if(a4146==1) { bonus bDef,10;}
+if(a4198==1) { bonus bMaxHp,200;}
+if(a4124==1) { bonus bMdef,2;}
+if(a4200==1) { bonus bMdef,2;}
+if(a4067==1) { bonus bDef,2;}
+if(a4399==1) { bonus bMatk,10;}
+if(a4199==1) { bonus bMatk,2;}
+if(a4341==1) { bonus bMaxSp,10;}
+if(a4057==1) { bonus bMdef,2;}
+if(a4231==1) { bonus bFlee,1;}
+if(a4205==1) { bonus bAtk2,2;}
+if(a4339==1) { bonus bMatk,2;}
+if(a4204==1) { bonus bMaxSp,10;}
+if(a4126==1) { bonus bFlee,1;}
+if(a4132==1) { bonus bHit,4;}
+if(a4393==1) { bonus bMaxSp,15;}
+if(a4208==1) { bonus bMaxSp,15;}
+if(a4317==1) { bonus bMaxSp,10;}
+if(a4131==1) { bonus bFlee,4;}
+if(a4036==1) { bonus bMaxHp,25;}
+if(a4106==1) { bonus bMdef,2;}
+if(a4090==1) { bonus bMdef,2;}
+if(a4420==1) { bonus bMaxHp,25;}
+if(a4203==1) { bonus bMaxSp,15;}
+if(a4108==1) { bonus bFlee,1;}
+if(a4206==1) { bonus bMdef,2;}
+if(a4207==1) { bonus bMaxHp,40;}
+if(a4440==1) { bonus bHit,1;}
+if(a4167==1) { bonus bMdef,2;}
+if(a4127==1) { bonus bMdef,2;}
+if(a4166==1) { bonus bAtk2,2;}
+if(a4159==1) { bonus bMdef,2;}
+if(a4334==1) { bonus bMaxHp,25;}
+if(a4093==1) { bonus bMdef,2;}
+if(a4338==1) { bonus bMaxHp,25;}
+if(a4396==1) { bonus bDef,2;}
+if(a4254==1) { bonus bMaxSp,15;}
+if(a4256==1) { bonus bDef,2;}
+if(a4375==1) { bonus bMaxHp,40;}
+if(a4143==1) { bonus bMaxSp,50;}
+if(a4255==1) { bonus bMdef,2;}
+if(a4135==1) { bonus bMatk,10;}
+if(a4085==1) { bonus bAtk2,2;}
+if(a4066==1) { bonus bMdef,2;}
+if(a4071==1) { bonus bMatk,2;}
+if(a4144==1) { bonus bAtk2,10;}
+if(a4238==1) { bonus bMaxHp,40;}
+if(a4237==1) { bonus bAtk2,4;}
+if(a4310==1) { bonus bMaxHp,25;}
+if(a4309==1) { bonus bAtk2,2;}
+if(a4099==1) { bonus bAtk2,2;}
+if(a4031==1) { bonus bAtk2,4;}
+if(a4007==1) { bonus bMatk,2;}
+if(a4314==1) { bonus bMaxHp,25;}
+if(a4311==1) { bonus bDef,2;}
+if(a4315==1) { bonus bMatk,2;}
+if(a4148==1) { bonus bMaxHp,200;}
+if(a4077==1) { bonus bHit,1;}
+if(a4329==1) { bonus bMatk,2;}
+if(a4121==1) { bonus bHit,5;}
+if(a4008==1) { bonus bMdef,2;}
+if(a4011==1) { bonus bMaxHp,25;}
+if(a4073==1) { bonus bMaxSp,10;}
+if(a4335==1) { bonus bDef,2;}
+if(a4024==1) { bonus bMaxHp,25;}
+if(a4389==1) { bonus bDef,2;}
+if(a4048==1) { bonus bMdef,2;}
+if(a4175==1) { bonus bMdef,2;}
+if(a4033==1) { bonus bMaxHp,25;}
+if(a4337==1) { bonus bMaxHp,25;}
+if(a4001==1) { bonus bAtk2,2;}
+if(a4313==1) { bonus bMaxHp,25;}
+if(a4003==1) { bonus bDef,2;}
+if(a4294==1) { bonus bAtk2,2;}
+if(a4083==1) { bonus bMdef,2;}
+if(a4436==1) { bonus bDef,2;}
+if(a4186==1) { bonus bMdef,2;}
+if(a4407==1) { bonus bCritical,5;}
+if(a4187==1) { bonus bMatk,2;}
+if(a4133==1) { bonus bMaxSp,10;}
+if(a4380==1) { bonus bMaxHp,25;}
+if(a4383==1) { bonus bMdef,2;}
+if(a4353==1) { bonus bMaxSp,15;}
+if(a4104==1) { bonus bDef,2;}
+if(a4185==1) { bonus bHit,1;}
+if(a4021==1) { bonus bMaxHp,25;}
+if(a4014==1) { bonus bMaxHp,25;}
+if(a4192==1) { bonus bMdef,2;}
+if(a4422==1) { bonus bMatk,2;}
+if(a4342==1) { bonus bDef,10;}
+if(a4194==1) { bonus bFlee,1;}
+if(a4219==1) { bonus bMdef,2;}
+if(a4429==1) { bonus bDef,2;}
+if(a4263==1) { bonus bMaxHp,40;}
+if(a4101==1) { bonus bMdef,2;}
+if(a4005==1) { bonus bMaxHp,25;}
+if(a4216==1) { bonus bMdef,2;}
+if(a4017==1) { bonus bMatk,2;}
+if(a4078==1) { bonus bMdef,2;}
+if(a4068==1) { bonus bMdef,2;}
+if(a4130==1) { bonus bMdef,2;}
+if(a4326==1) { bonus bMaxHp,25;}
+if(a4312==1) { bonus bMaxHp,25;}
+if(a4414==1) { bonus bMaxHp,25;}
+if(a4358==1) { bonus bMaxHp,25;}
+if(a4273==1) { bonus bMaxSp,10;}
+if(a4230==1) { bonus bDef,2;}
+if(a4117==1) { bonus bMaxSp,10;}
+if(a4416==1) { bonus bMaxHp,25;}
+if(a4406==1) { bonus bMatk,4;}
+if(a4025==1) { bonus bMaxHp,25;}
+if(a4221==1) { bonus bFlee,1;}
+if(a4222==1) { bonus bHit,1;}
+if(a4092==1) { bonus bMaxSp,15;}
+if(a4404==1) { bonus bMaxHp,25;}
+if(a4158==1) { bonus bMdef,2;}
+if(a4120==1) { bonus bMdef,2;}
+if(a4228==1) { bonus bMdef,2;}
+if(a4044==1) { bonus bMdef,3;}
+if(a4037==1) { bonus bMatk,2;}
+if(a4367==1) { bonus bDef,10;}
+if(a4415==1) { bonus bDef,2;}
+if(a4100==1) { bonus bMaxHp,40;}
+if(a4059==1) { bonus bMdef,2;}
+if(a4086==1) { bonus bMaxHp,40;}
+if(a4220==1) { bonus bDef,2;}
+if(a4022==1) { bonus bDef,2;}
+if(a4227==1) { bonus bAtk2,2;}
+if(a4039==1) { bonus bMaxSp,10;}
+if(a4223==1) { bonus bMdef,2;}
+if(a4424==1) { bonus bMdef,2;}
+if(a4042==1) { bonus bDef,2;}
+if(a4224==1) { bonus bMatk,2;}
+if(a4226==1) { bonus bMaxSp,10;}
+if(a4225==1) { bonus bMdef,2;}
+if(a4318==1) { bonus bAtk2,10;}
+if(a4111==1) { bonus bDef,2;}
+if(a4218==1) { bonus bAtk2,2;}
+if(a4427==1) { bonus bAtk2,4;}
+if(a4089==1) { bonus bDef,2;}
+if(a4304==1) { bonus bMatk,2;}
+if(a4302==1) { bonus bCritical,5;}
+if(a4028==1) { bonus bMaxSp,10;}
+if(a4442==1) { bonus bMaxHp,40;}
+if(a4340==1) { bonus bMdef,2;}
+if(a4282==1) { bonus bMdef,2;}
+if(a4058==1) { bonus bMaxHp,40;}
+if(a4172==1) { bonus bFlee,1;}
+if(a4016==1) { bonus bMaxHp,25;}
+if(a4012==1) { bonus bDef,2;}
+if(a4306==1) { bonus bDef,2;}
+if(a4229==1) { bonus bAtk2,4;}
+if(a4308==1) { bonus bMaxSp,10;}
+if(a4305==1) { bonus bCritical,5;}
+if(a4336==1) { bonus bMaxHp,25;}
+if(a4049==1) { bonus bMatk,2;}
+if(a4183==1) { bonus bMatk,4;}
+if(a4411==1) { bonus bMaxSp,10;}
+if(a4369==1) { bonus bMatk,2;}
+if(a4333==1) { bonus bAtk2,2;}
+if(a4107==1) { bonus bDef,2;}
+if(a4374==1) { bonus bAtk2,4;}
+if(a4209==1) { bonus bDef,2;}
+if(a4053==1) { bonus bMdef,2;}
+if(a4211==1) { bonus bFlee,1;}
+if(a4210==1) { bonus bFlee,1;}
+if(a4332==1) { bonus bMaxSp,10;}
+if(a4102==1) { bonus bMaxHp,40;}
+if(a4372==1) { bonus bCritical,5;}
+if(a4348==1) { bonus bDef,2;}
+if(a4257==1) { bonus bFlee,1;}
+if(a4010==1) { bonus bAtk2,2;}
+if(a4264==1) { bonus bAtk2,2;}
+if(a4029==1) { bonus bAtk2,2;}
+if(a4259==1) { bonus bMdef,2;}
+if(a4261==1) { bonus bMdef,2;}
+if(a4260==1) { bonus bMatk,2;}
+if(a4034==1) { bonus bMaxHp,25;}
+if(a4190==1) { bonus bAtk2,2;}
+if(a4189==1) { bonus bMaxSp,10;}
+if(a4328==1) { bonus bMaxHp,25;}
+if(a4382==1) { bonus bMatk,2;}
+if(a4051==1) { bonus bMaxSp,10;}
+if(a4277==1) { bonus bDef,2;}
+if(a4096==1) { bonus bMdef,2;}
+if(a4064==1) { bonus bDef,2;}
+if(a4272==1) { bonus bMdef,2;}
+if(a4281==1) { bonus bMatk,2;}
+if(a4038==1) { bonus bMdef,2;}
+if(a4274==1) { bonus bAtk2,2;}
+if(a4275==1) { bonus bMaxHp,25;}
+if(a4435==1) { bonus bMaxHp,25;}
+
+
+// new headgear
+
+if(a5788==1) { bonus bMaxHp,25;}
+if(a5786==1) { bonus bAtk2,2;}
+if(a35032==1) { bonus bAtkRate,1;}
+if(a5344==1) { bonus bDef,2;}
+if(a5338==1) { bonus bMaxHp,25;}
+if(a5401==1) { bonus bDef,2;}
+if(a18613==1) { bonus bMaxHp,25;}
+if(a31289==1) { bonus bAtk2,2;}
+if(a31554==1) { bonus bDef,2;}
+if(a31506==1) { bonus bMaxHp,25;}
+if(a31207==1) { bonus bMatk,2;}
+if(a31311==1) { bonus bMaxHp,25;}
+if(a31575==1) { bonus bMatk,2;}
+if(a31178==1) { bonus bDef,4;}
+if(a31314==1) { bonus bMdef,2;}
+if(a31529==1) { bonus bMaxSp,10;}
+if(a31561==1) { bonus bAtk2,2;}
+if(a31579==1) { bonus bAtk2,2;}
+if(a31600==1) { bonus bDef,2;}
+if(a31447==1) { bonus bMaxHp,25;}
+if(a31569==1) { bonus bMatk,2;}
+if(a31295==1) { bonus bMaxHp,25;}
+if(a31417==1) { bonus bMatk,2;}
+if(a31315==1) { bonus bMdef,2;}
+if(a31300==1) { bonus bMaxSp,10;}
+if(a31299==1) { bonus bMaxSp,25;}
+if(a18600==1) { bonus bMaxSp,10;}
+if(a31145==1) { bonus bDef,4;}
+if(a31186==1) { bonus bMdef,5;}
+if(a20108==1) { bonus bAtk2,2;}
+if(a20043==1) { bonus bAtk2,2;}
+if(a31031==1) { bonus bAtk2,10;}
+if(a31148==1) { bonus bAtk2,10;}
+if(a31197==1) { bonus bDef,2;}
+if(a20764==1) { bonus bMAtkRate,1;}
+if(a20107==1) { bonus bMaxHp,25;}
+if(a20377==1) { bonus bMatk,2;}
+if(a31568==1) { bonus bMaxHp,25;}
+if(a31123==1) { bonus bMaxHp,100;}
+if(a31167==1) { bonus bMatk,2;}
+if(a20015==1) { bonus bMdef,2;}
+if(a31149==1) { bonus bMaxHp,100;}
+if(a20283==1) { bonus bMaxSp,10;}
+if(a31165==1) { bonus bAtk2,10;}
+if(a20504==1) { bonus bMAtkRate,1;}
+if(a31055==1) { bonus bMatk,5;}
+if(a20145==1) { bonus bAtk2,2;}
+if(a20451==1) { bonus bAtk2,2;}
+if(a20392==1) { bonus bDef,2;}
+if(a20286==1) { bonus bMaxHp,25;}
+if(a5564==1) { bonus bAtk2,2;}
+if(a5340==1) { bonus bMdef,2;}
+if(a5421==1) { bonus bAtk2,2;}
+if(a5664==1) { bonus bMdef,2;}
+if(a5339==1) { bonus bMatk,2;}
+if(a5346==1) { bonus bMatk,2;}
+if(a5341==1) { bonus bMaxSp,10;}
+if(a35121==1) { bonus bMatk,5;}
+if(a5336==1) { bonus bMaxHp,25;}
+if(a5471==1) { bonus bAtk2,2;}
+if(a5610==1) { bonus bMaxSp,10;}
+if(a35800==1) { bonus bDef,3;}
+if(a35136==1) { bonus bMatk,4;}
+if(a35342==1) { bonus bMaxHp,25;}
+if(a31395==1) { bonus bMaxHp,100;}
+if(a31396==1) { bonus bAtk2,10;}
+if(a35198==1) { bonus bMdef,10;}
+if(a35343==1) { bonus bMaxSp,35;}
+if(a5337==1) { bonus bMatk,2;}
+if(a35169==1) { bonus bMatk,2;}
+if(a35172==1) { bonus bMdef,5;}
+if(a35176==1) { bonus bMaxSp,25;}
+if(a35177==1) { bonus bAtk2,4;}
+if(a35171==1) { bonus bAtk2,4;}
+if(a35173==1) { bonus bDef,4;}
+if(a35178==1) { bonus bMaxHp,75;}
+if(a35200==1) { bonus bMatk,4;}
+if(a35202==1) { bonus bMaxHp,75;}
+if(a5592==1) { bonus bMdef,2;}
+if(a5388==1) { bonus bMatk,5;}
+if(a5342==1) { bonus bAtk2,2;}
+if(a5343==1) { bonus bAtk2,2;}
+if(a18505==1) { bonus bMatk,2;}
+if(a5345==1) { bonus bMaxHp,25;}
+if(a35275==1) { bonus bAtkRate,1;}
+if(a18612==1) { bonus bMatk,2;}
+
+
+// new cards
+
+if(a27020==1) { bonus bAtk2,15;}
+if(a27085==1) { bonus bCritical,3;}
+if(a27086==1) { bonus bDef,15;}
+if(a27126==1) { bonus bFlee,10;}
+if(a27152==1) { bonus bHit,10;}
+if(a27164==1) { bonus bMaxHp,300;}
+if(a27014==1) { bonus bMatk,3;}
+if(a27015==1) { bonus bMdef,3;}
+if(a27017==1) { bonus bMaxSp,5;}
+if(a27029==1) { bonus bAtk2,3;}
+if(a27030==1) { bonus bMaxHp,25;}
+if(a27083==1) { bonus bDef,10;}
+if(a27121==1) { bonus bFlee,1;}
+if(a27122==1) { bonus bHit,1;}
+if(a27123==1) { bonus bMaxHp,25;}
+if(a27124==1) { bonus bMatk,3;}
+if(a27158==1) { bonus bMdef,3;}
+if(a27159==1) { bonus bMaxSp,5;}
+if(a27162==1) { bonus bAtk2,4;}
+if(a27016==1) { bonus bMdef,2;}
+if(a27026==1) { bonus bDef,2;}
+if(a27028==1) { bonus bFlee,1;}
+if(a27084==1) { bonus bHit,1;}
+if(a27088==1) { bonus bMaxHp,30;}
+if(a27106==1) { bonus bMatk,3;}
+if(a27120==1) { bonus bMdef,3;}
+if(a27125==1) { bonus bMaxSp,5;}
+if(a27147==1) { bonus bAtk2,3;}
+if(a27148==1) { bonus bMatk,3;}
+if(a27160==1) { bonus bDef,3;}
+if(a27163==1) { bonus bFlee,1;}
+if(a27165==1) { bonus bHit,1;}
+if(a27166==1) { bonus bMaxHp,25;}
+if(a27167==1) { bonus bMatk,3;}
+if(a27157==1) { bonus bMdef,5;}
+if(a27027==1) { bonus bMaxSp,5;}
+if(a27082==1) { bonus bAtk2,5;}
+if(a27087==1) { bonus bCritical,1;}
+if(a27161==1) { bonus bDef,5;}
+if(a27170==1) { bonus bFlee,1;}
+if(a27171==1) { bonus bHit,1;}
+
+
+
+
+end;
+}

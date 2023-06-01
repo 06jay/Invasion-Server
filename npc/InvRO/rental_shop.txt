@@ -1,0 +1,313 @@
+prontera,147,99,5	script	Rentals Shop	109,{	
+
+if($RentalItems == 1) {
+		mes "[^0000FF Rentals Shop ^000000]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+	mes "[^0000FF Rentals Shop ^000000]";
+	mes "What do you want to rent?";
+	next;
+	mes "[^0000FF Rentals Shop ^000000]";
+	mes "This price is rental per day, select the desired rental and ^ff0000CLICK BUY FOR THE NEXT WINDOWS WHERE YOU CAN SETUP HOW MANY DAYS YOU WANT TO RENT^000000";
+	next;
+	switch(select("> Rental Weapon","> Rental Headgear", "> Rental Armor","> Rental Accessory", "> ^FF0000Exit^000000")) {
+		case 1:
+			doevent  "Weapon_Rentals_Shop::OnWeaponRental";
+			end;
+		case 2:
+			doevent  "Head_Rentals_Shop::OnHeadRental";
+			end;
+		case 3:
+			doevent  "Armor_Rentals_Shop::OnArmorRental";
+			end;
+		case 4:
+			doevent  "Acce_Rentals_Shop::OnAcceRental";
+			end;
+		case 5:
+			end;
+			break;
+	}
+
+}
+
+
+-	shop	wrental_shop	-1,501:50
+-	script	Weapon_Rentals_Shop	-1,{
+//prontera,157,174,4	script	Rentals Shop	100,{	
+OnWeaponRental:
+	callshop "wrental_shop", 1;	
+	npcshopattach "wrental_shop";	
+	end;
+
+OnBuyItem:	
+	dispbottom "Rentals Shop: You can only buy one item at once.";	
+	setarray .@q[0], @bought_nameid[0], @bought_quantity[0];	
+	for (.@i = 0; .@i < getarraysize(.items_list); .@i++) {		
+	if (.@q[0] == .items_list[.@i]) {			
+	.@q[2] = .price_list[.@i];		
+	}	
+}	
+	mes .@npc_name$ = "[^0000FF Rentals Shop ^000000]";
+	mes "Rental Item: "+getitemname(.@q[0]);	
+	mes "Rental Cost: "+.@q[2]+" Zeny for one day.";	
+	mes " ";	
+	mes "How many days do you want to rent it ?";	
+	next;	
+if (input(.@day, 1, 365)) {		
+	mes .@npc_name$;		
+	mes "Invalid input days..";		
+	callsub ClearBought;		
+	close;	
+}	
+.@q[3] = .@day * .@q[2];	
+mes .@npc_name$;	
+mes "Rental Item: "+getitemname(.@q[0]);	
+mes "Rental Cost: "+.@q[3]+" Zeny for "+.@day+" day"+((.@day > 1) ? "s" : "")+".";	
+mes " ";	mes "Still want to make the rent ?";	
+next;	
+if (select("Yes:No") == 2) {		
+mes .@npc_name$;		
+mes "All right, "+callfunc("F_Bye");		
+callsub ClearBought;		
+close;	
+}		
+if (Zeny < .@q[3]) {
+mes .@npc_name$;		
+mes "I'm sorry, you haven't enought Zeny to pay the rental";		
+callsub ClearBought;		
+close;	
+}	
+if (!checkweight(.@q[0], .@q[1])) {		
+mes .@npc_name$;		
+mes "You need more space in your inventory.";		
+callsub ClearBought;		
+close;	
+}	
+set Zeny, Zeny-.@q[3];
+rentitem .@q[0], .@day * 86400; // rent an items. 86400 = 1 day in seconds	
+callsub ClearBought;	
+end;	
+ClearBought:	deletearray @bought_quantity, getarraysize(@bought_quantity);	
+deletearray @bought_nameid, getarraysize(@bought_nameid);	
+return;OnInit:	// Configuration	
+setarray .items_list, 13023,1578,1744,1728, 1190,13402,13022,13048,13401,1174,1829,13422,1929,13419,13309,1267,1286,1283,1487,13175,1372,1547,1623,1828,13026,1173,1312,1982,1430,1419,13408,1378,13407,1729,1563,1642,16002,1388,13109,1534; // items list that you want to sell.	
+setarray .price_list,  150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000; // itens price that item you sell in the shop.	
+
+// do not touch from here!!	
+npcshopdelitem "wrental_shop", 501;	
+for (.@i = 0; .@i < getarraysize(.items_list); .@i++)		
+npcshopadditem "wrental_shop", .items_list[.@i], .price_list[.@i];	
+end;
+}
+
+
+-	shop	arental_shop	-1,501:50
+//prontera,157,174,4	script	Rentals Shop	100,{	
+-	script	Armor_Rentals_Shop	-1,{
+OnArmorRental:
+	callshop "arental_shop", 1;	
+	npcshopattach "arental_shop";	
+	end;
+
+OnBuyItem:	
+	dispbottom "Rentals Shop: You can only buy one item at once.";	
+	setarray .@q[0], @bought_nameid[0], @bought_quantity[0];	
+	for (.@i = 0; .@i < getarraysize(.items_list); .@i++) {		
+	if (.@q[0] == .items_list[.@i]) {			
+	.@q[2] = .price_list[.@i];		
+	}	
+}	
+	mes .@npc_name$ = "[^0000FF Rentals Shop ^000000]";	
+	mes "Rental Item: "+getitemname(.@q[0]);	
+	mes "Rental Cost: "+.@q[2]+" Zeny for one day.";	
+	mes " ";	
+	mes "How many days do you want to rent it ?";	
+	next;	
+if (input(.@day, 1, 365)) {		
+	mes .@npc_name$;		
+	mes "Invalid input days..";		
+	callsub ClearBought;		
+	close;	
+}	
+.@q[3] = .@day * .@q[2];	
+mes .@npc_name$;	
+mes "Rental Item: "+getitemname(.@q[0]);	
+mes "Rental Cost: "+.@q[3]+" Zeny for "+.@day+" day"+((.@day > 1) ? "s" : "")+".";	
+mes " ";	mes "Still want to make the rent ?";	
+next;	
+if (select("Yes:No") == 2) {		
+mes .@npc_name$;		
+mes "All right, "+callfunc("F_Bye");		
+callsub ClearBought;		
+close;	
+}		
+if (Zeny < .@q[3]) {
+mes .@npc_name$;		
+mes "I'm sorry, you haven't enought Zeny to pay the rental";		
+callsub ClearBought;		
+close;	
+}	
+if (!checkweight(.@q[0], .@q[1])) {		
+mes .@npc_name$;		
+mes "You need more space in your inventory.";		
+callsub ClearBought;		
+close;	
+}	
+set Zeny, Zeny-.@q[3];
+rentitem .@q[0], .@day * 86400; // rent an items. 86400 = 1 day in seconds	
+callsub ClearBought;	
+end;	
+ClearBought:	deletearray @bought_quantity, getarraysize(@bought_quantity);	
+deletearray @bought_nameid, getarraysize(@bought_nameid);	
+return;OnInit:	// Configuration	
+setarray .items_list, 2535, 2439, 2132, 2384, 2543; // items list that you want to sell.	
+setarray .price_list,  200000, 250000, 200000, 200000, 200000; // itens price that item you sell in the shop.	
+
+// do not touch from here!!	
+npcshopdelitem "arental_shop", 501;	
+for (.@i = 0; .@i < getarraysize(.items_list); .@i++)		
+npcshopadditem "arental_shop", .items_list[.@i], .price_list[.@i];	
+end;
+}
+
+
+-	shop	hrental_shop	-1,501:50
+//prontera,157,174,4	script	Rentals Shop	100,{	
+-	script	Head_Rentals_Shop	-1,{
+OnHeadRental:
+	callshop "hrental_shop", 1;	
+	npcshopattach "hrental_shop";	
+	end;
+
+OnBuyItem:	
+	dispbottom "Rentals Shop: You can only buy one item at once.";	
+	setarray .@q[0], @bought_nameid[0], @bought_quantity[0];	
+	for (.@i = 0; .@i < getarraysize(.items_list); .@i++) {		
+	if (.@q[0] == .items_list[.@i]) {			
+	.@q[2] = .price_list[.@i];		
+	}	
+}	
+	mes .@npc_name$ = "[^0000FF Rentals Shop ^000000]";	
+	mes "Rental Item: "+getitemname(.@q[0]);	
+	mes "Rental Cost: "+.@q[2]+" Zeny for one day.";	
+	mes " ";	
+	mes "How many days do you want to rent it ?";	
+	next;	
+if (input(.@day, 1, 365)) {		
+	mes .@npc_name$;		
+	mes "Invalid input days..";		
+	callsub ClearBought;		
+	close;	
+}	
+.@q[3] = .@day * .@q[2];	
+mes .@npc_name$;	
+mes "Rental Item: "+getitemname(.@q[0]);	
+mes "Rental Cost: "+.@q[3]+" Zeny for "+.@day+" day"+((.@day > 1) ? "s" : "")+".";	
+mes " ";	mes "Still want to make the rent ?";	
+next;	
+if (select("Yes:No") == 2) {		
+mes .@npc_name$;		
+mes "All right, "+callfunc("F_Bye");		
+callsub ClearBought;		
+close;	
+}		
+if (Zeny < .@q[3]) {
+mes .@npc_name$;		
+mes "I'm sorry, you haven't enought Zeny to pay the rental";		
+callsub ClearBought;		
+close;	
+}	
+if (!checkweight(.@q[0], .@q[1])) {		
+mes .@npc_name$;		
+mes "You need more space in your inventory.";		
+callsub ClearBought;		
+close;	
+}	
+set Zeny, Zeny-.@q[3];
+rentitem .@q[0], .@day * 86400; // rent an items. 86400 = 1 day in seconds	
+callsub ClearBought;	
+end;	
+ClearBought:	deletearray @bought_quantity, getarraysize(@bought_quantity);	
+deletearray @bought_nameid, getarraysize(@bought_nameid);	
+return;OnInit:	// Configuration	
+setarray .items_list, 5286, 5265,5280,5331,5328,2686,5268,5330,5326,5281,5279,5327,5267,5391; // items list that you want to sell.	
+setarray .price_list,  200000, 200000, 100000, 200000, 200000, 100000, 100000, 150000, 250000, 150000,150000, 150000, 150000, 150000; // itens price that item you sell in the shop.	
+
+// do not touch from here!!	
+npcshopdelitem "hrental_shop", 501;	
+for (.@i = 0; .@i < getarraysize(.items_list); .@i++)		
+npcshopadditem "hrental_shop", .items_list[.@i], .price_list[.@i];	
+end;
+}
+
+
+-	shop	accrental_shop	-1,501:50
+//prontera,157,174,4	script	Rentals Shop	100,{	
+-	script	Acce_Rentals_Shop	-1,{
+OnAcceRental:
+	callshop "accrental_shop", 1;	
+	npcshopattach "accrental_shop";	
+	end;
+
+OnBuyItem:	
+	dispbottom "Rentals Shop: You can only buy one item at once.";	
+	setarray .@q[0], @bought_nameid[0], @bought_quantity[0];	
+	for (.@i = 0; .@i < getarraysize(.items_list); .@i++) {		
+	if (.@q[0] == .items_list[.@i]) {			
+	.@q[2] = .price_list[.@i];		
+	}	
+}	
+	mes .@npc_name$ = "[^0000FF Rentals Shop ^000000]";	
+	mes "Rental Item: "+getitemname(.@q[0]);	
+	mes "Rental Cost: "+.@q[2]+" Zeny for one day.";	
+	mes " ";	
+	mes "How many days do you want to rent it ?";	
+	next;	
+if (input(.@day, 1, 365)) {		
+	mes .@npc_name$;		
+	mes "Invalid input days..";		
+	callsub ClearBought;		
+	close;	
+}	
+.@q[3] = .@day * .@q[2];	
+mes .@npc_name$;	
+mes "Rental Item: "+getitemname(.@q[0]);	
+mes "Rental Cost: "+.@q[3]+" Zeny for "+.@day+" day"+((.@day > 1) ? "s" : "")+".";	
+mes " ";	mes "Still want to make the rent ?";	
+next;	
+if (select("Yes:No") == 2) {		
+mes .@npc_name$;		
+mes "All right, "+callfunc("F_Bye");		
+callsub ClearBought;		
+close;	
+}		
+if (Zeny < .@q[3]) {
+mes .@npc_name$;		
+mes "I'm sorry, you haven't enought Zeny to pay the rental";		
+callsub ClearBought;		
+close;	
+}	
+if (!checkweight(.@q[0], .@q[1])) {		
+mes .@npc_name$;		
+mes "You need more space in your inventory.";		
+callsub ClearBought;		
+close;	
+}	
+set Zeny, Zeny-.@q[3];
+rentitem .@q[0], .@day * 86400; // rent an items. 86400 = 1 day in seconds	
+callsub ClearBought;	
+end;	
+ClearBought:	deletearray @bought_quantity, getarraysize(@bought_quantity);	
+deletearray @bought_nameid, getarraysize(@bought_nameid);	
+return;OnInit:	// Configuration	
+setarray .items_list, 2741,2710,2760,2693,2688,2689,2692,2691,2690,2694,2695,2696,2697,2698,2699; // items list that you want to sell.	
+setarray .price_list,  150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000, 150000; // itens price that item you sell in the shop.	
+
+// do not touch from here!!	
+npcshopdelitem "accrental_shop", 501;	
+for (.@i = 0; .@i < getarraysize(.items_list); .@i++)		
+npcshopadditem "accrental_shop", .items_list[.@i], .price_list[.@i];	
+end;
+}

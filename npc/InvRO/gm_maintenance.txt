@@ -1,0 +1,1119 @@
+prontera,96,69,5	script	GM Controller	757,{
+  .n$ = "[ GM Controller ]";
+  if(getgroupid() == 99) {
+    mes .n$;
+    mes "Hello GM ^ff0000"+strcharinfo(0)+"^000000";
+    if($Actex == 1) {
+    mes "Activity Exchanger: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Activity Exchanger: ^00ff00ONLINE^000000";
+    }
+    if($Actmis == 1) {
+    mes "Activity Mission: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Activity Mission: ^00ff00ONLINE^000000";
+    }
+    if($Cupg == 1) {
+    mes "Craft UPG: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Craft UPG: ^00ff00ONLINE^000000";
+    }
+    if($FSupply == 1) {
+    mes "Free Supply: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Free Supply: ^00ff00ONLINE^000000";
+    }
+    if($FMarket == 1) {
+    mes "Marketplace: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Marketplace: ^00ff00ONLINE^000000";
+    }
+    if($MSylphe == 1) {
+    mes "Metheus Sylphe: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Metheus Sylphe: ^00ff00ONLINE^000000";
+    }
+    if($MVPVoucher == 1) {
+    mes "MVP Voucher: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "MVP Voucher: ^00ff00ONLINE^000000";
+    }
+    if($PlaytimeS == 1) {
+    mes "Playtime Shop: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Playtime Shop: ^00ff00ONLINE^000000";
+    }
+    if($r99ev == 1) {
+    mes "Race 99/70: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Race 99/70: ^00ff00ONLINE^000000";
+    }
+    if($refsys == 1) {
+    mes "Referral System: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Referral System: ^00ff00ONLINE^000000";
+    }
+    if($resetst == 1) {
+    mes "Reset Stats: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Reset Stats: ^00ff00ONLINE^000000";
+    }
+    if($shexchage == 1) {
+    mes "Shard Exchanger: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Shard Exchanger: ^00ff00ONLINE^000000";
+    }
+    if($tmanager == 1) {
+    mes "Token Manager: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Token Manager: ^00ff00ONLINE^000000";
+    }
+    if($StreamerNPC == 1) {
+    mes "Streamer NPC: ^ff0000MAINTENANCE^000000";
+    } else {
+    mes "Streamer NPC: ^00ff00ONLINE^000000";
+    }
+    next;
+    switch(select(
+    ($Actex == 0 )?"Activity Exchanger - ^00ff00Online^000000":"Activity Exchanger - ^ff0000Maintenance^000000",
+    ($Actmis == 0 )?"Activity Mission - ^00ff00Online^000000":"Activity Mission - ^ff0000Maintenance^000000",
+    ($Cupg == 0 )?"Craft UPG - ^00ff00Online^000000":"Craft UPG - ^ff0000Maintenance^000000",
+    ($FSupply == 0 )?"Free Supply - ^00ff00Online^000000":"Free Supply - ^ff0000Maintenance^000000",
+    ($FMarket == 0 )?"Marketplace - ^00ff00Online^000000":"Marketplace - ^ff0000Maintenance^000000",
+    ($MSylphe == 0 )?"Metheus Sylphe - ^00ff00Online^000000":"Metheus Sylphe - ^ff0000Maintenance^000000",
+    ($MVPVoucher == 0 )?"MVP Voucher - ^00ff00Online^000000":"MVP Voucher - ^ff0000Maintenance^000000",
+    ($PlaytimeS == 0 )?"Playtime Shop - ^00ff00Online^000000":"Playtime Shop - ^ff0000Maintenance^000000",
+    ($r99ev == 0 )?"Race 99/70 - ^00ff00Online^000000":"Race 99/70 - ^ff0000Maintenance^000000",
+    ($refsys == 0 )?"Referral System - ^00ff00Online^000000":"Referral System - ^ff0000Maintenance^000000",
+    ($resetst == 0 )?"Reset Stats - ^00ff00Online^000000":"Reset Stats - ^ff0000Maintenance^000000",
+    ($shexchage == 0 )?"Shard Exchanger - ^00ff00Online^000000":"Shard Exchanger - ^ff0000Maintenance^000000",
+    ($tmanager == 0 )?"Token Manager - ^00ff00Online^000000":"Token Manager - ^ff0000Maintenance^000000",
+    ($StreamerNPC == 0 )?"Streamer NPC - ^00ff00Online^000000":"Streamer NPC - ^ff0000Maintenance^000000"
+    )){
+      case 1:
+        mes .n$;
+        mes "Selected -> Activity Exchanger";
+        if($Actex == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($Actex == 0 )?"Set ^ff0000Maintenance^000000":"",($Actex == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Activity Exchanger";
+            if($Actex == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $Actex+=1;
+                announce strcharinfo(0)+": Activity Shard Exchanger - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Activity Exchanger";
+            if($Actex == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $Actex-=1;
+                announce strcharinfo(0)+": Activity Shard Exchanger - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",163,102;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 2:
+        mes .n$;
+        mes "Selected -> Activity Mission";
+        if($Actmis == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($Actmis == 0 )?"Set ^ff0000Maintenance^000000":"",($Actmis == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Activity Mission";
+            if($Actmis == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $Actmis+=1;
+                announce strcharinfo(0)+": Activity Shard Mission - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Activity Mission";
+            if($Actmis == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $Actmis-=1;
+                announce strcharinfo(0)+": Activity Mission - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",165,91;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 3:
+        mes .n$;
+        mes "Selected -> Craft UPG";
+        if($CUpg == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($CUpg == 0 )?"Set ^ff0000Maintenance^000000":"",($CUpg == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Craft UPG";
+            if($CUpg == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $CUpg+=1;
+                announce strcharinfo(0)+": Craft UPG - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Craft UPG";
+            if($CUpg == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $CUpg-=1;
+                announce strcharinfo(0)+": Craft UPG - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",140,228;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 4:
+        mes .n$;
+        mes "Selected -> Free Supply";
+        if($FSupply == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($FSupply == 0 )?"Set ^ff0000Maintenance^000000":"",($FSupply == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Free Supply";
+            if($FSupply == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $FSupply+=1;
+                announce strcharinfo(0)+": Free Supply - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Free Supply";
+            if($FSupply == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $FSupply-=1;
+                announce strcharinfo(0)+": Free Supply - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",157,195;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 5:
+        mes .n$;
+        mes "Selected -> Marketplace";
+        if($FMarket == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($FMarket == 0 )?"Set ^ff0000Maintenance^000000":"",($FMarket == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Marketplace";
+            if($FMarket == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $FMarket+=1;
+                announce strcharinfo(0)+": Marketplace - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Marketplace";
+            if($FMarket == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $FMarket-=1;
+                announce strcharinfo(0)+": Marketplace - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",148,108;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 6:
+        mes .n$;
+        mes "Selected -> Metheus Sylphe";
+        if($MSylphe == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($MSylphe == 0 )?"Set ^ff0000Maintenance^000000":"",($MSylphe == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Metheus Sylphe";
+            if($MSylphe == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $MSylphe+=1;
+                announce strcharinfo(0)+": Metheus Sylphe - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Metheus Sylphe";
+            if($MSylphe == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $MSylphe-=1;
+                announce strcharinfo(0)+": Metheus Sylphe - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "yuno_in02",88,163;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 7:
+        mes .n$;
+        mes "Selected -> MVP Voucher";
+        if($MVPVoucher == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($MVPVoucher == 0 )?"Set ^ff0000Maintenance^000000":"",($MVPVoucher == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> MVP Voucher";
+            if($MVPVoucher == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $MVPVoucher+=1;
+                announce strcharinfo(0)+": MVP Voucher - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> MVP Voucher";
+            if($MVPVoucher == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $MVPVoucher-=1;
+                announce strcharinfo(0)+": MVP Voucher - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",163,83;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 8:
+        mes .n$;
+        mes "Selected -> Playtime Shop";
+        if($PlaytimeS == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($PlaytimeS == 0 )?"Set ^ff0000Maintenance^000000":"",($PlaytimeS == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Playtime Shop";
+            if($PlaytimeS == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $PlaytimeS+=1;
+                announce strcharinfo(0)+": Playtime Shop - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Playtime Shop";
+            if($PlaytimeS == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $PlaytimeS-=1;
+                announce strcharinfo(0)+": Playtime Shop - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",114,102;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 9:
+        mes .n$;
+        mes "Selected -> Race 99/70";
+        if($r99ev == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($r99ev == 0 )?"Set ^ff0000Maintenance^000000":"",($r99ev == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Race 99/70";
+            if($r99ev == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $r99ev+=1;
+                announce strcharinfo(0)+": Race 99/70 - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Race 99/70";
+            if($r99ev == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $r99ev-=1;
+                announce strcharinfo(0)+": Race 99/70 - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",124,94;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 10:
+        mes .n$;
+        mes "Selected -> Referral System";
+        if($refsys == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($refsys == 0 )?"Set ^ff0000Maintenance^000000":"",($refsys == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Referral System";
+            if($refsys == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $refsys+=1;
+                announce strcharinfo(0)+": Referral System - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Referral System";
+            if($refsys == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $refsys-=1;
+                announce strcharinfo(0)+": Referral System - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",147,91;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 11:
+        mes .n$;
+        mes "Selected -> Reset Stats";
+        if($resetst == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($resetst == 0 )?"Set ^ff0000Maintenance^000000":"",($resetst == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Reset Stats";
+            if($resetst == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $resetst+=1;
+                announce strcharinfo(0)+": Reset Stats - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Reset Stats";
+            if($resetst == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $resetst-=1;
+                announce strcharinfo(0)+": Reset Stats - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",124,63;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 12:
+        mes .n$;
+        mes "Selected -> Shard Exchanger";
+        if($shexchage == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($shexchage == 0 )?"Set ^ff0000Maintenance^000000":"",($shexchage == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Shard Exchanger";
+            if($shexchage == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $shexchage+=1;
+                announce strcharinfo(0)+": Shard Exchanger - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Shard Exchanger";
+            if($shexchage == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $shexchage-=1;
+                announce strcharinfo(0)+": Shard Exchanger - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",163,108;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 13:
+        mes .n$;
+        mes "Selected -> Token Manager";
+        if($tmanager == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($tmanager == 0 )?"Set ^ff0000Maintenance^000000":"",($tmanager == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Token Manager";
+            if($tmanager == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $tmanager+=1;
+                announce strcharinfo(0)+": Token Manager - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Token Manager";
+            if($tmanager == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $tmanager-=1;
+                announce strcharinfo(0)+": Token Manager - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",148,105;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+      case 14:
+        mes .n$;
+        mes "Selected -> Streamer NPC";
+        if($StreamerNPC == 1) {
+        mes "Status: ^ff0000MAINTENANCE^000000";
+        } else {
+        mes "Status: ^00ff00ONLINE^000000";
+        }
+        next;
+        switch(select(
+        ($StreamerNPC == 0 )?"Set ^ff0000Maintenance^000000":"",($StreamerNPC == 1 )?"Set ^00ff00Online^000000":"","Goto NPC","Back"
+        )){
+          case 1:
+            mes .n$;
+            mes "Selected -> Streamer NPC";
+            if($StreamerNPC == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^ff0000Maintenance^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $StreamerNPC+=1;
+                announce strcharinfo(0)+": Streamer NPC - Set Maintenance Mode.",bc_all;
+                close;
+                }
+
+
+          case 2:
+            mes .n$;
+            mes "Selected -> Streamer NPC";
+            if($StreamerNPC == 1) {
+            mes "Status: ^ff0000MAINTENANCE^000000";
+            } else {
+            mes "Status: ^00ff00ONLINE^000000";
+            }
+            mes "--";
+            mes "Are you sure you want to set ^00ff00ONLINE^000000 mode?";
+            next;
+            switch(select("No:Yes")){
+              case 1:
+                mes .n$;
+                mes "Okay have a nice day";
+                close;
+
+              case 2:
+                mes .n$;
+                mes "He we go !";
+                $StreamerNPC-=1;
+                announce strcharinfo(0)+": Streamer NPC - Set Online Mode.",bc_all;
+                close;
+                }
+
+          case 3:
+            warp "prontera",111,97;
+            end;
+
+          case 4:
+            mes .n$;
+            mes "Okay have a nice day";
+            close;
+          }
+
+     }
+  }
+  end;
+}
+

@@ -1,0 +1,5 @@
+-	script	Rodexc	-1,{
+OnRodexc:
+    mes "Rodex Tax Notice";
+    close;
+}

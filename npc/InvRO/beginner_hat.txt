@@ -1,0 +1,6 @@
+function	script	F_NoWoEBonus_	{
+    if(agitcheck() || agitcheck2() || agitcheck3()){
+        end;
+    }
+    bonus bHit,30; bonus bMaxHP,1000; bonus bMaxSP,200; bonus bVariableCastrate,-10; bonus bHealPower,150; bonus bHealPower2,10; bonus bAddItemHealRate,10;
+}

@@ -1,0 +1,14 @@
+prontera,137,94,5	script	Limited Stock	882,{
+	mes "[ Limited Stock ]";
+	mes "Limited stock will change price depending on $Zeny value";
+	next;
+	mes "[ Limited Stock ]";
+	mes "When restocking an item, the price may vary depending on the $Zeny value";
+	callshop "limitedstock",2;
+	end;
+OnInit:
+	waitingroom "Limited Stock",0;
+end;
+}
+
+-	marketshop	limitedstock	882,35415:30000:1000

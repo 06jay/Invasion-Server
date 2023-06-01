@@ -1,0 +1,2741 @@
+function	script	C7Menu	{
+mes "[ Hand Book ]";
+		mes "What would you like to deposit?";
+		next;
+	switch(select( 
+(!a4395)?"241. ^0000ff"+getitemname(4395)+" - Empty^000000":"241. ^FF0000"+getitemname(4395)+" - Deposited^000000",
+(!a4432)?"242. ^0000ff"+getitemname(4432)+" - Empty^000000":"242. ^FF0000"+getitemname(4432)+" - Deposited^000000",
+(!a4076)?"243. ^0000ff"+getitemname(4076)+" - Empty^000000":"243. ^FF0000"+getitemname(4076)+" - Deposited^000000",
+(!a4201)?"244. ^0000ff"+getitemname(4201)+" - Empty^000000":"244. ^FF0000"+getitemname(4201)+" - Deposited^000000",
+(!a4050)?"245. ^0000ff"+getitemname(4050)+" - Empty^000000":"245. ^FF0000"+getitemname(4050)+" - Deposited^000000",
+(!a4030)?"246. ^0000ff"+getitemname(4030)+" - Empty^000000":"246. ^FF0000"+getitemname(4030)+" - Deposited^000000",
+(!a4079)?"247. ^0000ff"+getitemname(4079)+" - Empty^000000":"247. ^FF0000"+getitemname(4079)+" - Deposited^000000",
+(!a4202)?"248. ^0000ff"+getitemname(4202)+" - Empty^000000":"248. ^FF0000"+getitemname(4202)+" - Deposited^000000",
+(!a4105)?"249. ^0000ff"+getitemname(4105)+" - Empty^000000":"249. ^FF0000"+getitemname(4105)+" - Deposited^000000",
+(!a4112)?"250. ^0000ff"+getitemname(4112)+" - Empty^000000":"250. ^FF0000"+getitemname(4112)+" - Deposited^000000",
+(!a4364)?"251. ^0000ff"+getitemname(4364)+" - Empty^000000":"251. ^FF0000"+getitemname(4364)+" - Deposited^000000",
+(!a4196)?"252. ^0000ff"+getitemname(4196)+" - Empty^000000":"252. ^FF0000"+getitemname(4196)+" - Deposited^000000",
+(!a4055)?"253. ^0000ff"+getitemname(4055)+" - Empty^000000":"253. ^FF0000"+getitemname(4055)+" - Deposited^000000",
+(!a4084)?"254. ^0000ff"+getitemname(4084)+" - Empty^000000":"254. ^FF0000"+getitemname(4084)+" - Deposited^000000",
+(!a4113)?"255. ^0000ff"+getitemname(4113)+" - Empty^000000":"255. ^FF0000"+getitemname(4113)+" - Deposited^000000",
+(!a4095)?"256. ^0000ff"+getitemname(4095)+" - Empty^000000":"256. ^FF0000"+getitemname(4095)+" - Deposited^000000",
+(!a4046)?"257. ^0000ff"+getitemname(4046)+" - Empty^000000":"257. ^FF0000"+getitemname(4046)+" - Deposited^000000",
+(!a4197)?"258. ^0000ff"+getitemname(4197)+" - Empty^000000":"258. ^FF0000"+getitemname(4197)+" - Deposited^000000",
+(!a4361)?"259. ^0000ff"+getitemname(4361)+" - Empty^000000":"259. ^FF0000"+getitemname(4361)+" - Deposited^000000",
+(!a4097)?"260. ^0000ff"+getitemname(4097)+" - Empty^000000":"260. ^FF0000"+getitemname(4097)+" - Deposited^000000",
+(!a4146)?"261. ^0000ff"+getitemname(4146)+" - Empty^000000":"261. ^FF0000"+getitemname(4146)+" - Deposited^000000",
+(!a4198)?"262. ^0000ff"+getitemname(4198)+" - Empty^000000":"262. ^FF0000"+getitemname(4198)+" - Deposited^000000",
+(!a4124)?"263. ^0000ff"+getitemname(4124)+" - Empty^000000":"263. ^FF0000"+getitemname(4124)+" - Deposited^000000",
+(!a4200)?"264. ^0000ff"+getitemname(4200)+" - Empty^000000":"264. ^FF0000"+getitemname(4200)+" - Deposited^000000",
+(!a4067)?"265. ^0000ff"+getitemname(4067)+" - Empty^000000":"265. ^FF0000"+getitemname(4067)+" - Deposited^000000",
+(!a4399)?"266. ^0000ff"+getitemname(4399)+" - Empty^000000":"266. ^FF0000"+getitemname(4399)+" - Deposited^000000",
+(!a4199)?"267. ^0000ff"+getitemname(4199)+" - Empty^000000":"267. ^FF0000"+getitemname(4199)+" - Deposited^000000",
+(!a4341)?"268. ^0000ff"+getitemname(4341)+" - Empty^000000":"268. ^FF0000"+getitemname(4341)+" - Deposited^000000",
+(!a4057)?"269. ^0000ff"+getitemname(4057)+" - Empty^000000":"269. ^FF0000"+getitemname(4057)+" - Deposited^000000",
+(!a4231)?"270. ^0000ff"+getitemname(4231)+" - Empty^000000":"270. ^FF0000"+getitemname(4231)+" - Deposited^000000",
+(!a4205)?"271. ^0000ff"+getitemname(4205)+" - Empty^000000":"271. ^FF0000"+getitemname(4205)+" - Deposited^000000",
+(!a4339)?"272. ^0000ff"+getitemname(4339)+" - Empty^000000":"272. ^FF0000"+getitemname(4339)+" - Deposited^000000",
+(!a4204)?"273. ^0000ff"+getitemname(4204)+" - Empty^000000":"273. ^FF0000"+getitemname(4204)+" - Deposited^000000",
+(!a4126)?"274. ^0000ff"+getitemname(4126)+" - Empty^000000":"274. ^FF0000"+getitemname(4126)+" - Deposited^000000",
+(!a4132)?"275. ^0000ff"+getitemname(4132)+" - Empty^000000":"275. ^FF0000"+getitemname(4132)+" - Deposited^000000",
+(!a4393)?"276. ^0000ff"+getitemname(4393)+" - Empty^000000":"276. ^FF0000"+getitemname(4393)+" - Deposited^000000",
+(!a4208)?"277. ^0000ff"+getitemname(4208)+" - Empty^000000":"277. ^FF0000"+getitemname(4208)+" - Deposited^000000",
+(!a4317)?"278. ^0000ff"+getitemname(4317)+" - Empty^000000":"278. ^FF0000"+getitemname(4317)+" - Deposited^000000",
+(!a4131)?"279. ^0000ff"+getitemname(4131)+" - Empty^000000":"279. ^FF0000"+getitemname(4131)+" - Deposited^000000",
+(!a4036)?"280. ^0000ff"+getitemname(4036)+" - Empty^000000":"280. ^FF0000"+getitemname(4036)+" - Deposited^000000",
+	
+	"Next-->",
+	"<--Back")){
+
+//////	
+	
+												
+	case 1 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4395)+"";										
+		mes "have additional bonus effect of";										
+		mes "hp 40";										
+		next;										
+	if(a4395==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4395,1;								
+				set a4395,0;								
+				set hbhp,hbhp-40;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4395) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4395,1;								
+				set Zeny, Zeny-2000000;								
+				set a4395,1;								
+				set hbhp,hbhp+40;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 2 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4432)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 10";										
+		next;										
+	if(a4432==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4432,1;								
+				set a4432,0;								
+				set hbsp,hbsp-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4432) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4432,1;								
+				set Zeny, Zeny-2000000;								
+				set a4432,1;								
+				set hbsp,hbsp+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 3 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4076)+"";										
+		mes "have additional bonus effect of";										
+		mes "def 2";										
+		next;										
+	if(a4076==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4076,1;								
+				set a4076,0;								
+				set hbdef,hbdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4076) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4076,1;								
+				set Zeny, Zeny-2000000;								
+				set a4076,1;								
+				set hbdef,hbdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 4 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4201)+"";										
+		mes "have additional bonus effect of";										
+		mes "def 2";										
+		next;										
+	if(a4201==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4201,1;								
+				set a4201,0;								
+				set hbdef,hbdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4201) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4201,1;								
+				set Zeny, Zeny-2000000;								
+				set a4201,1;								
+				set hbdef,hbdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 5 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4050)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4050==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4050,1;								
+				set a4050,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4050) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4050,1;								
+				set Zeny, Zeny-2000000;								
+				set a4050,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 6 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4030)+"";										
+		mes "have additional bonus effect of";										
+		mes "hp 25";										
+		next;										
+	if(a4030==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4030,1;								
+				set a4030,0;								
+				set hbhp,hbhp-25;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4030) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4030,1;								
+				set Zeny, Zeny-2000000;								
+				set a4030,1;								
+				set hbhp,hbhp+25;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 7 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4079)+"";										
+		mes "have additional bonus effect of";										
+		mes "flee 1";										
+		next;										
+	if(a4079==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4079,1;								
+				set a4079,0;								
+				set hbflee,hbflee-1;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4079) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4079,1;								
+				set Zeny, Zeny-2000000;								
+				set a4079,1;								
+				set hbflee,hbflee+1;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 8 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4202)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 3";										
+		next;										
+	if(a4202==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4202,1;								
+				set a4202,0;								
+				set hbmdef,hbmdef-3;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4202) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4202,1;								
+				set Zeny, Zeny-2000000;								
+				set a4202,1;								
+				set hbmdef,hbmdef+3;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 9 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4105)+"";										
+		mes "have additional bonus effect of";										
+		mes "hit 1";										
+		next;										
+	if(a4105==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4105,1;								
+				set a4105,0;								
+				set hbhit,hbhit-1;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4105) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4105,1;								
+				set Zeny, Zeny-2000000;								
+				set a4105,1;								
+				set hbhit,hbhit+1;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 10 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4112)+"";										
+		mes "have additional bonus effect of";										
+		mes "attack 4";										
+		next;										
+	if(a4112==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4112,1;								
+				set a4112,0;								
+				set hbattack,hbattack-4;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4112) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4112,1;								
+				set Zeny, Zeny-2000000;								
+				set a4112,1;								
+				set hbattack,hbattack+4;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 11 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4364)+"";										
+		mes "have additional bonus effect of";										
+		mes "hit 1";										
+		next;										
+	if(a4364==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4364,1;								
+				set a4364,0;								
+				set hbhit,hbhit-1;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4364) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4364,1;								
+				set Zeny, Zeny-2000000;								
+				set a4364,1;								
+				set hbhit,hbhit+1;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 12 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4196)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4196==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4196,1;								
+				set a4196,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4196) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4196,1;								
+				set Zeny, Zeny-2000000;								
+				set a4196,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 13 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4055)+"";										
+		mes "have additional bonus effect of";										
+		mes "def 2";										
+		next;										
+	if(a4055==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4055,1;								
+				set a4055,0;								
+				set hbdef,hbdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4055) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4055,1;								
+				set Zeny, Zeny-2000000;								
+				set a4055,1;								
+				set hbdef,hbdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 14 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4084)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 10";										
+		next;										
+	if(a4084==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4084,1;								
+				set a4084,0;								
+				set hbsp,hbsp-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4084) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4084,1;								
+				set Zeny, Zeny-2000000;								
+				set a4084,1;								
+				set hbsp,hbsp+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 15 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4113)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4113==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4113,1;								
+				set a4113,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4113) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4113,1;								
+				set Zeny, Zeny-2000000;								
+				set a4113,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 16 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4095)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.attack 2";										
+		next;										
+	if(a4095==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4095,1;								
+				set a4095,0;								
+				set hbmatack,hbmatack-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4095) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4095,1;								
+				set Zeny, Zeny-2000000;								
+				set a4095,1;								
+				set hbmatack,hbmatack+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 17 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4046)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4046==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4046,1;								
+				set a4046,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4046) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4046,1;								
+				set Zeny, Zeny-2000000;								
+				set a4046,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 18 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4197)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 3";										
+		next;										
+	if(a4197==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4197,1;								
+				set a4197,0;								
+				set hbmdef,hbmdef-3;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4197) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4197,1;								
+				set Zeny, Zeny-2000000;								
+				set a4197,1;								
+				set hbmdef,hbmdef+3;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 19 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4361)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 50";										
+		next;										
+	if(a4361==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4361,1;								
+				set a4361,0;								
+				set hbsp,hbsp-50;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4361) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4361,1;								
+				set Zeny, Zeny-2000000;								
+				set a4361,1;								
+				set hbsp,hbsp+50;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 20 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4097)+"";										
+		mes "have additional bonus effect of";										
+		mes "attack 4";										
+		next;										
+	if(a4097==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4097,1;								
+				set a4097,0;								
+				set hbattack,hbattack-4;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4097) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4097,1;								
+				set Zeny, Zeny-2000000;								
+				set a4097,1;								
+				set hbattack,hbattack+4;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 21 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4146)+"";										
+		mes "have additional bonus effect of";										
+		mes "def 10";										
+		next;										
+	if(a4146==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4146,1;								
+				set a4146,0;								
+				set hbdef,hbdef-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4146) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4146,1;								
+				set Zeny, Zeny-2000000;								
+				set a4146,1;								
+				set hbdef,hbdef+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 22 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4198)+"";										
+		mes "have additional bonus effect of";										
+		mes "hp 200";										
+		next;										
+	if(a4198==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4198,1;								
+				set a4198,0;								
+				set hbhp,hbhp-200;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4198) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4198,1;								
+				set Zeny, Zeny-2000000;								
+				set a4198,1;								
+				set hbhp,hbhp+200;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 23 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4124)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4124==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4124,1;								
+				set a4124,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4124) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4124,1;								
+				set Zeny, Zeny-2000000;								
+				set a4124,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 24 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4200)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4200==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4200,1;								
+				set a4200,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4200) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4200,1;								
+				set Zeny, Zeny-2000000;								
+				set a4200,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 25 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4067)+"";										
+		mes "have additional bonus effect of";										
+		mes "def 2";										
+		next;										
+	if(a4067==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4067,1;								
+				set a4067,0;								
+				set hbdef,hbdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4067) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4067,1;								
+				set Zeny, Zeny-2000000;								
+				set a4067,1;								
+				set hbdef,hbdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 26 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4399)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.attack 10";										
+		next;										
+	if(a4399==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4399,1;								
+				set a4399,0;								
+				set hbmatack,hbmatack-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4399) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4399,1;								
+				set Zeny, Zeny-2000000;								
+				set a4399,1;								
+				set hbmatack,hbmatack+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 27 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4199)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.attack 2";										
+		next;										
+	if(a4199==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4199,1;								
+				set a4199,0;								
+				set hbmatack,hbmatack-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4199) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4199,1;								
+				set Zeny, Zeny-2000000;								
+				set a4199,1;								
+				set hbmatack,hbmatack+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 28 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4341)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 10";										
+		next;										
+	if(a4341==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4341,1;								
+				set a4341,0;								
+				set hbsp,hbsp-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4341) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4341,1;								
+				set Zeny, Zeny-2000000;								
+				set a4341,1;								
+				set hbsp,hbsp+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 29 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4057)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.def 2";										
+		next;										
+	if(a4057==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4057,1;								
+				set a4057,0;								
+				set hbmdef,hbmdef-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4057) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4057,1;								
+				set Zeny, Zeny-2000000;								
+				set a4057,1;								
+				set hbmdef,hbmdef+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 30 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4231)+"";										
+		mes "have additional bonus effect of";										
+		mes "flee 1";										
+		next;										
+	if(a4231==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4231,1;								
+				set a4231,0;								
+				set hbflee,hbflee-1;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4231) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4231,1;								
+				set Zeny, Zeny-2000000;								
+				set a4231,1;								
+				set hbflee,hbflee+1;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 31 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4205)+"";										
+		mes "have additional bonus effect of";										
+		mes "attack 2";										
+		next;										
+	if(a4205==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4205,1;								
+				set a4205,0;								
+				set hbattack,hbattack-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4205) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4205,1;								
+				set Zeny, Zeny-2000000;								
+				set a4205,1;								
+				set hbattack,hbattack+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 32 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4339)+"";										
+		mes "have additional bonus effect of";										
+		mes "m.attack 2";										
+		next;										
+	if(a4339==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4339,1;								
+				set a4339,0;								
+				set hbmatack,hbmatack-2;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4339) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4339,1;								
+				set Zeny, Zeny-2000000;								
+				set a4339,1;								
+				set hbmatack,hbmatack+2;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 33 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4204)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 10";										
+		next;										
+	if(a4204==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4204,1;								
+				set a4204,0;								
+				set hbsp,hbsp-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4204) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4204,1;								
+				set Zeny, Zeny-2000000;								
+				set a4204,1;								
+				set hbsp,hbsp+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 34 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4126)+"";										
+		mes "have additional bonus effect of";										
+		mes "flee 1";										
+		next;										
+	if(a4126==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4126,1;								
+				set a4126,0;								
+				set hbflee,hbflee-1;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4126) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4126,1;								
+				set Zeny, Zeny-2000000;								
+				set a4126,1;								
+				set hbflee,hbflee+1;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 35 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4132)+"";										
+		mes "have additional bonus effect of";										
+		mes "hit 4";										
+		next;										
+	if(a4132==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4132,1;								
+				set a4132,0;								
+				set hbhit,hbhit-4;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4132) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4132,1;								
+				set Zeny, Zeny-2000000;								
+				set a4132,1;								
+				set hbhit,hbhit+4;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 36 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4393)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 15";										
+		next;										
+	if(a4393==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4393,1;								
+				set a4393,0;								
+				set hbsp,hbsp-15;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4393) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4393,1;								
+				set Zeny, Zeny-2000000;								
+				set a4393,1;								
+				set hbsp,hbsp+15;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 37 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4208)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 15";										
+		next;										
+	if(a4208==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4208,1;								
+				set a4208,0;								
+				set hbsp,hbsp-15;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4208) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4208,1;								
+				set Zeny, Zeny-2000000;								
+				set a4208,1;								
+				set hbsp,hbsp+15;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 38 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4317)+"";										
+		mes "have additional bonus effect of";										
+		mes "sp 10";										
+		next;										
+	if(a4317==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4317,1;								
+				set a4317,0;								
+				set hbsp,hbsp-10;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4317) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4317,1;								
+				set Zeny, Zeny-2000000;								
+				set a4317,1;								
+				set hbsp,hbsp+10;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 39 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4131)+"";										
+		mes "have additional bonus effect of";										
+		mes "flee 4";										
+		next;										
+	if(a4131==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4131,1;								
+				set a4131,0;								
+				set hbflee,hbflee-4;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4131) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4131,1;								
+				set Zeny, Zeny-2000000;								
+				set a4131,1;								
+				set hbflee,hbflee+4;								
+				close;								
+				}								
+			}									
+		}										
+												
+												
+												
+												
+												
+	case 40 : 											
+		mes "[ Hand Book ]";										
+		mes ""+getitemname(4036)+"";										
+		mes "have additional bonus effect of";										
+		mes "hp 25";										
+		next;										
+	if(a4036==1) {											
+	switch(select("Pullout")){											
+		case 1:										
+			mes "[ Hand Book ]";									
+			mes "okay okay, we cant refund your zeny once you pull-out...";									
+			mes "and also once you deposit again you will pay again 2m zeny!!!";									
+			mes "are you sure you want to pull out???";									
+			next;									
+		switch(select("No:I want to pullout")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+			case 2:									
+				getitem 4036,1;								
+				set a4036,0;								
+				set hbhp,hbhp-25;								
+				close;								
+				}								
+			}									
+			} 									
+												
+			else {									
+	switch(select("Deposit")){											
+		case 1:										
+			if(countitem(4036) < 1) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough item";									
+			close;									
+			}									
+			if (Zeny < 2000000) {									
+			mes "[ Hand Book ]";									
+			mes "Sorry you dont have enough zeny";									
+			close;									
+			}									
+			mes "[ Hand Book ]";									
+			mes "This will cost 2m";									
+			mes "are you sure you want to proceed?";									
+			next;									
+		switch(select("Cancel:Yes i want to proceed")){										
+			case 1:									
+				mes "[ Hand Book ]";								
+				mes "Ok have a nice day";								
+				close;								
+												
+			case 2:									
+				mes "[ Hand Book ]";								
+				mes "Here we go!!";								
+				delitem 4036,1;								
+				set Zeny, Zeny-2000000;								
+				set a4036,1;								
+				set hbhp,hbhp+25;								
+				close;								
+				}								
+			}									
+		}										
+												
+
+	case 41:
+		callfunc "C8Menu";
+		end;
+		
+	case 42:
+		callfunc "C6Menu";
+		end;
+			
+		}
+		
+	}
+	

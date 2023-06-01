@@ -1,0 +1,49 @@
+prontera,164,102,4	script	Acitivy Points Exchanger	83,{
+    .@name$ ="[^225aa9 Acitivy Exchanger ^000000]";
+    if($Actex == 1) {
+        mes .@name$;
+        mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+        close;
+    }
+    mes .@name$;
+    mes "I can exchanger yout activity points";
+    mes "5 Activity Points equal to 1 Acitivity Shard";
+    mes "";
+    mes "^777777~ You have ^000000 ^0055FF" + #ACTIVITY_POINTS + "^000000 Activity Points.";
+    next;
+    switch( select("Exchange Activity Shard","Cancel") ) {
+
+        case 1:
+            mes .@name$;
+            mes "How many shard do you want?";
+            input .@num;
+            next;
+            if( .@num <= 0 || #ACTIVITY_POINTS < .@num * 5 ) {
+                mes .@name$;
+                mes "Sorry, you don't have enough Activity Points!";
+                close;
+            }
+
+            mes .@name$;
+            mes "This will cost ^FF0000" +(.@num * 5)+ " Activity Points^000000.";
+            next;
+            if( select("Proceed:Nevermind") -1 ) {
+                mes .@name$;
+                mes "Goodbye!";
+                close;
+            }
+
+            set #ACTIVITY_POINTS, #ACTIVITY_POINTS - .@num * 5;
+            dispbottom "Lost: " +(.@num * 5)+ " Activity Points. Total: " +#ACTIVITY_POINTS+" Activity Points.";
+            getitem 35393 , .@num;
+            $ACTVS+=.@num;
+            break;
+ 
+        case 2:
+            mes .@name$;
+            mes "Okay have a nice day";
+            close;
+    }
+    close;
+
+}

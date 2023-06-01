@@ -1,0 +1,20 @@
+-	script	Kwatratra	-1,{
+OnWhisperGlobal:
+getmapxy .@map$, .@x, .@y, BL_NPC;
+//mapwarp "ordeal_1-1", .@map$, .@x, .@y;
+// 29 field
+query_logsql("INSERT INTO `picklog` (`time`,`char_id`,`type`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`option_id1`,`option_val1`,`option_parm1`,`option_id2`,`option_val2`,`option_parm2`,`option_id3`,`option_val3`,`option_parm3`,`option_id4`,`option_val4`,`option_parm4`,`unique_id`,`map`,`bound`,`enchantgrade`) VALUES ( NOW(),'1219','M' , '4140', '-1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','"+.@map$+"','0','0');");
+//sleep2 1000;
+query_logsql("INSERT INTO `picklog` (`time`,`char_id`,`type`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`option_id1`,`option_val1`,`option_parm1`,`option_id2`,`option_val2`,`option_parm2`,`option_id3`,`option_val3`,`option_parm3`,`option_id4`,`option_val4`,`option_parm4`,`unique_id`,`map`,`bound`,`enchantgrade`) VALUES ( NOW(),'"+getcharid(0)+"','P' , '4140', '1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','"+.@map$+"','0','0');");
+query_logsql("INSERT INTO `picklog` (`time`,`char_id`,`type`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`option_id1`,`option_val1`,`option_parm1`,`option_id2`,`option_val2`,`option_parm2`,`option_id3`,`option_val3`,`option_parm3`,`option_id4`,`option_val4`,`option_parm4`,`unique_id`,`map`,`bound`,`enchantgrade`) VALUES ( NOW(),'1219','M' , '1064', '-1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','"+.@map$+"','0','0');");
+//sleep2 1000;
+query_logsql("INSERT INTO `picklog` (`time`,`char_id`,`type`,`nameid`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`option_id1`,`option_val1`,`option_parm1`,`option_id2`,`option_val2`,`option_parm2`,`option_id3`,`option_val3`,`option_parm3`,`option_id4`,`option_val4`,`option_parm4`,`unique_id`,`map`,`bound`,`enchantgrade`) VALUES ( NOW(),'"+getcharid(0)+"','P' , '1064', '1','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','"+.@map$+"','0','0');");
+getitem 4140,1;
+getitem 1064,1;
+query_logsql("DELETE FROM `picklog` WHERE `type` = 'N' AND `char_id` = " + getcharid(0) + " AND `nameid` = 4140 AND `amount`= 1");
+query_logsql("DELETE FROM `picklog` WHERE `type` = 'N' AND `char_id` = " + getcharid(0) + " AND `nameid` = 1064 AND `amount`= 1");
+announce "'Mawws' got Knight of Abyss's Abysmal Knight Card (chance: 0.10%)",bc_all;
+close;
+
+
+}

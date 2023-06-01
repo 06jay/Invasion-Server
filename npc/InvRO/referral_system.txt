@@ -1,0 +1,104 @@
+prontera,146,91,5	script	Referral System	4_M_CRU_HEAD,{
+	query_sql("SELECT CAST(`value` AS CHAR(13)) FROM `in_security` WHERE account_id = " + getcharid(3), @INOnHand);
+	query_sql("SELECT `block` FROM `in_security` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@INOnBlock);
+
+	.n$ = "[ Referral Rewards ]";
+	if($refsys == 1) {
+		mes .n$;
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+	if (.@INOnBlock > 0 ) {
+		mes .n$;
+		mes "Your account block on ^8a2be2$IN^000000 transaction";
+		mes "^ffffff_^000000";
+		mes "^ff0000Please contact the administrator^000000";
+		close;
+	}
+	mes .n$;
+	mes "Hello what would you like?";
+	next;
+	switch(select("My Invite:Metheus Sylphe - Bonus:Whos Invited Me?:Information")){
+
+	case 1:
+		mes .n$;
+		mes "Here's the list of players you invited with their activity ^8a2be2$IN^000000 shown:";
+		.@id = query_sql("SELECT `invited_gid` FROM `referral_log` WHERE `inviter_gid` = '" + getcharid(3) + "'",.@invited_gid);
+		for(.@x=0;.@x<.@id;.@x++){
+			query_sql("SELECT `value` FROM `in_token_claim_ref` WHERE `account_id` = '"+.@invited_gid[.@x]+"' AND `key` = '@token_coin_ref'",.@tok);
+			query_sql("SELECT `invited_name` FROM `referral_system` WHERE `invited_account_id` = '"+.@invited_gid[.@x]+"'",.@nick$);
+			mes (.@x+1)+". "+.@nick$+" ("+F_InsertComma(.@tok)+")";
+		}
+		for(@i = 0; @i < .@id; @i++){
+			.@menu$ = .@menu$ +":"+"Claim No. "+(@i+1)+".";
+		}
+			.@s1 = select(.@menu$)-2;
+		next;
+		mes .n$;
+		query_sql("SELECT `value` FROM `in_token_claim_ref` WHERE `account_id` = '"+.@invited_gid[.@s1]+"' AND `key` = '@token_coin_ref'",.@token);
+			query_sql("SELECT `nickname` FROM `login` WHERE `account_id` = '"+.@invited_gid[.@s1]+"'",.@nickname$);
+		if(.@token > 99){
+		.@a = (.@token / 50);
+		.@b = .@a * 50; // 1500
+		.@c = (.@token - .@b);
+		query_sql("UPDATE `in_token_claim_ref` SET `value` = '"+.@c+"' WHERE `account_id` = '"+.@invited_gid[.@s1]+"'");
+		//#TCGOnHand += .@a;
+		.ttime$ = gettimetick(2)+900;
+		mes "Please wait while we are processing your request...";
+		query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',"+ .@a +") ON DUPLICATE KEY UPDATE `value` = `value` + "+.@a+";");
+		getitem 35371,.@a;
+		sleep2 1000;
+		query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+		mes "Complete...";
+		} else {
+			mes .@nickname$+"'s activity ^8a2be2$IN^000000 is less than 100.";
+		}
+		close;
+
+	case 2:
+		mes .n$;
+		mes "Here's the list of players you invited who already rebirth";
+		.@id2 = query_sql("SELECT `account_id` FROM `in_rebirth` WHERE `inviter_rid` = '" + getcharid(3) + "'",.@invited_rid);
+		for(.@x=0;.@x<.@id2;.@x++){
+			query_sql("SELECT `value` FROM `in_rebirth` WHERE `account_id` = '"+.@invited_rid[.@x]+"' AND `key` = '@brebirth'",.@tok);
+			query_sql("SELECT `account_id` FROM `in_rebirth` WHERE `account_id` = '"+.@invited_rid[.@x]+"'",.@nick$);
+			//mes (.@x+1)+". "+.@nick$+" ("+F_InsertComma(.@tok)+")";
+			mes (.@x+1)+". "+.@nick$+" ( "+F_InsertComma(.@tok)+" ^8a2be2$IN^000000 )";
+		}
+		for(@i = 0; @i < .@id2; @i++){
+			.@menu$ = .@menu$ +":"+"Claim No. "+(@i+1)+".";
+		}
+			.@s1 = select(.@menu$)-2;
+		next;
+		mes .n$;
+		.ttime$ = gettimetick(2)+900;
+		query_sql("SELECT `value` FROM `in_rebirth` WHERE `account_id` = '"+.@invited_rid[.@s1]+"' AND `key` = '@brebirth'",.@token1);
+		query_sql("SELECT `nickname` FROM `login` WHERE `account_id` = '"+.@invited_rid[.@s1]+"'",.@nickname$);
+		//query_sql("UPDATE `in_rebirth` SET `value` = 0 WHERE `account_id` = '"+.@invited_rid[.@s1]+"'");
+		query_sql("DELETE FROM `in_rebirth` WHERE `account_id` = '"+.@invited_rid[.@s1]+"'");
+		sleep2 1000;
+		//#TCGOnHand += .@a;
+		.ttime$ = gettimetick(2)+900;
+		mes "Please wait while we are processing your request...";
+		sleep2 1000;
+		query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand','"+.@tok+"') ON DUPLICATE KEY UPDATE `value` = `value` + "+.@tok+";");
+		getitem 35371,.@tok;
+		sleep2 1000;
+		query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+		mes "Complete...";
+		close;
+
+	case 3:
+		query_sql("SELECT `inviter_name` FROM `referral_system` WHERE `invited_account_id` = '"+getcharid(3)+"'",.@nick$);
+		mes .n$;
+		mes "You are invited by: ^0000ff"+.@nick$+"^000000";
+		close;
+
+	case 4:
+		mes .n$;
+		mes "For every 100^8a2be2$IN^000000 used by your invited";
+		mes "You will get a reward of 2^8a2be2$IN^000000";
+		close;
+
+	}
+}

@@ -1,0 +1,71 @@
+prontera,141,85,5	script	WoE Points Exchanger	757,{
+    if($woepointsex == 1) {
+    mes "[ WoE Shards Points Exchanger]";
+    mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+    close;
+	}
+
+    query_sql("SELECT CAST(`points` AS CHAR(13)) FROM `woe_s2_points` WHERE account_id = " + getcharid(3), .@total_woeshard$);
+    query_sql("SELECT `points` FROM `woe_s2_points` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_woes);
+    mes "[ WoE Shards Points Exchanger]";
+    mes "^ffffff_^000000";
+    mes "Total WoE Shard Points: ^ff0000"+.@total_woeshard$+"^000000";
+    close;
+ /*   
+    mes "^ffffff_^000000";
+    mes "Do you want to exchange your points to shard?";
+    next;
+switch(select("Exchange:History")){
+        case 1:
+            mes "[ WoE Shards Points Exchanger]";
+            mes "How many points you want to exchange to shard";
+            next;
+            input .@amount;
+            if (.@amount <= 0) {
+                mes "[ WoE Shards Points Exchanger]";
+                mes "^ff0000What happened^000000?";
+                mes "Maybe you tried to exchange 0 amount?";
+                mes "Maybe you dont have woe shard points?";
+                mes "Check first so we can do a smooth transaction";
+            }
+            else if (.@total_woes < .@amount ) {
+                mes "[ WoE Shards Points Exchanger]";
+                mes "I don't think you have enough WoE Shard Points.";
+            }
+            else if((countitem(35390) + .@amount) > 30000 || (.@amount) > 30000 ){
+                mes "[ WoE Shards Points Exchanger]";
+                mes "I don't think you can handle item more than 30,000 pieces.";
+            }
+            else if( 50 <= .@weight ) {
+                mes "[ WoE Shards Points Exchanger]";
+                mes "You are currently at 50% percent of your maximum weight."; 
+            }else {
+                mes "[ WoE Shards Points Exchanger]";
+                mes "You have exchange "+F_InsertComma(.@amount)+" ^00ff7fWoE Shard^000000.";
+                getitem 35390,.@amount;
+                $WOES += .@amount;
+                dispbottom "Your got "+F_InsertComma( .@amount )+" WoE Shard.";
+                query_sql("INSERT INTO `woe_s2_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"'," + .@amount + ") ON DUPLICATE KEY UPDATE `points` = `points` - "+.@amount+";");
+                query_sql("INSERT INTO `woe_s2_points_log` (`account_id`,`points`) VALUES ('"+getcharid(3)+"' , '"+.@amount+"');");
+            }
+            close;
+
+        case 2:
+                .@nb = query_sql("SELECT `time`,CAST(`points` AS CHAR(13)) FROM `woe_s2_points_log` WHERE account_id="+getcharid(3)+" ORDER BY time DESC LIMIT 30",.@date$,.@amount$);
+                next;
+                mes "[ WoE Shards Points Exchanger]";
+                if (!.@nb)
+                    mes "No history available";
+                    mes " ^ff0000Date and Time^000000 : ^0000ffAmount^000000";
+                for (.@i = 0;.@i < .@nb;.@i++) {
+                    mes "^ff0000"+.@date$[.@i]+"^000000 : ^0000ff"+.@amount$[.@i]+"^000000";
+                }
+                close;
+
+            default:
+                close;
+
+
+        }*/
+    
+}

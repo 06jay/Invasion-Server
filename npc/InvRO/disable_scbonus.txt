@@ -1,0 +1,40 @@
+-	script	remove_sc	-1,{
+OnPCLoadMapEvent:
+	sc_end SC_ADD_MATK_DAMAGE;
+end;
+}
+
+aldeg_cas01	mapflag	loadevent
+aldeg_cas02	mapflag	loadevent
+aldeg_cas03	mapflag	loadevent
+aldeg_cas04	mapflag	loadevent
+aldeg_cas05	mapflag	loadevent
+gefg_cas01	mapflag	loadevent
+gefg_cas02	mapflag	loadevent
+gefg_cas03	mapflag	loadevent
+gefg_cas04	mapflag	loadevent
+gefg_cas05	mapflag	loadevent
+payg_cas01	mapflag	loadevent
+payg_cas02	mapflag	loadevent
+payg_cas03	mapflag	loadevent
+payg_cas04	mapflag	loadevent
+payg_cas05	mapflag	loadevent
+prtg_cas01	mapflag	loadevent
+prtg_cas02	mapflag	loadevent
+prtg_cas03	mapflag	loadevent
+prtg_cas04	mapflag	loadevent
+prtg_cas05	mapflag	loadevent
+nguild_alde	mapflag	loadevent
+nguild_gef	mapflag	loadevent
+nguild_pay	mapflag	loadevent
+nguild_prt	mapflag	loadevent
+schg_cas01	mapflag	loadevent
+schg_cas02	mapflag	loadevent
+schg_cas03	mapflag	loadevent
+schg_cas04	mapflag	loadevent
+schg_cas05	mapflag	loadevent
+arug_cas01	mapflag	loadevent
+arug_cas02	mapflag	loadevent
+arug_cas03	mapflag	loadevent
+arug_cas04	mapflag	loadevent
+arug_cas05	mapflag	loadevent

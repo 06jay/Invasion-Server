@@ -1,0 +1,111 @@
+//===== rAthena Script =======================================
+//= Guild Warehouse Manager
+//===== Description: =========================================
+//= [Walkthrough Conversion]
+//= Gives players access to their guild storage and log.
+//===== Changelogs: ==========================================
+//= 1.0 First Version. [Lemongrass]
+//============================================================
+
+-	script	GuildWarehouse	-1,{
+	if($guildwarehouse == 1) {
+    mes "[Warehouse Manager]";
+    mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+    close;
+	}
+	mes "[Warehouse Manager]";
+	mes "How are you? We are specialized in guild warehouses. This is our ^0000cdstory^000000:";
+	mes "Why can't guild members share a storage? We started off with that simple question.";
+	next;
+	mes "[Warehouse Manager]";
+	mes "You can open the warehouse for 1000 Zeny or look up the usage history of the guild.";
+	mes "How can I help you?";
+	next;
+	if( select( "Open guild warehouse:View warehouse usage history" ) == 1 ){
+		.@guildid = getcharid( 2 );
+
+		if( .@guildid == 0 ){
+			mes "[Warehouse Manager]";
+			mes "The guild storage is only available for guild members.";
+			close;
+		}
+
+		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
+			mes "[Warehouse Manager]";
+			mes "It seems that it is not yet possible for your guild to use the guild warehouse or you do not have access permissions for the warehouse.";
+			mes "Please come back after checking the guild skill and the permission to access the warehouse.";
+			close;
+		}
+
+        if (BaseLevel < 10 ){
+            mes "[Warehouse Manager]";
+            mes "I am afrad level 9 doesn't authorize to use guild storage.";
+            close;
+        }
+
+		if( Zeny < 1000 ){
+			mes "[Warehouse Manager]";
+			mes "I am afraid you do not have enough money to settle the fee.";
+			mes "The fee is 1000 Zeny.";
+			close;
+		}
+
+		mes "[Warehouse Manager]";
+		mes "I will open the guild storage for you then. Have a memorable time!";
+		close2;
+
+		if( Zeny < 1000 ){
+			// Cheat prevention
+			end;
+		}
+
+		if( guildopenstorage() == GSTORAGE_OPEN ){
+			Zeny -= 1000;
+			end;
+		}else{
+			mes "[Warehouse Manager]";
+			mes "I am afraid someone else is using the warehouse right now.";
+			mes "Please try again after a while.";
+			close;
+		}
+	}else{
+		.@guildid = getcharid( 2 );
+
+		if( .@guildid == 0 ){
+			mes "[Warehouse Manager]";
+			mes "The guild storage is only available for guild members.";
+			close;
+		}
+
+		if( getgdskilllv( .@guildid, "GD_GUILD_STORAGE" ) == 0 || !guild_has_permission( GUILD_PERM_STORAGE ) ){
+			mes "[Warehouse Manager]";
+			mes "It seems that it is not yet possible for your guild to use the guild warehouse or you do not have access permissions for the warehouse.";
+			mes "Please come back after checking the guild skill and the permission to access the warehouse.";
+			close;
+		}
+
+		mes "[Warehouse Manager]";
+		mes "I will show you the usage history of the warehouse. Usage history will be retained for up to 3 months.";
+		mes "Have a memorable time!";
+		close2;
+		guildopenstorage_log();
+		end;
+	}
+}
+
+prontera,159,326,4	duplicate(GuildWarehouse)	Guild Warehouse Manager#pronteratop	896
+prontera,32,212,5	duplicate(GuildWarehouse)	Guild Warehouse Manager#pronteraleft	896
+prontera,147,29,8	duplicate(GuildWarehouse)	Guild Warehouse Manager#pronteralower	896
+prontera,146,87,5	duplicate(GuildWarehouse)	Guild Warehouse Manager#pronteratoplowermid	896
+prontera,279,200,2	duplicate(GuildWarehouse)	Guild Warehouse Manager#pronteratoprigth	896
+alberta,114,65,5	duplicate(GuildWarehouse)	Guild Warehouse Manager#alberta	896
+alberta,30,229,8	duplicate(GuildWarehouse)	Guild Warehouse Manager#albertatop	896
+aldebaran,146,122,3	duplicate(GuildWarehouse)	Guild Warehouse Manager#aldebaran	896
+geffen,128,68,3	duplicate(GuildWarehouse)	Guild Warehouse Manager#geffen	896
+geffen,200,123,4	duplicate(GuildWarehouse)	Guild Warehouse Manager#geffenright	896
+morocc,168,107,3	duplicate(GuildWarehouse)	Guild Warehouse Manager#morocc	896
+morocc,157,258,5	duplicate(GuildWarehouse)	Guild Warehouse Manager#morocctop	896
+payon,180,106,3	duplicate(GuildWarehouse)	Guild Warehouse Manager#payon	896
+payon,172,226,4	duplicate(GuildWarehouse)	Guild Warehouse Manager#payontop	896
+izlude,137,95,3	duplicate(GuildWarehouse)	Guild Warehouse Manager#izlude	896
+

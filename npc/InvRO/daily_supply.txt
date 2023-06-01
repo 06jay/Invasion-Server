@@ -1,0 +1,38 @@
+prontera,164,96,3	script	Daily Supply	756,{
+
+if($dailysuppls == 1) {
+	mes "[ Daily Supply ]";
+	mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+	close;
+}
+
+set .Hour,24;
+if( #dailytimer < gettimetick(2) ) {
+      mes "[ Daily Supply ]";
+			mes "This is your daily supply item";
+      set #dailytimer,gettimetick(2) + ( .Hour * 3600 );
+			getitembound 35384,2,1;
+      getitembound 35415,1,1;
+			set #Day,gettime(4);
+		}else{
+    set .@last,#dailytimer - gettimetick(2);
+    set .@hour, .@last % ( 24 * 3600 ) / 3600;
+    set .@min, .@last % ( 24 * 3600 ) % 3600 / 60;
+    set .@sec, .@last % ( 24 * 3600 ) % 3600 % 60;
+    mes "[ Daily Supply ]";
+    mes "You have claimed the supply for today.";
+    mes "Time CountDown : ^FF0000"+.@hour+":"+.@min+":"+.@sec+"^000000";
+    }
+    close;
+    }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,245 @@
+prontera,139,228,5	script	Stojan#prontera	84,{ 
+if($Cupg == 1) {
+		mes "[ Stojan ]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+}
+
+	callfunc "qshop"; 
+
+	}
+
+-	script	quest_shop	-1,{
+function Add; function Chk; function Slot;
+OnInit:
+	freeloop(1);
+
+// -----------------------------------------------------------
+//  Basic shop settings.
+// -----------------------------------------------------------
+
+	set .Announce,1;	// Announce quest completion? (1: yes / 0: no)
+	set .ShowSlot,1;	// Show item slots? (2: all equipment / 1: if slots > 0 / 0: never)
+	set .ShowID,0;  	// Show item IDs? (1: yes / 0: no)
+	set .ShowZeny,0;	// Show Zeny cost, if any? (1: yes / 0: no)
+	set .MaxStack,1;	// Max number of quest items purchased at one time.
+    set .craft_rate,10; // Success rate of crafting
+
+// -----------------------------------------------------------
+//  Points variable -- optional quest requirement.
+//	setarray .Points$[0],"<variable name>","<display name>";
+// -----------------------------------------------------------
+
+	setarray .Points$[0],
+		"#CASHPOINTS", "Cash Points";
+
+
+//=====================================================================================
+// ------------------- ADD YOUR SHOPS NAME AND ITEMS SHOPS STARTING HERE --------------
+//=====================================================================================
+
+// -----------------------------------------------------------
+//  Shop IDs -- to add shops, copy dummy data at bottom of file.
+//	setarray .Shops$[1],"<Shop 1>","<Shop 2>"{,...};
+// -----------------------------------------------------------
+
+	setarray .Shops$[1],
+		"> Craft UPG Accessory",	// Upg Accessory
+		"> Craft UPG Armor",	// Upg Armor
+		"> Craft UPG Garment",	// Upg Garment
+		"> Craft UPG Shield",	// Upg Shield
+		"> Craft UPG Shoes";	// Upg Shoes
+
+// -----------------------------------------------------------
+//  Quest items -- do NOT use a reward item more than once!
+//	Add(<shop ID>,<reward ID>,<reward amount>,
+//	    <Zeny cost>,<point cost>,
+//	    <required item ID>,<required item amount>{,...});
+// -----------------------------------------------------------
+
+// Shop 1
+Add(1,2828,1,500000,0,2607,1,985,5,984,5,969,2);
+
+Add(2,15015,1,750000,0,2306,1,985,10,984,10,969,1);
+Add(2,15016,1,750000,0,2310,1,985,10,984,10,969,1);
+Add(2,15017,1,750000,0,2326,1,985,10,984,10,969,1);
+Add(2,15018,1,750000,0,2331,1,985,10,984,10,969,1);
+Add(2,15019,1,750000,0,2336,1,985,10,984,10,969,1);
+Add(2,15020,1,750000,0,2315,1,985,10,984,10,969,1);
+
+Add(3,2561,1,750000,0,2502,1,985,10,984,10,969,1);
+Add(3,2562,1,750000,0,2504,1,985,10,984,10,969,1);
+Add(3,2563,1,750000,0,2506,1,985,10,984,10,969,1);
+
+Add(4,2149,1,750000,0,2102,1,985,10,984,10,969,1);
+Add(4,2150,1,750000,0,2104,1,985,10,984,10,969,1);
+Add(4,2151,1,750000,0,2106,1,985,10,984,10,969,1);
+
+Add(5,2459,1,750000,0,2404,1,985,10,984,10,969,1);
+Add(5,2460,1,750000,0,2406,1,985,10,984,10,969,1);
+Add(5,2461,1,750000,0,2412,1,985,10,984,10,969,1);
+
+// -----------------------------------------------------------
+
+//=====================================================================================
+// ------------------- YOUR SHOPS AND ITEMS SHOPS HAVE BEEN ADDED ---------------------
+//=====================================================================================
+
+	freeloop(0);
+	set .menu$,"";
+	for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1) {
+		set .menu$, .menu$+.Shops$[.@i]+":";
+		npcshopdelitem "qshop"+.@i,909;
+	}
+	end;
+
+OnMenu:
+	mes "[^0000FF Stojan ^000000]";
+	mes "Step right in brave adventurer";
+	mes "I am Goldsmith";
+	mes "I've just recently started my business";
+    mes " ";
+	mes "^FF0000The success rate chance is 10%^000000";
+	set .@size, getarraysize(@i);
+	if (!.@size) set @shop_index, select(.menu$);
+	else if (.@size == 1) set @shop_index, @i[0];
+	else {
+		for(set .@j,0; .@j<.@size; set .@j,.@j+1)
+			set .@menu$, .@menu$+.Shops$[@i[.@j]]+":";
+		set @shop_index, @i[select(.@menu$)-1];
+	}
+	deletearray @i[0],getarraysize(@i);
+	if (.Shops$[@shop_index] == "") {
+		message strcharinfo(0),"An error has occurred.";
+		end;
+	}
+	dispbottom "Select one item at a time.";
+	callshop "qshop"+@shop_index,1;
+	npcshopattach "qshop"+@shop_index;
+	end;
+
+OnBuyItem:
+	// .@q[] : RewardID, BoughtAmt, RewardAmt, BaseAmt, ReqZeny, ReqPts, { ReqItem, ReqAmt, ... }
+	setarray .@q[0],@bought_nameid[0],((@bought_quantity[0] > .MaxStack)?.MaxStack:@bought_quantity[0]);
+	copyarray .@q[3],getd(".q_"+@shop_index+"_"+.@q[0]+"[0]"),getarraysize(getd(".q_"+@shop_index+"_"+.@q[0]));
+	set .@q[2],.@q[1]*.@q[3];
+	if (!.@q[2] || .@q[2] > 30000) {
+		message strcharinfo(0),"You can't put that many "+getitemname(.@q[0])+".";
+		end;
+	}
+	mes "[^0000FF Stojan ^000000]";
+	mes "Reward: ^0055FF"+((.@q[2] > 1)?.@q[2]+"x ":"")+Slot(.@q[0])+"^000000";
+	mes "Requirements:";
+	disable_items;
+	if (.@q[4]) mes "> "+Chk(Zeny,.@q[4]*.@q[1])+(.@q[4]*.@q[1])+" Zeny^000000";
+	if (.@q[5]) mes "> "+Chk(getd(.Points$[0]),.@q[5]*.@q[1])+(.@q[5]*.@q[1])+" "+.Points$[1]+" ("+getd(.Points$[0])+"/"+(.@q[5]*.@q[1])+")^000000";
+	if (.@q[6]) for(set .@i,6; .@i<getarraysize(.@q); set .@i,.@i+2)
+		mes "> "+Chk(countitem(.@q[.@i]),.@q[.@i+1]*.@q[1])+((.ShowID)?"{"+.@q[.@i]+"} ":"")+Slot(.@q[.@i])+" ("+countitem(.@q[.@i])+"/"+(.@q[.@i+1]*.@q[1])+")^000000";
+	next;
+	setarray @qe[1], getiteminfo(.@q[0],5), getiteminfo(.@q[0],11);
+	if (@qe[2] > 0 && ((@qe[1] & EQP_HEAD_LOW) || (@qe[1] & EQP_HEAD_TOP) || (@qe[1] & EQP_HEAD_MID) || (@qe[1] & EQP_COSTUME_HEAD_TOP) || (@qe[1] & EQP_COSTUME_HEAD_MID) || (@qe[1] & EQP_COSTUME_HEAD_LOW) || (@qe[1] & EQP_GARMENT) || (@qe[1] & EQP_COSTUME_GARMENT)))
+		set .@preview,1;
+	addtimer 1000, strnpcinfo(0)+"::OnEnd";
+	while(1) {
+		switch(select("> Craft ^0055FF"+getitemname(.@q[0])+"^000000:"+((.@preview && !@qe[7])?"> Preview...":"")+":> ^777777Cancel^000000")) {
+		case 1:
+			if (@qe[0]) {
+				mes "[^0000FF Stojan ^000000]";
+				mes "You're missing one or more quest requirements.";
+				close;
+			}
+			if (!checkweight(.@q[0],.@q[2])) {
+				mes "[^0000FF Stojan ^000000]";
+				mes "^FF0000You need "+(((.@q[2]*getiteminfo(.@q[0],6))+Weight-MaxWeight)/10)+" additional weight capacity to complete this trade.^000000";
+				close;
+			}
+			if (.@q[4]) set Zeny, Zeny-(.@q[4]*.@q[1]);
+			if (.@q[5]) setd .Points$[0], getd(.Points$[0])-(.@q[5]*.@q[1]);
+			if (.@q[6]) for(set .@i,6; .@i<getarraysize(.@q); set .@i,.@i+2)
+            delitem .@q[.@i],.@q[.@i+1]*.@q[1];
+            progressbar "",1;
+            if ( rand(100) > .craft_rate ) {
+				mes "[^0000FF Stojan ^000000]";
+				emotion (!rand(5))?ET_MONEY:ET_HUK;
+                mes "^FF0000Item creation was failed.^000000";
+                mes "Come back again next time.";
+                close;
+            }
+			getitem .@q[0],.@q[2];
+			emotion ET_SMILE;
+			if (.Announce) announce "[Stojan]: Congratulations! '"+strcharinfo(0)+"' just successfully crafted "+((.@q[2] > 1)?.@q[2]+"x "+getitemname(.@q[0]):callfunc("F_InsertArticle",getitemname(.@q[0])))+"!",0;
+			specialeffect2 EF_FLOWERLEAF;
+			close;
+        case 2:
+			setarray @qe[3], getlook(LOOK_HEAD_BOTTOM), getlook(LOOK_HEAD_TOP), getlook(LOOK_HEAD_MID), getlook(LOOK_ROBE), 1;
+			if ((@qe[1] & 1) || (@qe[1] & 4096)) changelook LOOK_HEAD_BOTTOM, @qe[2];
+			else if ((@qe[1] & 256) || (@qe[1] & 1024)) changelook LOOK_HEAD_TOP, @qe[2];
+			else if ((@qe[1] & 512) || (@qe[1] & 2048)) changelook LOOK_HEAD_MID, @qe[2];
+			else if ((@qe[1] & 4) || (@qe[1] & 8192)) changelook LOOK_ROBE, @qe[2];
+			break;
+		case 3:
+			close;
+		}
+	}
+
+OnEnd:
+	if (@qe[7]) {
+		changelook LOOK_HEAD_BOTTOM, @qe[3];
+		changelook LOOK_HEAD_TOP, @qe[4];
+		changelook LOOK_HEAD_MID, @qe[5];
+		changelook LOOK_ROBE, @qe[6];
+	}
+	deletearray @qe[0],8;
+	end;
+
+function Add {
+	if (getitemname(getarg(1)) == "null") {
+		debugmes "Quest reward #"+getarg(1)+" invalid (skipped).";
+		return;
+	}
+	setarray .@j[0],getarg(2),getarg(3),getarg(4);
+	for(set .@i,5; .@i<getargcount(); set .@i,.@i+2) {
+		if (getitemname(getarg(.@i)) == "null") {
+			debugmes "Quest requirement #"+getarg(.@i)+" invalid (skipped).";
+			return;
+		} else
+			setarray .@j[.@i-2],getarg(.@i),getarg(.@i+1);
+	}
+	copyarray getd(".q_"+getarg(0)+"_"+getarg(1)+"[0]"),.@j[0],getarraysize(.@j);
+	npcshopadditem "qshop"+getarg(0),getarg(1),((.ShowZeny)?getarg(3):0);
+	return;
+}
+
+function Chk {
+	if (getarg(0) < getarg(1)) {
+		set @qe[0],1;
+		return "^FF0000";
+	} else
+		return "^00FF00";
+}
+
+function Slot {
+	set .@s$,getitemname(getarg(0));
+	switch(.ShowSlot) {
+		case 1: if (!getitemslots(getarg(0))) return .@s$;
+		case 2: if (getiteminfo(getarg(0),2) == 4 || getiteminfo(getarg(0),2) == 5) return .@s$+" ["+getitemslots(getarg(0))+"]";
+		default: return .@s$;
+	}
+}
+}
+
+function	script	qshop	{
+	deletearray @i[0],getarraysize(@i);
+	for(set .@i,0; .@i<getargcount(); set .@i,.@i+1)
+		set @i[.@i],getarg(.@i);
+	doevent "quest_shop::OnMenu";
+	end;
+}
+
+// Dummy shop data -- copy as needed.
+//============================================================
+-	shop	qshop1	-1,909:-1
+-	shop	qshop2	-2,909:-1
+-	shop	qshop3	-3,909:-1
+-	shop	qshop4	-4,909:-1
+-	shop	qshop5	-5,909:-1

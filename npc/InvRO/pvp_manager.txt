@@ -1,0 +1,425 @@
+
+prontera,145,107,5	script	PVP Mananger	419,{
+    query_sql("SELECT CAST(`kpoints` AS CHAR(13)) FROM `in_pvp_points` WHERE account_id = " + getcharid(3), .@total_kpoints$);
+    query_sql("SELECT CAST(`kzeny` AS CHAR(13)) FROM `in_pvp_points` WHERE account_id = " + getcharid(3), .@total_kzeny$);
+    query_sql("SELECT `kpoints` FROM `in_pvp_points` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_kpoints);
+    query_sql("SELECT `kzeny` FROM `in_pvp_points` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_kzeny);
+    query_sql "SELECT `char`.char_id,`char`.`name`,char_reg_num.`value` FROM char_reg_num LEFT JOIN `char` ON char_reg_num.char_id=`char`.char_id WHERE char_reg_num.key='pvpmanager' ORDER BY CAST(`char_reg_num`.`value` AS UNSIGNED) DESC LIMIT 10", .@char_id, .@name$, .@count;
+   .@n$ = "[ PVP Manager ]";
+    mes .@n$;
+    if($HAPPYH == 1) {
+    mes "PVP Status: ^00ff00OPEN^000000";
+    } else {
+    mes "PVP Status: ^ff00008PM to 10PM^000000";
+    }
+    next;
+   mes .@n$;
+   mes "What would you like?";
+   next;
+   switch(select(($HAPPYH == 1 )?"Enter ( "+getmapusers("guild_vs3")+" ) User":"Schedule ^ff00008PM to 10PM^000000","View Ranking","Claim Zeny Reward","Reward Shop","Information",(getgroupid() == 99) ?"Reset Ranking - ^ff0000Admin Only^000000":"")){
+        case 1:
+            if($HAPPYH == 0) {
+                mes .@n$;
+                mes "PVP Status: ^ff00008PM to 10PM^000000";
+                mes "Please come back later";
+                close;
+            }
+                if (Zeny < 75000 ) {
+                    mes .@n$;
+                    mes "Sorry you dont have enought zeny";
+                    close;
+                }
+                mes .@n$;
+                mes "Good Luck";
+                next;
+                set Zeny, Zeny-75000;
+                warp "guild_vs3",0,0;
+                announce ""+strcharinfo(0)+" has entered PvP Arena",0,cbbeb5;
+                end;
+
+        case 2:
+            mes .@n$;
+            for( set .@x,0; .@x<=9; set .@x,.@x+1 )
+            {
+                mes "^0000FF"+(.@x+1)+".^000000 "+.@name$[.@x]+" - ^FF0000"+.@count[.@x]+"^000000 Point(s)";
+            } 
+            close;
+
+        case 3:
+            mes .@n$;
+            mes "How many zeny points you want to exchange to Zeny";
+            mes "^ffffff_^000000";
+            mes "Total Zeny Points: ^ff0000"+F_InsertComma(.@total_kzeny$)+"^000000";
+            next;
+            input .@amount;
+            if (.@amount <= 0) {
+                mes .@n$;
+                mes "^ff0000What happened^000000?";
+                mes "Maybe you tried to exchange 0 amount?";
+                mes "Maybe you dont have enough zeny points?";
+                mes "Check first so we can do a smooth transaction";
+                close;
+            }
+            if (.@total_kzeny < .@amount ) {
+                mes .@n$;
+                mes "I don't think you have enough Zeny Points.";
+                close;
+            }
+                mes .@n$;
+                query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kzeny`) VALUES ('"+getcharid(3)+"',-"+.@amount+") ON DUPLICATE KEY UPDATE `kzeny` = `kzeny` - "+.@amount+";");
+                set Zeny, Zeny+.@amount;
+                dispbottom "You have get "+F_InsertComma(.@amount)+" Zeny";
+                end;
+
+        case 4:
+            mes .@n$;
+            mes "Here's the available item at the moment";
+            mes "^ffffff_^000000";
+            mes "Total Kill Points: ^ff0000"+F_InsertComma(.@total_kpoints$)+"^000000";
+            next;
+            switch(select("C. Golden Majestic Goat:C. Forest Guide:C. Beginner Black Backpack:C. Ulysses Butterfly Wings:C. Wind Master:C. Full Bloom Cherry Tree:C. Electro Two Side Up:C. Elephangel:C. Enhanced Whisper Mask:C. Eye of Ifrit")){
+                case 1:
+                    mes .@n$;
+                    mes "<ITEM>Costume Golden Majestic Goat<INFO>31589</INFO></ITEM>";
+                    mes "Price: ^ff00001000^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 1000 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-1000) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 1000;");
+                            getitem 31589,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 2:
+                    mes .@n$;
+                    mes "<ITEM>Costume Forest Guide<INFO>31598</INFO></ITEM>";
+                    mes "Price: ^ff0000600^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 600 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-600) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 600;");
+                            getitem 31598,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 3:
+                    mes .@n$;
+                    mes "<ITEM>Costume Beginner Black Backpack<INFO>20575</INFO></ITEM>";
+                    mes "Price: ^ff0000750^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 750 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-750) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 750;");
+                            getitem 20575,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 4:
+                    mes .@n$;
+                    mes "<ITEM>Costume Ulysses Butterfly Wings<INFO>20603</INFO></ITEM>";
+                    mes "Price: ^ff0000800^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 800 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-800) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 800;");
+                            getitem 20603,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 5:
+                    mes .@n$;
+                    mes "<ITEM>Costume Wind Master<INFO>31803</INFO></ITEM>";
+                    mes "Price: ^ff00001100^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 1100 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-1100) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 1100;");
+                            getitem 31803,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 6:
+                    mes .@n$;
+                    mes "<ITEM>Costume Full Bloom Cherry Tree<INFO>20519</INFO></ITEM>";
+                    mes "Price: ^ff00001200^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 1200 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-1200) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 1200;");
+                            getitem 20519,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 7:
+                    mes .@n$;
+                    mes "<ITEM>Costume Electro Two Side Up<INFO>31575</INFO></ITEM>";
+                    mes "Price: ^ff0000700^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 700 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-700) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 700;");
+                            getitem 31575,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 8:
+                    mes .@n$;
+                    mes "<ITEM>Costume Elephangel<INFO>31498</INFO></ITEM>";
+                    mes "Price: ^ff0000600^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 600 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-600) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 600;");
+                            getitem 31498,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 9:
+                    mes .@n$;
+                    mes "<ITEM>Costume Enhanced Whisper Mask<INFO>31669</INFO></ITEM>";
+                    mes "Price: ^ff0000900^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 900 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-900) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 900;");
+                            getitem 31669,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 10:
+                    mes .@n$;
+                    mes "<ITEM>Costume Eye of Ifrit<INFO>20221</INFO></ITEM>";
+                    mes "Price: ^ff0000550^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_kpoints < 550 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',-550) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` - 550;");
+                            getitem 20221,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+            }
+        case 5:
+            mes .@n$;
+            mes "To enter this room you need to be level 96 and above and pay 75k for the entrance fee every time you enter";
+            mes "^ffffff_^000000";
+            mes "Every time you kill your enemies inside the room, you get 50k zeny points and 1 point.";
+            mes "^ffffff_^000000";
+            mes "You can claim zeny points to become ZENY and your POINTS can buy the item here in the shop";
+            close;
+
+        case 6:
+            mes .@n$;
+            mes "Are you sure you want to reset the ranking?";
+            next;
+            switch(select("No:Yes")){
+                case 1:
+                    mes .@n$;
+                    mes "Okay have a nice day";
+                    close;
+
+                case 2:
+                    mes .@n$;
+                    mes "Once you've reset the ranking, you can't undo it";
+                    next;
+                    switch(select("Stop:Yes I know")){
+                        case 1:
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Type ^FF0000RESETRANKING^000000";
+                            mes "To completly reset the Ranking";
+                            next;
+                            input .@resetrank$;
+                            if(.@resetrank$ != "RESETRANKING"){
+                            mes .@n$;
+                            mes "Incorrect type!.";
+                            mes "Transaction cancel try again";
+                            close;
+                            }
+                            query_sql("DELETE FROM `invasionro_main`.`char_reg_num` WHERE `key`='pvpmanager'");
+                            mes .@n$;
+                            mes "Ranking Reset !!";
+                            close;
+                    }
+            }
+   }
+}
+
+
+
+-	script	KillCashPoint	-1,{
+OnPCKillEvent:
+if ( strcharinfo(3) == "guild_vs3" ) {
+    query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kpoints`) VALUES ('"+getcharid(3)+"',1) ON DUPLICATE KEY UPDATE `kpoints` = `kpoints` + 1;");
+    query_sql("INSERT INTO `in_pvp_points` (`account_id`,`kzeny`) VALUES ('"+getcharid(3)+"',50000) ON DUPLICATE KEY UPDATE `kzeny` = `kzeny` + 50000;");
+    query_sql("SELECT CAST(`kpoints` AS CHAR(13)) FROM `in_pvp_points` WHERE account_id = " + getcharid(3), .@total_kpoints$);
+    query_sql("SELECT CAST(`kzeny` AS CHAR(13)) FROM `in_pvp_points` WHERE account_id = " + getcharid(3), .@total_kzeny$);
+    dispbottom "You have gained 50,000 zeny. Your total zeny reward are "+.@total_kzeny$+"";
+    dispbottom "You have gained 1 Kill Points. Your total kill points reward are "+.@total_kpoints$+"";
+    set pvpmanager,pvpmanager+1;
+    end;
+    }
+}
+
+-	script	PVPHAPPYH	-1,{
+OnClock2000:
+    $HAPPYH=1;
+    announce "PVP Manager: OPEN!",0,0x808000;
+    end;
+
+OnClock2200:
+    $HAPPYH=0;
+    announce "PVP Manager: CLOSE!",0,0x808000;
+    end;
+}

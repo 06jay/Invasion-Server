@@ -1,0 +1,44 @@
+// TODO: Execute below query on your SQL DB
+
+// CREATE TABLE IF NOT EXISTS `in_shard_audit` (
+// 	`id` INT NOT NULL AUTO_INCREMENT,
+// 	`shard_actvs_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+// 	`shard_boss_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+// 	`shard_evens_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+// 	`shard_tpvps_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+// 	`shard_wobs_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+// 	`shard_woes_pool_db` DECIMAL(10, 4) NOT NULL DEFAULT 0.0000,
+//     `update_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+//     PRIMARY KEY(`id`)
+// ) ENGINE=InnoDB;
+
+// TODO: Add below script on your coin item in item_db.
+
+// callfunc "AddShards";
+
+// TODO : Add below script on your npc folder and load using @reloadscript
+
+function	script	AddShards	{
+
+	query_sql("INSERT INTO `in_total_consume` (`account_id`,`char_name`,`intkn`,`transaction`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '1', 'Cash Points');");
+	
+	// allocate 55% on AIN
+	query_sql("INSERT INTO `mapreg` (`varname`, `index`, `value`) VALUES ('$AIN$', 0, '0.5500') ON DUPLICATE KEY UPDATE `value` = `value` + 0.5500");
+	
+	// allocate 45% on SIN
+	query_sql(
+		"INSERT INTO `in_shard_audit` (`id`, `shard_actvs_pool_db`, `shard_boss_pool_db`, " +
+		"`shard_evens_pool_db`, `shard_tpvps_pool_db2`, `shard_wobs_pool_db`, `shard_woes_pool_db2`, `shard_mvp_pool_db`) " +
+		" VALUES (1, 0.0225, 0.075, 0.0675, 0.045, 0.045, 0.135, 0.06) ON DUPLICATE KEY UPDATE " +
+		" `shard_actvs_pool_db` = `shard_actvs_pool_db` + 0.0225, " +
+		" `shard_boss_pool_db` = `shard_boss_pool_db` + 0.075, " +
+		" `shard_evens_pool_db` = `shard_evens_pool_db` + 0.0675, " +
+		" `shard_tpvps_pool_db2` = `shard_tpvps_pool_db2` + 0.045, " +
+		" `shard_wobs_pool_db` = `shard_wobs_pool_db` + 0.045, " +
+		" `shard_woes_pool_db2` = `shard_woes_pool_db2` + 0.135, " +
+		" `shard_mvp_pool_db` = `shard_mvp_pool_db` + 0.06, " +
+		" `update_date` = CURRENT_TIMESTAMP"
+	);
+	
+	return;
+}

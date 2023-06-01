@@ -1,0 +1,114 @@
+function	script	CMADeffenseView	{
+		mes "[ Hand Book ]";
+		mes "Here's the mdef list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+
+if(a4401 == 1) { mes "^ff0000"+getitemname(4401)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4401)+" + 2 (default) ^000000"; }
+if(a4249 == 1) { mes "^ff0000"+getitemname(4249)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4249)+" + 2 (default) ^000000"; }
+if(a4018 == 1) { mes "^ff0000"+getitemname(4018)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4018)+" + 2 (default) ^000000"; }
+if(a4138 == 1) { mes "^ff0000"+getitemname(4138)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4138)+" + 2 (default) ^000000"; }
+if(a4242 == 1) { mes "^ff0000"+getitemname(4242)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4242)+" + 2 (default) ^000000"; }
+if(a4094 == 1) { mes "^ff0000"+getitemname(4094)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4094)+" + 2 (default) ^000000"; }
+if(a4075 == 1) { mes "^ff0000"+getitemname(4075)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4075)+" + 2 (default) ^000000"; }
+if(a4247 == 1) { mes "^ff0000"+getitemname(4247)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4247)+" + 2 (default) ^000000"; }
+if(a4233 == 1) { mes "^ff0000"+getitemname(4233)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4233)+" + 2 (default) ^000000"; }
+if(a4119 == 1) { mes "^ff0000"+getitemname(4119)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4119)+" + 3 (default) ^000000"; }
+if(a4307 == 1) { mes "^ff0000"+getitemname(4307)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4307)+" + 2 (default) ^000000"; }
+if(a4213 == 1) { mes "^ff0000"+getitemname(4213)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4213)+" + 2 (default) ^000000"; }
+if(a4290 == 1) { mes "^ff0000"+getitemname(4290)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4290)+" + 3 (default) ^000000"; }
+if(a4300 == 1) { mes "^ff0000"+getitemname(4300)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4300)+" + 3 (default) ^000000"; }
+if(a4235 == 1) { mes "^ff0000"+getitemname(4235)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4235)+" + 2 (default) ^000000"; }
+if(a4061 == 1) { mes "^ff0000"+getitemname(4061)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4061)+" + 2 (default) ^000000"; }
+if(a4392 == 1) { mes "^ff0000"+getitemname(4392)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4392)+" + 3 (default) ^000000"; }
+if(a4125 == 1) { mes "^ff0000"+getitemname(4125)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4125)+" + 2 (default) ^000000"; }
+if(a4370 == 1) { mes "^ff0000"+getitemname(4370)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4370)+" + 2 (default) ^000000"; }
+if(a4181 == 1) { mes "^ff0000"+getitemname(4181)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4181)+" + 2 (default) ^000000"; }
+if(a4178 == 1) { mes "^ff0000"+getitemname(4178)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4178)+" + 2 (default) ^000000"; }
+if(a4069 == 1) { mes "^ff0000"+getitemname(4069)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4069)+" + 2 (default) ^000000"; }
+if(a4137 == 1) { mes "^ff0000"+getitemname(4137)+" + 10 (default) ^000000"; } else { mes "^0000FF"+getitemname(4137)+" + 10 (default) ^000000"; }
+if(a4056 == 1) { mes "^ff0000"+getitemname(4056)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4056)+" + 2 (default) ^000000"; }
+if(a4410 == 1) { mes "^ff0000"+getitemname(4410)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4410)+" + 2 (default) ^000000"; }
+if(a4070 == 1) { mes "^ff0000"+getitemname(4070)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4070)+" + 2 (default) ^000000"; }
+if(a4141 == 1) { mes "^ff0000"+getitemname(4141)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4141)+" + 2 (default) ^000000"; }
+if(a27016 == 1) { mes "^ff0000"+getitemname(27016)+" + 2 (new) ^000000"; } else { mes "^0000FF"+getitemname(27016)+" + 2 (new) ^000000"; }
+if(a4316 == 1) { mes "^ff0000"+getitemname(4316)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4316)+" + 2 (default) ^000000"; }
+if(a4080 == 1) { mes "^ff0000"+getitemname(4080)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4080)+" + 2 (default) ^000000"; }
+if(a4152 == 1) { mes "^ff0000"+getitemname(4152)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4152)+" + 2 (default) ^000000"; }
+if(a4423 == 1) { mes "^ff0000"+getitemname(4423)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4423)+" + 3 (default) ^000000"; }
+if(a4149 == 1) { mes "^ff0000"+getitemname(4149)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4149)+" + 2 (default) ^000000"; }
+if(a4110 == 1) { mes "^ff0000"+getitemname(4110)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4110)+" + 2 (default) ^000000"; }
+if(a4087 == 1) { mes "^ff0000"+getitemname(4087)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4087)+" + 2 (default) ^000000"; }
+if(a4150 == 1) { mes "^ff0000"+getitemname(4150)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4150)+" + 2 (default) ^000000"; }
+if(a4155 == 1) { mes "^ff0000"+getitemname(4155)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4155)+" + 2 (default) ^000000"; }
+if(a4072 == 1) { mes "^ff0000"+getitemname(4072)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4072)+" + 2 (default) ^000000"; }
+if(a4162 == 1) { mes "^ff0000"+getitemname(4162)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4162)+" + 2 (default) ^000000"; }
+if(a4331 == 1) { mes "^ff0000"+getitemname(4331)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4331)+" + 2 (default) ^000000"; }
+if(a4081 == 1) { mes "^ff0000"+getitemname(4081)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4081)+" + 2 (default) ^000000"; }
+if(a4045 == 1) { mes "^ff0000"+getitemname(4045)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4045)+" + 3 (default) ^000000"; }
+if(a27120 == 1) { mes "^ff0000"+getitemname(27120)+" + 3 (new) ^000000"; } else { mes "^0000FF"+getitemname(27120)+" + 3 (new) ^000000"; }
+if(a4433 == 1) { mes "^ff0000"+getitemname(4433)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4433)+" + 3 (default) ^000000"; }
+if(a4116 == 1) { mes "^ff0000"+getitemname(4116)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4116)+" + 2 (default) ^000000"; }
+if(a4265 == 1) { mes "^ff0000"+getitemname(4265)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4265)+" + 2 (default) ^000000"; }
+if(a4351 == 1) { mes "^ff0000"+getitemname(4351)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4351)+" + 2 (default) ^000000"; }
+if(a4292 == 1) { mes "^ff0000"+getitemname(4292)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4292)+" + 2 (default) ^000000"; }
+if(a4091 == 1) { mes "^ff0000"+getitemname(4091)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4091)+" + 3 (default) ^000000"; }
+if(a4027 == 1) { mes "^ff0000"+getitemname(4027)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4027)+" + 2 (default) ^000000"; }
+if(a4188 == 1) { mes "^ff0000"+getitemname(4188)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4188)+" + 2 (default) ^000000"; }
+if(a27158 == 1) { mes "^ff0000"+getitemname(27158)+" + 3 (new) ^000000"; } else { mes "^0000FF"+getitemname(27158)+" + 3 (new) ^000000"; }
+if(a4050 == 1) { mes "^ff0000"+getitemname(4050)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4050)+" + 2 (default) ^000000"; }
+if(a4202 == 1) { mes "^ff0000"+getitemname(4202)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4202)+" + 3 (default) ^000000"; }
+if(a4196 == 1) { mes "^ff0000"+getitemname(4196)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4196)+" + 2 (default) ^000000"; }
+if(a4113 == 1) { mes "^ff0000"+getitemname(4113)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4113)+" + 2 (default) ^000000"; }
+if(a4046 == 1) { mes "^ff0000"+getitemname(4046)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4046)+" + 2 (default) ^000000"; }
+if(a4197 == 1) { mes "^ff0000"+getitemname(4197)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4197)+" + 3 (default) ^000000"; }
+if(a4124 == 1) { mes "^ff0000"+getitemname(4124)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4124)+" + 2 (default) ^000000"; }
+if(a4200 == 1) { mes "^ff0000"+getitemname(4200)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4200)+" + 2 (default) ^000000"; }
+if(a4057 == 1) { mes "^ff0000"+getitemname(4057)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4057)+" + 2 (default) ^000000"; }
+if(a4106 == 1) { mes "^ff0000"+getitemname(4106)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4106)+" + 2 (default) ^000000"; }
+if(a4090 == 1) { mes "^ff0000"+getitemname(4090)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4090)+" + 2 (default) ^000000"; }
+if(a4206 == 1) { mes "^ff0000"+getitemname(4206)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4206)+" + 2 (default) ^000000"; }
+if(a4167 == 1) { mes "^ff0000"+getitemname(4167)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4167)+" + 2 (default) ^000000"; }
+if(a4127 == 1) { mes "^ff0000"+getitemname(4127)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4127)+" + 2 (default) ^000000"; }
+if(a4159 == 1) { mes "^ff0000"+getitemname(4159)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4159)+" + 2 (default) ^000000"; }
+if(a4093 == 1) { mes "^ff0000"+getitemname(4093)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4093)+" + 2 (default) ^000000"; }
+if(a4255 == 1) { mes "^ff0000"+getitemname(4255)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4255)+" + 2 (default) ^000000"; }
+if(a4066 == 1) { mes "^ff0000"+getitemname(4066)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4066)+" + 2 (default) ^000000"; }
+if(a4008 == 1) { mes "^ff0000"+getitemname(4008)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4008)+" + 2 (default) ^000000"; }
+if(a4048 == 1) { mes "^ff0000"+getitemname(4048)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4048)+" + 2 (default) ^000000"; }
+if(a4175 == 1) { mes "^ff0000"+getitemname(4175)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4175)+" + 2 (default) ^000000"; }
+if(a4083 == 1) { mes "^ff0000"+getitemname(4083)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4083)+" + 2 (default) ^000000"; }
+if(a4186 == 1) { mes "^ff0000"+getitemname(4186)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4186)+" + 2 (default) ^000000"; }
+if(a4383 == 1) { mes "^ff0000"+getitemname(4383)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4383)+" + 2 (default) ^000000"; }
+if(a27015 == 1) { mes "^ff0000"+getitemname(27015)+" + 3 (new) ^000000"; } else { mes "^0000FF"+getitemname(27015)+" + 3 (new) ^000000"; }
+if(a4192 == 1) { mes "^ff0000"+getitemname(4192)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4192)+" + 2 (default) ^000000"; }
+if(a4219 == 1) { mes "^ff0000"+getitemname(4219)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4219)+" + 2 (default) ^000000"; }
+if(a4101 == 1) { mes "^ff0000"+getitemname(4101)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4101)+" + 2 (default) ^000000"; }
+if(a4216 == 1) { mes "^ff0000"+getitemname(4216)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4216)+" + 2 (default) ^000000"; }
+if(a4078 == 1) { mes "^ff0000"+getitemname(4078)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4078)+" + 2 (default) ^000000"; }
+if(a4068 == 1) { mes "^ff0000"+getitemname(4068)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4068)+" + 2 (default) ^000000"; }
+if(a4130 == 1) { mes "^ff0000"+getitemname(4130)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4130)+" + 2 (default) ^000000"; }
+if(a4158 == 1) { mes "^ff0000"+getitemname(4158)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4158)+" + 2 (default) ^000000"; }
+if(a4120 == 1) { mes "^ff0000"+getitemname(4120)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4120)+" + 2 (default) ^000000"; }
+if(a4228 == 1) { mes "^ff0000"+getitemname(4228)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4228)+" + 2 (default) ^000000"; }
+if(a4044 == 1) { mes "^ff0000"+getitemname(4044)+" + 3 (default) ^000000"; } else { mes "^0000FF"+getitemname(4044)+" + 3 (default) ^000000"; }
+if(a4059 == 1) { mes "^ff0000"+getitemname(4059)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4059)+" + 2 (default) ^000000"; }
+if(a4223 == 1) { mes "^ff0000"+getitemname(4223)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4223)+" + 2 (default) ^000000"; }
+if(a4424 == 1) { mes "^ff0000"+getitemname(4424)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4424)+" + 2 (default) ^000000"; }
+if(a4225 == 1) { mes "^ff0000"+getitemname(4225)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4225)+" + 2 (default) ^000000"; }
+if(a4340 == 1) { mes "^ff0000"+getitemname(4340)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4340)+" + 2 (default) ^000000"; }
+if(a4282 == 1) { mes "^ff0000"+getitemname(4282)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4282)+" + 2 (default) ^000000"; }
+if(a4053 == 1) { mes "^ff0000"+getitemname(4053)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4053)+" + 2 (default) ^000000"; }
+if(a27157 == 1) { mes "^ff0000"+getitemname(27157)+" + 5 (new) ^000000"; } else { mes "^0000FF"+getitemname(27157)+" + 5 (new) ^000000"; }
+if(a4259 == 1) { mes "^ff0000"+getitemname(4259)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4259)+" + 2 (default) ^000000"; }
+if(a4261 == 1) { mes "^ff0000"+getitemname(4261)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4261)+" + 2 (default) ^000000"; }
+if(a4096 == 1) { mes "^ff0000"+getitemname(4096)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4096)+" + 2 (default) ^000000"; }
+if(a4272 == 1) { mes "^ff0000"+getitemname(4272)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4272)+" + 2 (default) ^000000"; }
+if(a4038 == 1) { mes "^ff0000"+getitemname(4038)+" + 2 (default) ^000000"; } else { mes "^0000FF"+getitemname(4038)+" + 2 (default) ^000000"; }
+
+
+
+
+		close;
+	}

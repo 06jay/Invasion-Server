@@ -1,0 +1,169 @@
+//__________    _____    ________  __________________________________   ____
+//\______   \  /  _  \  /  _____/ /   _____/\_   _____/\______   \   \ /   /
+// |       _/ /  /_\  \/   \  ___ \_____  \  |    __)_  |       _/\   Y   / 
+// |    |   \/    |    \    \_\  \/        \ |        \ |    |   \ \     /  
+// |____|_  /\____|__  /\______  /_______  //_______  / |____|_  /  \___/   
+//        \/         \/        \/        \/         \/         \/           
+//Website: www.ragserv.com
+//Discord Support: -R#9305
+//Facebook: https://www.facebook.com/RagServPH/
+//RAGSERV SUPPORT || RAGSERV PH";
+//====================================================
+//	Compensation NPC v1                              |
+//	By : -R (KazumaSatou on rAthena)                 |
+//====================DESCRIPTION=====================
+//	Compensation NPC for Invasion Ragnarok Online.   |
+//	Able to activate/deactivate NPC.                 |
+//	Able to change set of rerwards at OnInit command.|
+//	Able to choose rewards set when the Compensation |
+//	NPC is not yet active.                           |
+//=======================POLICY=======================
+//	You must not claim my work as yours.             |
+//	You must not resell my work.                     |
+//	You must not share in any form to others.        |
+//	You can use my works on your future owned servers|
+//====================================================
+prontera,123,86,3	script	Compensation NPC	4_F_GELKA,{
+query_sql("SELECT `value` FROM `in_compensation` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", @Compensation);
+  if($compenpc == 1) {
+		mes "[Compensation NPC]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+	.n$ = "[Compensation NPC]";
+	if(!$Compensation && getgroupid() < 99){
+		mes .n$;
+		mes "Compensation isn't available yet.";
+		close;
+	}
+	if(BaseLevel < 40) {
+		mes .n$;
+		mes "The Compensation NPC is only for level 40 and above.";
+		close;
+	}
+	mes .n$;
+	mes "Hello there!";
+	if(getgroupid() == 99)
+		mes "Compensation NPC Status: "+(($Compensation) ? "^00BB00Activated^000000." : "^FF0000Deactivated^000000.");
+	mes "Would you like to get your compensation?";
+	next;
+	.@glvl = getgroupid();
+	switch(select("Claim"+((.@glvl == 99) ? ":Select Rewards:Enable/Disable Compensation" : ""))){
+		case 1:
+			.n$ = "[Compensation NPC]";
+			if(!$Compensation){
+				mes .n$;
+				mes "Compensation isn't available yet.";
+				close;
+			}
+			mes .n$;
+			mes "Let me check if you still have compensation rewards waiting for you.";
+			next;
+			if(@Compensation == $CompensationNum){
+				mes .n$;
+				mes "You already received your compensation rewards.";
+				close;
+			} else {
+				mes .n$;
+				mes "Thank you for your patience on our server.";
+				mes "Please receive these gifts as a compensation for supporting our server.";
+				for ( .@i = 0; .@i < .size; .@i++ )
+				getitem .item_id[.@i],.amount[.@i];
+				sleep2 1000;
+				query_sql("INSERT INTO `in_compensation` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@Compensation','"+$CompensationNum+"') ON DUPLICATE KEY UPDATE `value` = "+$CompensationNum+";");
+				close;
+			}
+			break;
+		case 2:
+			mes .n$;
+			if(.size > 0){
+				mes "Current Item Rewards:";
+				for ( .@i = 0; .@i < .size; .@i++ )
+					mes (.@i+1) + "/ x" + .amount[.@i] + " ^ff0000" + getitemname(.item_id[.@i]) + "^000000";
+			} else
+				mes "There is no rewards set at the moment";
+			if($Compensation){
+				mes "^FF0000Rewards can't be changed if the Compensation NPC is active.^000000";
+				close;
+			}
+			next;
+			while (true) {
+				next;
+				switch(select( "^FF0000Add an item^000000:^FF0000Reset^000000:Close" )){
+					case 1:
+						mes "Input Item ID :";
+						input .tmp_item;
+						if (getitemname(.tmp_item) == "null") {
+							mes "Invalid item ID " + .tmp_item;
+							continue;
+						}
+						mes "Input Amount :";
+						input .tmp_amount;
+						if (.tmp_amount == 0) {
+							mes "Invalid amount.";
+							continue;
+						}
+						.item_id[ .size ] = .tmp_item;
+						.amount[ .size ] = .tmp_amount;
+						.size++;
+						
+						mes "Item Rewards List:";
+						for ( .@i = 0; .@i < .size; .@i++ )
+							mes (.@i+1) + "/ x" + .amount[.@i] + " ^ff0000" + getitemname(.item_id[.@i]) + "^000000";
+						break;
+					case 2:
+						.size = 0;
+						mes "Item Rewards has been reset.";
+						close;
+						break;
+					case 3:
+						close;
+				}
+			}
+			break;
+		case 3:
+			mes .n$;
+			mes "Would you like to "+((!$Compensation) ? "Activate" : "Deactivate")+" the compensation npc?";
+			next;
+			switch(select("Activate now.:Deactivate now.")){
+				case 1:
+					if(.size < 1){
+						mes .n$;
+						mes "You must set rewards first before activating Compensation NPC.";
+						close;
+					}
+					if($Compensation == 1){
+						mes .n$;
+						mes "Compensation NPC is already active.";
+						close;
+					} else {
+						mes .n$;
+						mes "Compensation NPC is now activated.";
+						announce "Compensation is now activated and can be found at Prontera City.",BC_ALL|BC_YELLOW;
+						$CompensationNum++;
+						$Compensation = 1;
+						close;
+					}
+					break;
+				case 2:
+					if(!$Compensation){
+						mes .n$;
+						mes "Compensation NPC isn't activated.";
+						close;
+					} else {
+						mes .n$;
+						mes "Compensation is now deactivated.";
+						$Compensation = 0;
+						.size = 0;
+						.item_id = 0;
+						.amount = 0;
+						close;
+					}
+			}
+	}
+	
+OnInit:
+	// Disable Compensation on Reload.
+	$Compensation = 0;
+	end;
+}

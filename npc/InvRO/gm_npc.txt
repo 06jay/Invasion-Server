@@ -1,0 +1,140 @@
+prontera,97,66,4	script	GM NPC	997,{
+	.n$ = "[GM Reward NPC]";
+	mes .n$;
+	mes "What would you like to do?";
+	next;
+	switch(select("Claim Items"+((getgroupid() < 10) ? "":":Add Player Item"))){
+		case 1:
+			query_sql("SELECT `id`,`name` FROM `new_rewards` WHERE `name` = '"+strcharinfo(0)+"'", .@id,.@name$);
+			if(!.@id){
+				mes .n$;
+				mes "You don't have items waiting.";
+				close;
+			} else {
+				for(.@i = 0;.@i < getarraysize(.@name$);.@i++){
+					query_sql("SELECT `itemid1`, `amount1`, `itemid2`, `amount2`, `itemid3`, `amount3`, `itemid4`, `amount4`, `itemid5`, `amount5`, `itemid6`, `amount6`, `itemid7`, `amount7`, `itemid8`, `amount8`, `itemid9`, `amount9`, `itemid10`, `amount10` FROM `new_rewards` WHERE `name` = '" +strcharinfo(0)+ "' ",.@s_Item_id1,.@s_Item_Amount1,.@s_Item_id2,.@s_Item_Amount2,.@s_Item_id3,.@s_Item_Amount3,.@s_Item_id4,.@s_Item_Amount4,.@s_Item_id5,.@s_Item_Amount5,.@s_Item_id6,.@s_Item_Amount6,.@s_Item_id7,.@s_Item_Amount7,.@s_Item_id8,.@s_Item_Amount8,.@s_Item_id9,.@s_Item_Amount9,.@s_Item_id10,.@s_Item_Amount10);
+					mes .n$;
+					mes "Someone has sent you a item.";
+					next;
+					mes .n$;
+						if (((Weight*100)/MaxWeight) < 79) {
+							for(.@s=1;.@s<11;.@s++){
+								if(getd(".@s_Item_id" + .@s) != 0){
+									getitem getd(".@s_Item_id" + .@s),getd(".@s_Item_Amount" + .@s);	
+								}
+							}
+							mes "You received all your items.";
+							query_sql("DELETE FROM `new_rewards` WHERE `name` = '"+strcharinfo(0)+"'");
+							query_sql("UPDATE `new_rewards_log` SET `date_claimed` = NOW()");
+							close;
+						}else{
+							mes .n$;
+							mes "Woow!";
+							mes "how you can move like that !!?";
+							mes "you must be less then 80% Weight to get the Item;";
+							close;
+							break;
+						}
+				}
+			}
+			break;
+		case 2:
+			callsub R_Reset_Value;
+			mes .n$;
+			mes "Enter Player Name:";
+			input @R_PlayerName$;
+			query_sql("SELECT `name` FROM `char` WHERE `name` = '"+@R_PlayerName$+"'",.@pNamesql$);
+			if(@R_PlayerName$ == strcharinfo(0)){
+				mes .n$;
+				mes "You can't send Items to yourself.";
+				close;
+			}
+			if(.@pNamesql$ == ""){
+				mes .n$;
+				mes "The character name "+@R_PlayerName$+" does not exist.";
+				mes "Please double check your entries.";
+				close;
+			}
+			next;
+			query_sql("SELECT `name` FROM `new_rewards` WHERE `name` = '"+@R_PlayerName$+"'",.@n$);
+			if(.@n$ != ""){
+				mes .n$;
+				mes "Player "+.@n$+" has unclaimed items.";
+				mes "You can't add new set of items.";
+				mes "Please tell him/her to claim it first before sending another items.";
+				close;
+			}
+			mes .n$;
+			mes "Enter Reason:";
+			input @R_RewardsReason$;
+			next;
+			for(.@i=1;.@i<11;.@i++){
+				mes .n$;
+				mes "Input ITEM ID " + .@i + " .";
+				input @R_Item_id[.@i];
+				if ( getitemname( @R_Item_id[.@i] ) == "null" ) {
+					next;
+					mes .n$;
+					mes "The item ID not right please re input the item id";
+					set .@i,.@i-1;
+				}else{
+					next;
+					mes .n$;
+					mes "Input ITEM " + .@i + " Amount .";
+					input @R_Item_Amount[.@i];
+					if(@R_Item_Amount[.@i] == 0){
+						mes "You can't use item amount 0 it must be 1 or more!";
+						mes "Please re-enter the item id and the right amount";
+						next;
+						set .@i,.@i-1;
+					}else{
+						set @R_item_count,.@i;
+						next;
+						callsub R_AddMore;
+					}
+				}
+			}
+			R_AddMore:
+				if(@R_item_count < 10){
+					switch( select("Add More items("+@R_item_count+"):No More items:Close") ){
+						case 1: return;
+						case 2: break;
+						case 3: close;
+					}
+				}else{ switch( select("No More items:Close") == 1 ){ case 1: break; case 2: close;} }
+				mes .n$;
+				mes "Are You Sure ?";
+				mes "The Player Name is : " + @R_PlayerName$ + " .";
+				mes "The Reasons is : " + @R_RewardsReason$ + " .";
+				mes "Item List:";
+				for(.@i=1;.@i<11;.@i++){
+					if ( getitemname( @R_Item_id[.@i] ) != "null" ) {
+						mes getitemname(@R_Item_id[.@i]) + " = " + @R_Item_Amount[.@i];
+					}
+				}
+				if( select("yes:no") ==1 ){
+					// Rewards Table
+					query_sql("INSERT INTO `new_rewards` (`name`,`rewards_reason`, `itemid1`, `amount1`, `itemid2`, `amount2`, `itemid3`, `amount3`, `itemid4`, `amount4`, `itemid5`, `amount5`, `itemid6`, `amount6`, `itemid7`, `amount7`, `itemid8`, `amount8`, `itemid9`, `amount9`, `itemid10`, `amount10`) VALUES ('"+@R_PlayerName$+"', '"+@R_RewardsReason$+"', '"+@R_Item_id[1]+"', '"+@R_Item_Amount[1]+"', '"+@R_Item_id[2]+"', '"+@R_Item_Amount[2]+"', '"+@R_Item_id[3]+"', '"+@R_Item_Amount[3]+"', '"+@R_Item_id[4]+"', '"+@R_Item_Amount[4]+"', '"+@R_Item_id[5]+"', '"+@R_Item_Amount[5]+"', '"+@R_Item_id[6]+"', '"+@R_Item_Amount[6]+"', '"+@R_Item_id[7]+"', '"+@R_Item_Amount[7]+"', '"+@R_Item_id[8]+"', '"+@R_Item_Amount[8]+"', '"+@R_Item_id[9]+"', '"+@R_Item_Amount[9]+"', '"+@R_Item_id[10]+"', '"+@R_Item_Amount[10]+"')");
+					// Rewards Logs Table
+					query_sql("INSERT INTO `new_rewards_log` (`gm_name`,`player_name`,`rewards_reason`, `itemid1`, `amount1`, `itemid2`, `amount2`, `itemid3`, `amount3`, `itemid4`, `amount4`, `itemid5`, `amount5`, `itemid6`, `amount6`, `itemid7`, `amount7`, `itemid8`, `amount8`, `itemid9`, `amount9`, `itemid10`, `amount10`, `date_created`, `date_claimed`) VALUES ('"+strcharinfo(0)+"','"+@R_PlayerName$+"', '"+@R_RewardsReason$+"', '"+@R_Item_id[1]+"', '"+@R_Item_Amount[1]+"', '"+@R_Item_id[2]+"', '"+@R_Item_Amount[2]+"', '"+@R_Item_id[3]+"', '"+@R_Item_Amount[3]+"', '"+@R_Item_id[4]+"', '"+@R_Item_Amount[4]+"', '"+@R_Item_id[5]+"', '"+@R_Item_Amount[5]+"', '"+@R_Item_id[6]+"', '"+@R_Item_Amount[6]+"', '"+@R_Item_id[7]+"', '"+@R_Item_Amount[7]+"', '"+@R_Item_id[8]+"', '"+@R_Item_Amount[8]+"', '"+@R_Item_id[9]+"', '"+@R_Item_Amount[9]+"', '"+@R_Item_id[10]+"', '"+@R_Item_Amount[10]+"', NOW(), '19000101')");
+					mes "Rewards has been set.";
+					announce "[Reward NPC] : GM "+strcharinfo(0)+" has been sent a item to "+@R_PlayerName$+" with a reason of "+@R_RewardsReason$+".",bc_all;
+				}
+				callsub R_Reset_Value;
+				close;
+			end;
+	}
+
+R_Reset_Value:
+	deletearray @R_Item_id;
+	deletearray @R_Item_Amount;
+	deletearray @R_PlayerName$;
+	deletearray @R_RewardsReason$;
+	return;
+end;
+
+OnInit:
+	query_sql("CREATE TABLE IF NOT EXISTS `new_rewards` (`id` INT(11) unsigned NOT NULL auto_increment, `name` VARCHAR(32) NOT NULL,`rewards_reason` VARCHAR(300) NOT NULL, `itemid1` INT NOT NULL, `amount1` INT NOT NULL, `itemid2` INT NOT NULL, `amount2` INT NOT NULL, `itemid3` INT NOT NULL, `amount3` INT NOT NULL, `itemid4` INT NOT NULL, `amount4` INT NOT NULL, `itemid5` INT NOT NULL, `amount5` INT NOT NULL, `itemid6` INT NOT NULL, `amount6` INT NOT NULL, `itemid7` INT NOT NULL, `amount7` INT NOT NULL, `itemid8` INT NOT NULL, `amount8` INT NOT NULL, `itemid9` INT NOT NULL, `amount9` INT NOT NULL, `itemid10` INT NOT NULL, `amount10` INT NOT NULL, PRIMARY KEY(`id`)) ENGINE=MyISAM");
+	query_sql("CREATE TABLE IF NOT EXISTS `new_rewards_log` (`id` INT(11) unsigned NOT NULL auto_increment, `gm_name` VARCHAR(32) NOT NULL,`player_name` VARCHAR(32) NOT NULL,`rewards_reason` VARCHAR(300) NOT NULL, `itemid1` INT NOT NULL, `amount1` INT NOT NULL, `itemid2` INT NOT NULL, `amount2` INT NOT NULL, `itemid3` INT NOT NULL, `amount3` INT NOT NULL, `itemid4` INT NOT NULL, `amount4` INT NOT NULL, `itemid5` INT NOT NULL, `amount5` INT NOT NULL, `itemid6` INT NOT NULL, `amount6` INT NOT NULL, `itemid7` INT NOT NULL, `amount7` INT NOT NULL, `itemid8` INT NOT NULL, `amount8` INT NOT NULL, `itemid9` INT NOT NULL, `amount9` INT NOT NULL, `itemid10` INT NOT NULL, `amount10` INT NOT NULL, `date_created`  DATETIME NULL DEFAULT '19000101', `date_claimed` DATETIME NULL DEFAULT '19000101', PRIMARY KEY(`id`)) ENGINE=MyISAM");
+	end;
+}

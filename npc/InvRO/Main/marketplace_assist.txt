@@ -1,0 +1,528 @@
+
+/*
+CREATE TABLE  `marketplace_inventory` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `nameid` int(10) unsigned NOT NULL DEFAULT 0,
+  `equip` int(11) unsigned NOT NULL DEFAULT 0,
+  `identify` smallint(6) NOT NULL DEFAULT 0,
+  `refine` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `attribute` tinyint(4) unsigned NOT NULL DEFAULT 0,
+  `card0` int(10) unsigned NOT NULL DEFAULT 0,
+  `card1` int(10) unsigned NOT NULL DEFAULT 0,
+  `card2` int(10) unsigned NOT NULL DEFAULT 0,
+  `card3` int(10) unsigned NOT NULL DEFAULT 0,
+  `option_id0` smallint(6) NOT NULL DEFAULT 0,
+  `option_val0` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm0` tinyint(4) NOT NULL DEFAULT 0,
+  `option_id1` smallint(6) NOT NULL DEFAULT 0,
+  `option_val1` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm1` tinyint(4) NOT NULL DEFAULT 0,
+  `option_id2` smallint(6) NOT NULL DEFAULT 0,
+  `option_val2` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm2` tinyint(4) NOT NULL DEFAULT 0,
+  `option_id3` smallint(6) NOT NULL DEFAULT 0,
+  `option_val3` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm3` tinyint(4) NOT NULL DEFAULT 0,
+  `expire_time` int(10) unsigned NOT NULL DEFAULT 0,
+  `favorite` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `bound` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `unique_id` bigint(20) unsigned NOT NULL DEFAULT 0,
+  `equip_switch` int(10) unsigned NOT NULL DEFAULT 0,
+  `enchantgrade` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `price` int(255) NOT NULL DEFAULT 0,
+  `amount` int(255) NOT NULL DEFAULT 1,
+  `createdAt` timestamp NULL DEFAULT current_timestamp(),
+  `soldAt` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `for_sale` int(1) NOT NULL DEFAULT 0,
+  `currency` varchar(10) NOT NULL DEFAULT '',
+  `on_buying_web` tinyint(3) NOT NULL DEFAULT 0,
+  `on_buying_game` tinyint(3) NOT NULL DEFAULT 0,
+  `temp_buyer` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE  `marketplace_inventory_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) unsigned NOT NULL DEFAULT 0,
+  `char_id` varchar(50) NOT NULL,
+  `nameid` int(10) unsigned NOT NULL DEFAULT 0,
+  `amount` int(11) unsigned NOT NULL DEFAULT 0,
+  `identify` smallint(6) NOT NULL DEFAULT 0,
+  `refine` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `attribute` tinyint(4) unsigned NOT NULL DEFAULT 0,
+  `card0` int(10) unsigned NOT NULL DEFAULT 0,
+  `card1` int(10) unsigned NOT NULL DEFAULT 0,
+  `card2` int(10) unsigned NOT NULL DEFAULT 0,
+  `card3` int(10) unsigned NOT NULL DEFAULT 0,
+  `option_id0` smallint(5) NOT NULL DEFAULT 0,
+  `option_val0` smallint(5) NOT NULL DEFAULT 0,
+  `option_parm0` tinyint(3) NOT NULL DEFAULT 0,
+  `option_id1` smallint(6) NOT NULL DEFAULT 0,
+  `option_val1` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm1` tinyint(4) NOT NULL DEFAULT 0,
+  `option_id2` smallint(6) NOT NULL DEFAULT 0,
+  `option_val2` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm2` tinyint(4) NOT NULL DEFAULT 0,
+  `option_id3` smallint(6) NOT NULL DEFAULT 0,
+  `option_val3` smallint(6) NOT NULL DEFAULT 0,
+  `option_parm3` tinyint(4) NOT NULL DEFAULT 0,
+  `expire_time` int(10) unsigned NOT NULL DEFAULT 0,
+  `favorite` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `bound` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `unique_id` bigint(20) NOT NULL DEFAULT 0,
+  `equip_switch` int(10) unsigned NOT NULL DEFAULT 0,
+  `enchantgrade` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `soldAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `for_sale` tinyint(3) unsigned NOT NULL DEFAULT 0,
+  `currency` varchar(100) NOT NULL DEFAULT '',
+  `log_type` varchar(100) NOT NULL DEFAULT '',
+  `log_date` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `nameid` (`nameid`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+*/
+-	script	Item Bank	-1,{
+	function func_Item;
+	function func_Item_Card;
+	function func_Unique_Id;
+	
+	OnTalk:
+		if($FMarket == 1) {
+			mes .n$;
+			mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+			close;
+		}
+		.@weight = 100 * Weight / MaxWeight;
+		.@gettimetick = gettimetick(2);
+		.@aid = getcharid(3);
+		.@cid = getcharid(0);
+		.n$ = "[ Marketplace ]";
+		.@date_now$ = gettimestr("%Y-%m-%d %H:%M:%S",21);
+		query_sql("SELECT COUNT(`account_id`) FROM `marketplace_inventory` WHERE `account_id` = '"+getcharid(3)+"'",.@ic);
+		disable_items;
+		mes .n$;
+		mes "Welcome to the Marketplace.";
+		if(.@ic){
+			mes "You have ("+.@ic+") item(s) in your Marketplace.";
+			query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 1 WHERE `account_id` = '"+getcharid(3)+"'");
+		}
+		mes "What can I do for you my friend?";
+		next;
+		deletearray .@setup_item_id;
+		getinventorylist;
+		.@setup_inventory_count = @inventorylist_count;
+		copyarray .@setup_item_id,@inventorylist_id,.@setup_inventory_count;
+		copyarray .@setup_item_amount,@inventorylist_amount,.@setup_inventory_count;
+		copyarray .@setup_item_equip,@inventorylist_equip,.@setup_inventory_count;
+		copyarray .@setup_item_identify,@inventorylist_identify,.@setup_inventory_count;
+		copyarray .@setup_item_attribute,@inventorylist_attribute,.@setup_inventory_count;
+		copyarray .@setup_item_refine,@inventorylist_refine,.@setup_inventory_count;
+		copyarray .@setup_item_card1,@inventorylist_card1,.@setup_inventory_count;
+		copyarray .@setup_item_card2,@inventorylist_card2,.@setup_inventory_count;
+		copyarray .@setup_item_card3,@inventorylist_card3,.@setup_inventory_count;
+		copyarray .@setup_item_card4,@inventorylist_card4,.@setup_inventory_count;
+		copyarray .@setup_item_expire,@inventorylist_expire,.@setup_inventory_count;
+		copyarray .@setup_item_bound,@inventorylist_bound,.@setup_inventory_count;
+		copyarray .@setup_item_option_id1,@inventorylist_option_id1,.@setup_inventory_count;        
+		copyarray .@setup_item_option_value1,@inventorylist_option_value1,.@setup_inventory_count;     
+		copyarray .@setup_item_option_parameter1,@inventorylist_option_parameter1,.@setup_inventory_count;
+
+		do{
+			.@is_complete = ( .@setup_item_size > 0 );
+			.@option = prompt(
+				"> Store Items to Marketplace ^0000FF["+.@setup_item_size+"]^000000",
+				"> Get Items from Marketplace ^0000FF["+.@ic+"]^000000",
+				(.@is_complete) ? "> ^18A800Store Items Now^000000!" : ""
+			);
+			switch (.@option){
+				case 1:
+					mes .n$;
+					mes "Welcome to the Marketplace.";
+					mes "Checking... Please wait.";
+					query_sql("SELECT COUNT(*) FROM `inventory` WHERE `char_id` = '"+.@cid+"'",.@it);
+					getinventorylist;
+					.@sic = @inventorylist_count;
+					sleep2 3000;
+					next;
+					if(.@it < .@sic){
+						mes .n$;
+						mes "You have items that hasn't been saved yet to our database.";
+						mes "Please relog first then come back to me.";
+						close;
+					}
+					if (countitem(23817) > 1 ){
+						mes .n$;
+						mes "I'm sorry only 1 Char Book at the time is allowed";
+						mes "You need storage the other Char Book before proceed";
+						//query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					}
+					do {
+						next;
+						mes .n$;
+						mes "Select your Valued Items.";
+						
+						.@sub_item_add$ = "";
+						.@sub_item_delete$ = "";
+						.@setup_item_size = 0;
+						.@setup_item_tcg = 0;
+						for ( .@i = 0; .@i < .@setup_inventory_count; .@i++ ) {
+							if (.@setup_item_equip[.@i] <= 0 && .@setup_item_expire[.@i] <= 0 && .@setup_item_bound[.@i] != 2 && .@setup_item_bound[.@i] != 3 && .@setup_item_bound[.@i] != 4) {
+								.@item_name$ = func_Item( .@setup_item_id[.@i],.@setup_item_amount[.@i],.@setup_item_refine[.@i],.@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i] );
+								if ( .@setup_item_price[.@i] > 0 ) {
+									if(.@setup_item_id[.@i] == 23817)
+										.@setup_item_tcg++;
+									.@setup_item_size++;
+									mes "["+.@setup_item_size+"] ^0000FF"+.@item_name$+"^000000";
+									.@sub_item_delete$ = .@sub_item_delete$ + .@item_name$;
+								}
+								else {
+									.@sub_item_add$ = .@sub_item_add$ + .@item_name$;
+								}
+							}
+							
+							.@sub_item_add$ = .@sub_item_add$ + ":";
+							.@sub_item_delete$ = .@sub_item_delete$ + ":";
+						}
+						.@sub_option = prompt(
+							( .@setup_item_size < .max_item ) ? "> ^18A800Add Item^000000" : "",
+							( .@setup_item_size ) ? "> ^FF0000Remove Item^000000" : "",
+							"> ^0000FFBack^000000."
+						);
+						
+						switch ( .@sub_option ) {
+							case 1:
+								mes "Which item to add?";
+								.@i = prompt( .@sub_item_add$ ) - 1;
+								if(.@i == 254){
+									query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+									end;
+								}
+								if( compare( .blacklist$,"|"+.@setup_item_id[.@i]+"|" ) ){
+									next;
+									mes .n$;
+									mes " ~ "+getitemname( .@setup_item_id[.@i] )+"^000000 cant be stored.";
+									query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+									break;
+								}
+								mes func_Item( .@setup_item_id[.@i],.@setup_item_amount[.@i],.@setup_item_refine[.@i],.@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i] );
+								func_Item_Card( .@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i] );
+								if ( .@setup_item_tcg >= 1 && .@setup_item_id[.@i] == 23817 ){
+									mes "I'm sorry but I can only store 1 Character Record at a time.";
+									//query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+									break;
+								}
+								if ( @inventorylist_amount[.@i] > 1 ) {
+									mes "> ^18A800Enter Amount to store^000000:";
+									//mes "> ^FF0000Enter 0 to cancel^000000.";
+									input .@setup_item_amount[.@i],0,@inventorylist_amount[.@i];
+									if (.@setup_item_amount[.@i] == 0){
+									next;
+									mes .n$;
+									mes "You cant add less than 1 amount.";
+										//query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+										break;
+									}
+								}
+								if ( .@setup_item_amount[.@i] ) {
+									.@setup_item_price[.@i] = 1;
+								}
+								break;
+							case 2:
+								mes .n$;
+								mes "Which item to delete?";
+								.@i = select( .@sub_item_delete$ ) - 1;
+								.@setup_item_price[.@i] = 0;
+								break;
+							case 255:
+								query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+								end;
+							default:
+								query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+								break;
+						}
+					} while ( .@sub_option < 3 );
+					break;
+				case 2:
+					.@size = query_sql("SELECT `account_id` FROM `marketplace_inventory` WHERE `account_id` = '"+getcharid(3)+"'",.@waid);
+					if(!.@size){
+						mes .n$;
+						mes "You don't have any item in the Marketplace.";
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					}
+					.@size = query_sql("SELECT `id`, `nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`bound`,`unique_id`,`enchantgrade`,`for_sale`,`on_buying_web` FROM `marketplace_inventory` WHERE `for_sale` = 0 AND `account_id` = " + getcharid(3),
+							.@id, .@item_id, .@item_amount,
+							.@item_identify, .@item_refine,.@item_attribute,
+							.@item_card0, .@item_card1, .@item_card2, .@item_card3,
+							.@item_op_i0, .@item_op_v0, .@item_op_p0, 
+							.@bound, .@unique_id$, .@echgrade, .@isforsale,
+							.@on_buying_web
+						);
+					mes .n$;
+					mes "Please select the item you want to withdraw.";
+					if(.@size > 50){
+						.@size = 50;
+						mes "Showing maximum 50 items.";
+					}
+					next;
+					
+					for (.@i = 0; .@i < .@size; .@i++)
+						.@menu$ = .@menu$ + func_Item( .@item_id[.@i],.@item_amount[.@i],.@item_refine[.@i],.@item_card0[.@i],.@item_card1[.@i],.@item_card2[.@i],.@item_card3[.@i] ) + ":";
+					
+					.@s = prompt(.@menu$) - 1;
+
+					if(.@s == 254){
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						end;
+					}
+
+					if (getiteminfo(.@item_id[.@s], 2) == 0 || getiteminfo(.@item_id[.@s], 2) == 2 || getiteminfo(.@item_id[.@s], 2) == 3 || getiteminfo(.@item_id[.@s], 2) == 6 || getiteminfo(.@item_id[.@s], 2) == 10 || getiteminfo(.@item_id[.@s], 2) == 11 || getiteminfo(.@item_id[.@s], 2) == 18 && .@amount[.@s] > 1) {
+						mes .n$;
+						mes "Please enter the amount you want to withdraw.";
+						next;
+						do {
+							input .@amt;
+						} while (!.@amt);
+					} else {
+						.@amt = 1;
+					}
+
+					if(.@item_id[.@s] && .@on_buying_web[.@s] == 1){
+						mes .n$;
+						mes "I'm sorry but "+getitemname(.@item_id[.@s])+" is currently listed on marketplace.";
+						mes "Please remove it from marketplace first before withdrawing.";
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					}
+					
+					if((countitem(.@item_id[.@s]) + .@amt) > 1000){
+						mes .n$;
+						mes "I don't think you can handle item more than 1000 pieces.";
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					}
+
+					if( 50 <= .@weight ) {
+						mes .n$;
+						mes "You are currently at 50% percent of your maximum weight."; 
+						close;
+					}
+					
+					if (.@item_amount[.@s] < .@amt) {
+						mes .n$;
+						mes "I don't think you have enough item in your Marketplace.";
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					} else if (.@item_amount[.@s] == .@amt) {
+						.@diff = 0;
+					} else if (.@item_amount[.@s] > .@amt) {
+						.@diff = .@item_amount[.@s] - .@amt;
+					}
+					dispbottom "Selected Item: "+ getitemname(.@item_id[.@s]);
+					dispbottom "Type: "+getiteminfo(.@item_id[.@s],2);
+					if (getiteminfo(.@item_id[.@s], 2) == 0 || getiteminfo(.@item_id[.@s], 2) == 2 || getiteminfo(.@item_id[.@s], 2) == 3 || getiteminfo(.@item_id[.@s], 2) == 6 || getiteminfo(.@item_id[.@s], 2) == 10 || getiteminfo(.@item_id[.@s], 2) == 11 || getiteminfo(.@item_id[.@s], 2) == 18) {
+						mes .n$;
+						mes "Are you sure you want to withdraw " + .@amt + "x " + getitemname(.@item_id[.@s]) + "?";
+						if(.@item_id[.@s] == 23817)
+							mes "^FF0000Notice: Upon claiming this item, you will be disconnected automatically.^000000";
+					} else {
+						mes .n$;
+						mes "Are you sure you want to withdraw " + .@amt + "x +" + .@item_refine[.@s] + " " + getitemname(.@item_id[.@s]) + " [" + getitemslots(.@item_id[.@s]) + "]?";
+						if (.@item_card0[.@s] || .@item_card1[.@s] || .@item_card2[.@s] || .@item_card3[.@s]) {
+							if (.@item_card0[.@s])
+								mes "Card Slot 1 : " + getitemname(.@item_card0[.@s]);
+							if (.@item_card1[.@s])
+								mes "Card Slot 2 : " + getitemname(.@item_card1[.@s]);
+							if (.@item_card2[.@s])
+								mes "Card Slot 3 : " + getitemname(.@item_card2[.@s]);
+							if (.@item_card3[.@s])
+								mes "Card Slot 4 : " + getitemname(.@item_card3[.@s]);
+						}
+						if(.@item_id[.@s] == 23817)
+							mes "^FF0000Notice: Upon claiming this item, you will be disconnected automatically.^000000";
+					}
+					sleep2 300;
+					if(checkweight(.@item_id[.@s],.@amt) == 0){
+						mes "You are overweight.";
+						mes "Make space on your inventory first then come back.";
+						close;
+					}
+					
+					next;
+					
+					if (select("Yes", "No") - 1) { query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'"); end; }
+
+					// additional check
+					.@chk = query_sql("SELECT `id` FROM `marketplace_inventory` WHERE `account_id` = " + getcharid(3) + " AND `for_sale` = 0 AND `id` = " + .@id[.@s], .@var);
+					
+					if (!.@chk) {
+						// duplicate check
+						mes .n$;
+						mes "Item is not available due to recent changes.";
+						query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+						close;
+					}
+					
+					if (!.@diff) {
+						query_sql("DELETE FROM `marketplace_inventory` WHERE `id` = '"+.@id[.@s]+"' AND `account_id` = " + getcharid(3) + " AND `for_sale` = 0 AND `nameid`= " + .@item_id[.@s]);
+					} else {
+						query_sql(sprintf("UPDATE `marketplace_inventory` SET `amount` = `amount` - %d WHERE `id` = '"+.@id[.@s]+"' AND `for_sale` = 0 AND `nameid` = %d AND `account_id` = %d", .@amt, .@item_id[.@s], getcharid(3)));
+					}
+					if ((getiteminfo(.@item_id[.@s], 2) == 0 || getiteminfo(.@item_id[.@s], 2) == 2 || getiteminfo(.@item_id[.@s], 2) == 3 || getiteminfo(.@item_id[.@s], 2) == 6 || getiteminfo(.@item_id[.@s], 2) == 10 || getiteminfo(.@item_id[.@s], 2) == 11 || getiteminfo(.@item_id[.@s], 2) == 18) == -1 && .@item_id[.@s] != 23817) {
+						if(!checkweight(.@item_id[.@s],.@amt)){
+							mes .n$;
+							mes "You are overweight.";
+							mes "Make space on your inventory first then come back.";
+							close;
+						}
+						getitem .@item_id[.@s], .@amt;
+					} else {
+						if(.@bound[.@s] == 1)
+							getitembound3 .@item_id[.@s], .@amt, .@item_identify[.@s], .@item_refine[.@s], .@item_attribute[.@s], .@item_card0[.@s], .@item_card1[.@s], .@item_card2[.@s], .@item_card3[.@s], 1, .@item_op_i0[.@s], .@item_op_v0[.@s], .@item_op_p0[.@s];
+						else
+							getitem3 .@item_id[.@s], .@amt, .@item_identify[.@s], .@item_refine[.@s], .@item_attribute[.@s], .@item_card0[.@s], .@item_card1[.@s], .@item_card2[.@s], .@item_card3[.@s], .@item_op_i0[.@s], .@item_op_v0[.@s], .@item_op_p0[.@s];
+					}
+					.@sql$ = "INSERT INTO `marketplace_inventory_log`"
+							+ " ( `account_id`,`char_id`,`nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`bound`,`unique_id`,`enchantgrade`,`log_type`,`log_date`)"
+							+ " VALUES"
+							+ " ( "+getcharid(3)+",'"+strcharinfo(0)+"',"+.@item_id[.@s]+","+.@amt+","+.@item_identify[.@s]+","+.@item_refine[.@s]+","+.@item_attribute[.@s]+","+.@item_card0[.@s]+","+.@item_card1[.@s]+","+.@item_card2[.@s]+","+.@item_card3[.@s]+",'"+.@item_op_i0[.@s]+"','"+.@item_op_v0[.@s]+"','"+.@item_op_p0[.@s]+"','"+.@bound[.@s]+"','"+.@unique_id[.@s]+"',0,'OUT',NOW())";
+					query_sql( .@sql$ );
+					query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					if(.@item_id[.@s] == 23817){
+						kickplayer(getcharid(0));
+						sleep(2000);
+						query_sql("SELECT MAX(`id`) FROM `inventory` WHERE `char_id` = '"+.@cid+"'",.@mid);
+						query_sql("UPDATE `inventory` SET `card0` = '"+.@item_card0[.@s]+"', `card1` = '"+.@item_card1[.@s]+"', `card2` = '"+.@item_card2[.@s]+"', `card3` = '"+.@item_card3[.@s]+"', `unique_id` = '"+.@unique_id$[.@s]+"' WHERE `nameid` = '23817' AND `char_id` = '"+.@cid+"' AND `id` = '"+.@mid+"'");
+						//query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					}
+					end;
+					
+				case 255:
+					query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					end;
+
+				default: 
+					query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+					break;
+			}
+			next;
+		} while ( .@option < 3 );
+			mes .n$;
+			mes "Your Valued Items is on Marketplace now.";					
+			dispbottom "Your Valued Items is on Marketplace now.";
+			.@gettimetick = gettimetick(2);
+			for ( .@i = 0; .@i < .@setup_inventory_count; .@i++ ) {
+				if ( .@setup_item_price[.@i] > 0 && countitem2( .@setup_item_id[.@i],1,.@setup_item_refine[.@i],0,.@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i] ) >= .@setup_item_amount[.@i] ) {
+					delitem2 .@setup_item_id[.@i],.@setup_item_amount[.@i],1,.@setup_item_refine[.@i],0,.@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i];
+					dispbottom " > "+func_Item( .@setup_item_id[.@i],.@setup_item_amount[.@i],.@setup_item_refine[.@i],.@setup_item_card1[.@i],.@setup_item_card2[.@i],.@setup_item_card3[.@i],.@setup_item_card4[.@i] )+"";
+					//if ((getiteminfo(.@setup_item_id[.@i], 2) == 0 || getiteminfo(.@setup_item_id[.@i], 2) == 2 || getiteminfo(.@setup_item_id[.@i], 2) == 3 || getiteminfo(.@setup_item_id[.@i], 2) == 6 || getiteminfo(.@setup_item_id[.@i], 2) == 10 || getiteminfo(.@setup_item_id[.@i], 2) == 11 || getiteminfo(.@setup_item_id[.@i], 2) == 18) && .@setup_item_id[.@i] != 23817) {
+					if (.@setup_item_id[.@i] != 23817 && (getiteminfo(.@setup_item_id[.@i], 2) == 0 || getiteminfo(.@setup_item_id[.@i], 2) == 2 || getiteminfo(.@setup_item_id[.@i], 2) == 3 || getiteminfo(.@setup_item_id[.@i], 2) == 6 || getiteminfo(.@setup_item_id[.@i], 2) == 10 || getiteminfo(.@setup_item_id[.@i], 2) == 11 || getiteminfo(.@setup_item_id[.@i], 2) == 18)) {
+						.@s = query_sql("SELECT `nameid` FROM `marketplace_inventory` WHERE `account_id` = '"+getcharid(3)+"' AND `nameid` = '"+.@setup_item_id[.@i]+"'",.@nameid);
+						if(.@s){
+							//sleep2(2000);
+							.@sql$ = "UPDATE `marketplace_inventory`"
+									+ " SET"
+									+ " `amount` = (`amount` + '"+.@setup_item_amount[.@i]+"')"
+									+ " WHERE"
+									+ " `account_id` = '"+getcharid(3)+"' AND `nameid` = '"+.@setup_item_id[.@i]+"'";
+							query_sql( .@sql$ );
+						} else {
+							.@sql$ = "INSERT INTO `marketplace_inventory`"
+									+ " ( `account_id`,`nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`bound`,`unique_id`,`enchantgrade`)"
+									+ " VALUES"
+									+ " ( "+.@aid+","+.@setup_item_id[.@i]+","+.@setup_item_amount[.@i]+","+.@setup_item_identify[.@i]+","+.@setup_item_refine[.@i]+","+.@setup_item_attribute[.@i]+","+.@setup_item_card1[.@i]+","+.@setup_item_card2[.@i]+","+.@setup_item_card3[.@i]+","+.@setup_item_card4[.@i]+",'"+.@setup_item_option_id1[.@i]+"','"+.@setup_item_option_value1[.@i]+"','"+.@setup_item_option_parameter1[.@i]+"','"+.@setup_item_bound[.@i]+"','"+func_Unique_Id(.@setup_item_id[.@i])+"',0)";
+							query_sql( .@sql$ );
+						}
+						.@s = 0;
+						//sleep2(2000);
+					} else {
+						.@sql$ = "INSERT INTO `marketplace_inventory`"
+								+ " ( `account_id`,`nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`bound`,`unique_id`,`enchantgrade`)"
+								+ " VALUES"
+								+ " ( "+.@aid+","+.@setup_item_id[.@i]+","+.@setup_item_amount[.@i]+","+.@setup_item_identify[.@i]+","+.@setup_item_refine[.@i]+","+.@setup_item_attribute[.@i]+","+.@setup_item_card1[.@i]+","+.@setup_item_card2[.@i]+","+.@setup_item_card3[.@i]+","+.@setup_item_card4[.@i]+",'"+.@setup_item_option_id1[.@i]+"','"+.@setup_item_option_value1[.@i]+"','"+.@setup_item_option_parameter1[.@i]+"','"+.@setup_item_bound[.@i]+"','"+func_Unique_Id(.@setup_item_id[.@i])+"',0)";
+						query_sql( .@sql$ );
+						//sleep2(2000);
+					}
+					.@sql$ = "INSERT INTO `marketplace_inventory_log`"
+							+ " ( `account_id`,`char_id`,`nameid`,`amount`,`identify`,`refine`,`attribute`,`card0`,`card1`,`card2`,`card3`,`option_id0`,`option_val0`,`option_parm0`,`bound`,`unique_id`,`enchantgrade`,`log_type`,`log_date`)"
+							+ " VALUES"
+							+ " ( "+.@aid+",'"+.@cid+"',"+.@setup_item_id[.@i]+","+.@setup_item_amount[.@i]+","+.@setup_item_identify[.@i]+","+.@setup_item_refine[.@i]+","+.@setup_item_attribute[.@i]+","+.@setup_item_card1[.@i]+","+.@setup_item_card2[.@i]+","+.@setup_item_card3[.@i]+","+.@setup_item_card4[.@i]+",'"+.@setup_item_option_id1[.@i]+"','"+.@setup_item_option_value1[.@i]+"','"+.@setup_item_option_parameter1[.@i]+"','"+.@setup_item_bound[.@i]+"','"+func_Unique_Id(.@setup_item_id[.@i])+"',0,'IN',NOW())";
+					query_sql( .@sql$ );
+					query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+.@aid+"'");
+				}
+			}
+	query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+.@aid+"'");
+	close;	
+	 
+	OnInit:
+		// max item to store in one transaction
+		.max_item = 5;
+		// Max Amount of Item can be hold by Player
+		.max_amount_item = 30000;
+		.blacklist$ = "|12263|2710|2760|2689|2691|2690|2694|2695|5286|5280|5328|2686|5330|5281|5391|13023|1578|13402|13401|1174|13419|13309|1283|13175|1372|13026|1312|1430|13408|13407|1729|1642|13109|1534|35415|35371|35395|35390|35391|35392|35393|35394|35380|35387|35388|569|7059|7060|20507|20307|31051|19586|12209|12211|12221|2352|1243|2414|2510|2352|2112|35385|35386|35414|1728|1744|1190|13022|13048|1829|13422|1929|1267|1286|1487|1547|1623|1828|1173|1982|1419|1983|1378|1537|1628|1563|16002|1388|2741|5265|2693|5266|2535|5331|2688|2692|5268|5326|5408|5279|5327|2439|5267|2132|2384|2543|2696|2697|2698|2699|35384|7776|12209|12211|12221|12114|12115|12116|12117|";
+
+	end;
+
+
+	/** FUNCTION AREA DO NOT EDIT THIS AREA **/
+	function	func_Unique_Id	{
+		query_sql("SELECT `unique_id` FROM `inventory` WHERE `char_id` = '"+getcharid(0)+"' AND `nameid` = '"+getarg(0)+"'",.@unique_id$);
+		return .@unique_id$;
+	}
+
+	function	func_Item	{
+		.@nameid = getarg( 0,0 );
+		.@amount = getarg( 1,1 );
+		.@refine = getarg( 2,0 );
+		
+		for ( .@i = 3; .@i <= 6; .@i++ )
+			.@card_count += ( getarg( .@i,0 ) > 0 );
+			
+		.@name$ = getitemname( .@nameid );
+		.@type = getiteminfo( .@nameid,2 );
+		.@slot = getitemslots( .@nameid );
+		
+		if ( .@type == IT_ARMOR || .@type == IT_WEAPON ) {
+			if ( .@slot )
+				.@name$ = .@name$ + "["+.@slot+"]";
+			if ( .@card_count )
+				.@name$ = .@name$ + " ("+.@card_count+" Cards)";
+			if ( .@refine )
+				.@name$ = "+" + .@refine + " " + .@name$;
+		}
+		.@name$ = F_InsertComma( .@amount ) + "x " + .@name$;
+	
+		return replacestr( .@name$, ":", " " );
+	}
+	
+	function	func_Item_Card	{
+		for ( .@i = 0; .@i < 4; .@i++ ) {
+			.@card_id = getarg( .@i,0 );
+			if ( .@card_id ) {
+				.@count = getd( ".@card_"+.@card_id );
+				if ( !.@count ) {
+					.@card[.@c] = .@card_id;
+					.@c++;
+				}
+				setd( ".@card_"+.@card_id ),.@count + 1;
+			}
+		}
+		
+		for ( .@i = 0; .@i < .@c; .@i++ ) {
+			.@count = getd( ".@card_"+.@card[.@i] );
+			if ( .@count ) 
+				mes " > "+.@count+"x "+getitemname( .@card[.@i] );
+		}
+		return;
+	}
+	
+	OnPCLogoutEvent:
+		query_sql("UPDATE `marketplace_inventory` SET `on_buying_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+}
+
+prontera,147,108,5	duplicate(Item Bank)	Marketplace#1	100
+new_1-1,61,105,4	duplicate(Item Bank)	Marketplace#newtraining	100

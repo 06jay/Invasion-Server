@@ -1,0 +1,120 @@
+-	script	WOESupply	-1,{
+OnSun2130:
+OnWed2130:
+    $WOESUP=1;
+    announce "WoE Supply: is now Activated!",0,0x006400;
+    end;
+
+OnSun2300:
+OnWed2300:
+    $WOESUP=0;
+    announce "WoE Supply: is now Deactivated!",0,0x006400;
+    end;
+}
+
+prontera,139,125,5	script	WoE Supply	121,{
+//if ( !agitcheck() && !agitcheck2() ) {
+//    mes "[ WoE Supply ]";
+//    mes "The War of Emperium is ^777777inactive^000000.";
+//    close;
+//}
+
+    if(getcharid(2) > 0){
+    mes "[ WoE Supply ]";
+    mes "What would you like?";
+    next;
+    switch(select("Claim:Return")){
+        case 1:
+        if($WOESUP == 0) {
+            mes "[ WoE Supply ]";
+            mes "WOE Supply Open at";
+            mes "^ff0000Wednesday^000000: 9:30PM";
+            mes "^ff0000Sunday^000000: 9:30PM";
+            close;
+        }
+
+        if(BaseLevel < 69) {
+            mes "[ WoE Supply ]";
+            mes "This NPC is only for level 70 and above.";
+            close;
+        }
+            mes "[ WoE Supply ]";
+            mes "Siege White Potion [ "+countitem(11503)+"/^ff0000100^000000 ]";
+            mes "Siege Blue Potion [ "+countitem(11504)+"/^ff0000100^000000 ]";
+            next;
+            switch(select("Siege White Potion [ "+countitem(11503)+"/^ff0000100^000000 ]","Siege Blue Potion [ "+countitem(11504)+"/^ff0000100^000000 ]")){
+                case 1:
+                    input .@amount;
+					if (.@amount <= 0) {
+						mes "[ WoE Supply ]";
+						mes "^ff0000What happened^000000?";
+						mes "Maybe you tried to input 0 amount?";
+                        close;
+					}
+
+                    if((countitem(11503) + .@amount) > 100 || (.@amount) > 100 ){
+						mes "[ WoE Supply ]";
+						mes "You can handle 100pcs every WOE.";
+                        close;
+					}
+                    .@weight = 100 * Weight / MaxWeight;
+                    if( 50 <= .@weight ) {
+						mes "[ WoE Supply ]";
+						mes "You are currently at 50% percent of your maximum weight."; 
+                        close;
+                    }
+
+                    getitembound 11503,.@amount,4;
+                    close;
+
+                case 2:
+                    getitembound 11504,50,4;
+                    close;
+            }
+
+        case 2:
+            mes "[ WoE Supply ]";
+            mes "Which one? you want to remove?";
+            next;
+            switch(select("Siege White Potion [ "+countitem(11503)+" ]","Siege Blue Potion [ "+countitem(11504)+" ]")) {
+                case 1:
+                    input .@amount;
+                    if(.@amount < 0 ) {
+                       mes "[ WoE Supply ]";
+                        mes "Invalid value";
+                        close;
+                    }
+                    if (countitem(11503) < .@amount) {
+                        mes "[ WoE Supply ]";
+                        mes "Invalid amount.";
+                        mes "Please check the exact amount";
+                        close;
+                    }
+                        delitem 11503,.@amount;
+                        end;
+
+                case 2:
+                    input .@amount;
+                    if(.@amount < 0 ) {
+                       mes "[ WoE Supply ]";
+                        mes "Invalid value";
+                        close;
+                    }
+                    if (countitem(11504) < .@amount) {
+                        mes "[ WoE Supply ]";
+                        mes "Invalid amount.";
+                        mes "Please check the exact amount";
+                        close;
+                    }
+                        delitem 11504,.@amount;
+                        end;
+            }
+    close;
+    }
+}
+    mes "[ WoE Supply ]";
+    mes "You dont have guild";
+    close;
+}
+
+

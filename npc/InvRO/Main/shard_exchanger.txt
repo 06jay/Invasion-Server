@@ -1,0 +1,367 @@
+prontera,164,108,4	script	Shard Exchanger A#reward	899,{
+	if($shexchage == 1) {
+		mes "[ Shard Exchanger A ]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+function ex_getrate_boss;
+function ex_getrate_wobs;
+function ex_getrate_actvs;
+goto OnTalk;
+end;
+
+OnInit:
+	.n$ = "[ Shard Exchanger A ]";
+	.tcg_id = 35380;
+	.tcg_id3 = 35391;
+	.tcg_id5 = 35393;
+
+
+
+	.@nb = query_sql("SELECT shard_boss_farm_db FROM in_shard_farm_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_farm_db (shard_boss_farm_db) values('"+$BOSSS+"')");
+	}
+	.@nb = query_sql("SELECT shard_boss_rate_db FROM in_shard_rate_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_rate_db (shard_boss_rate_db) values('0')");
+	}
+
+	.@nb = query_sql("SELECT shard_wobs_farm_db FROM in_shard_farm_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_farm_db (shard_wobs_farm_db) values('"+$WOBS+"')");
+	}
+	.@nb = query_sql("SELECT shard_wobs_rate_db FROM in_shard_rate_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_rate_db (shard_wobs_rate_db) values('0')");
+	}
+
+	.@nb = query_sql("SELECT shard_actvs_farm_db FROM in_shard_farm_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_farm_db (shard_actvs_farm_db) values('"+$ACTVS+"')");
+	}
+	.@nb = query_sql("SELECT shard_actvs_rate_db FROM in_shard_rate_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_rate_db (shard_actvs_rate_db) values('0')");
+	}
+	
+	while(1) {
+		sleep(1000);
+		query_sql("UPDATE in_shard_farm_db SET shard_boss_farm_db="+$BOSSS);
+		query_sql("UPDATE in_shard_farm_db SET shard_wobs_farm_db="+$WOBS);
+		query_sql("UPDATE in_shard_farm_db SET shard_actvs_farm_db="+$ACTVS);
+	}
+
+end;
+
+
+
+
+
+OnTalk:
+mes .n$;
+	mes "^ff0000NOTE:^000000 ";
+	mes "1. Shards exchanger will automatically convert your shard to ^8a2be2$IN Token^000000.";
+	mes "2. it will have requirements before exchanging it.";
+	next;
+	mes .n$;
+	mes "^ff0000Requirements^000000:";
+	mes "If ^ff1493Boss Shard^000000 overall is below 1000 it will automatically lock the exchange in ^ff1493Boss Shard^000000.";
+	next;
+	mes .n$;
+	mes "While all other shards will automatically lock if below 100";
+	mes "World Boss / ^f7810fActivity Shard^000000";
+	mes "^C0C0C0Top Ladder Shard^000000";
+	next;
+	mes .n$;
+	.@updated_rate_boss$ = ex_getrate_boss();
+	mes "^ff00001^000000x ^ff1493Boss^000000 rate is ^00ff00" + .@updated_rate_boss$ + "^000000^8a2be2$IN Token^000000";
+
+	.@updated_rate_wobs$ = ex_getrate_wobs();
+	mes "^ff00001^000000x W.Boss rate is ^00ff00" + .@updated_rate_wobs$ + "^000000^8a2be2$IN Token^000000";
+
+	.@updated_rate_actvs$ = ex_getrate_actvs();
+	mes "^ff00001^000000x ^f7810fActivity^000000 rate is ^00ff00" + .@updated_rate_actvs$ + "^000000^8a2be2$IN Token^000000";
+switch(select(
+	($BOSSS > 999 )?"^ff1493Boss Shard^000000":"^ff1493Boss Shard^000000 - ^ff0000Locked^000000",
+	($WOBS > 99 )?"World Boss Shard":"World Boss Shard - ^ff0000Locked^000000",
+	($ACTVS > 99 )?"^f7810fActivity Shard^000000":"^f7810fActivity Shard^000000 - ^ff0000Locked^000000"
+	)){
+
+				case 1:
+		if( $BOSSS > 999 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your ^ff1493Boss Shard^000000 amount";
+						input(.@amount); 
+						next;
+						if ((.@amount) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						.@updated_rate_boss$ = ex_getrate_boss();
+						mes "Confirmation the current exchange rate is ^ff0000" + .@updated_rate_boss$ +"^000000 ^8a2be2$IN Token^000000";
+						mes "^ffffff_^000000";
+						mes "^ff0000Transact at your own risk.^000000";
+						mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id) < .@amount) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id);
+							close;
+						}
+						delitem .tcg_id,.@amount;
+						$BOSSS-=.@amount;
+
+						//.@query$ = "INSERT INTO `login` (`account_id`,`balance_roi`,`last_exchange_date`,`last_exchange_amount`) VALUES (";
+						//.@query$ = .@query$ + getcharid(3) + ", ";
+						//.@query$ = .@query$ + "( SELECT shard_boss_rate_db FROM shard_boss_rate_db ) * " + .@amount + ", NOW(), ";
+						//.@query$ = .@query$ + "( SELECT shard_boss_rate_db FROM shard_boss_rate_db ) * " + .@amount;
+						//.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", balance_roi = balance_roi + ( SELECT shard_boss_rate_db FROM shard_boss_rate_db ) * " + .@amount + ", last_exchange_date = NOW(), last_exchange_amount = ( SELECT shard_boss_rate_db FROM shard_boss_rate_db ) * " + .@amount;
+						
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_boss_rate_db FROM in_shard_rate_db ) * " + .@amount;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_boss_rate_db FROM in_shard_rate_db ) * " + .@amount;
+						
+
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,char_name,last_exchange_date,last_exchange_amount,shard_rate,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ",'"+strcharinfo(0)+"', NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_boss_rate_db FROM in_shard_rate_db ) * " + .@amount + ", " + .@updated_rate_boss$ + ", " + (.@amount) +",'Boss Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_boss_pool_db = shard_boss_pool_db - ( SELECT shard_boss_rate_db FROM in_shard_rate_db ) * " + .@amount);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_boss_rate_db FROM in_shard_rate_db ) * " + .@amount + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+					case 2:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amount$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amount$[.@i];
+						}
+						close;
+
+					default:
+						close;
+					
+				}
+			}
+				next;
+				mes .n$;
+				mes "Sorry ^ff1493Boss Shard^000000 exchanger is locked.";
+				mes "Must have minimum 1000 ^ff1493Boss Shard^000000 total server farm to unlock";
+				close;
+
+
+				case 2:
+				if( $WOBS > 99 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your World Boss Shard amount";
+						input(.@amountw);
+						next;
+						if ((.@amountw) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						.@updated_rate_wobs$ = ex_getrate_wobs();
+						mes "Confirmation the current exchange rate is ^ff0000" + .@updated_rate_wobs$ +"^000000 ^8a2be2$IN Token^000000";
+						mes "^ffffff_^000000";
+						mes "^ff0000Transact at your own risk.^000000";
+						mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id3) < .@amountw) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id3);
+							close;
+						}
+						delitem .tcg_id3,.@amountw;
+						$WOBS-=.@amountw;
+
+						//.@query$ = "INSERT INTO `login` (`account_id`,`balance_roi`,`last_exchange_date`,`last_exchange_amount`) VALUES (";
+						//.@query$ = .@query$ + getcharid(3) + ", ";
+						//.@query$ = .@query$ + "( SELECT shard_wobs_rate_db FROM shard_wobs_rate_db ) * " + .@amountw + ", NOW(), ";
+						//.@query$ = .@query$ + "( SELECT shard_wobs_rate_db FROM shard_wobs_rate_db ) * " + .@amountw;
+						//.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", balance_roi = balance_roi + ( SELECT shard_wobs_rate_db FROM shard_wobs_rate_db ) * " + .@amountw + ", last_exchange_date = NOW(), last_exchange_amount = ( SELECT shard_wobs_rate_db FROM shard_wobs_rate_db ) * " + .@amountw;
+						
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_wobs_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_wobs_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,last_exchange_date,last_exchange_amount,shard_rate,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_wobs_rate_db FROM in_shard_rate_db ) * " + .@amountw + ", " + .@updated_rate_wobs$ + ", " + (.@amountw) +",'World Boss Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_wobs_pool_db = shard_wobs_pool_db - ( SELECT shard_wobs_rate_db FROM in_shard_rate_db ) * " + .@amountw);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_wobs_rate_db FROM in_shard_rate_db ) * " + .@amountw + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+				
+					case 2:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amountw$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amountw$[.@i];
+						}
+						close;
+
+					default:
+						close;
+
+				}
+			}
+				next;
+				mes .n$;
+				mes "Sorry World Boss Shard exchanger is locked.";
+				mes "Must have minimum 99 World Boss Shard total server farm to unlock";
+				close;
+
+				case 3:
+				if( $ACTVS > 99 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your ^f7810fActivity Shard^000000 amount";
+						input(.@amountw);
+						next;
+						if ((.@amountw) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						.@updated_rate_actvs$ = ex_getrate_actvs();
+						mes "Confirmation the current exchange rate is ^ff0000" + .@updated_rate_actvs$ +"^000000 ^8a2be2$IN Token^000000";
+						mes "^ffffff_^000000";
+						mes "^ff0000Transact at your own risk.^000000";
+						mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id5) < .@amountw) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id5);
+							close;
+						}
+						delitem .tcg_id5,.@amountw;
+						$ACTVS-=.@amountw;
+
+						//.@query$ = "INSERT INTO `login` (`account_id`,`balance_roi`,`last_exchange_date`,`last_exchange_amount`) VALUES (";
+						//.@query$ = .@query$ + getcharid(3) + ", ";
+						//.@query$ = .@query$ + "( SELECT shard_actvs_rate_db FROM shard_actvs_rate_db ) * " + .@amountw + ", NOW(), ";
+						//.@query$ = .@query$ + "( SELECT shard_actvs_rate_db FROM shard_actvs_rate_db ) * " + .@amountw;
+						//.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", balance_roi = balance_roi + ( SELECT shard_actvs_rate_db FROM shard_actvs_rate_db ) * " + .@amountw + ", last_exchange_date = NOW(), last_exchange_amount = ( SELECT shard_actvs_rate_db FROM shard_actvs_rate_db ) * " + .@amountw;
+						
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_actvs_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_actvs_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,last_exchange_date,last_exchange_amount,shard_rate,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_actvs_rate_db FROM in_shard_rate_db ) * " + .@amountw + ", " + .@updated_rate_actvs$ + ", " + (.@amountw) +",'Activity Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_actvs_pool_db = shard_actvs_pool_db - ( SELECT shard_actvs_rate_db FROM in_shard_rate_db ) * " + .@amountw);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_actvs_rate_db FROM in_shard_rate_db ) * " + .@amountw + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+				
+					case 3:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amountw$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amountw$[.@i];
+						}
+						close;
+
+					default:
+						close;
+
+				}
+			}
+				next;
+				mes .n$;
+				mes "Sorry ^f7810fActivity Shard^000000 exchanger is locked.";
+				mes "Must have minimum 99 ^f7810fActivity Shard^000000 total server farm to unlock";
+				close;
+
+				
+				}
+
+
+function ex_getrate_boss {
+	query_sql("SELECT shard_boss_pool_db FROM in_shard_audit",.@shard_boss_pool_db);	
+	query_sql("UPDATE in_shard_farm_db SET shard_boss_farm_db="+$BOSSS);
+	if (!$BOSSS) return 0;
+	query_sql("UPDATE in_shard_rate_db SET shard_boss_rate_db = (SELECT " + .@shard_boss_pool_db + " / " + $BOSSS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_boss_rate_db AS CHAR(13)) FROM in_shard_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_wobs {
+	query_sql("SELECT shard_wobs_pool_db FROM in_shard_audit",.@shard_wobs_pool_db);	
+	query_sql("UPDATE in_shard_farm_db SET shard_wobs_farm_db="+$WOBS);
+	if (!$WOBS) return 0;
+	query_sql("UPDATE in_shard_rate_db SET shard_wobs_rate_db = (SELECT " + .@shard_wobs_pool_db + " / " + $WOBS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_wobs_rate_db AS CHAR(13)) FROM in_shard_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_actvs {
+	query_sql("SELECT shard_actvs_pool_db FROM in_shard_audit",.@shard_actvs_pool_db);	
+	query_sql("UPDATE in_shard_farm_db SET shard_actvs_farm_db="+$ACTVS);
+	if (!$ACTVS) return 0;
+	query_sql("UPDATE in_shard_rate_db SET shard_actvs_rate_db = (SELECT " + .@shard_actvs_pool_db + " / " + $ACTVS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_actvs_rate_db AS CHAR(13)) FROM in_shard_rate_db", .@rate$);
+	return .@rate$;
+}
+
+}

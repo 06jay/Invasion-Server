@@ -1,0 +1,603 @@
+prontera,141,125,5	script	Master Potion Brewer#1	4_M_ALCHE_B,{
+	.@name$ = "[ Master Potion Brewer ]";
+	set @brew,0;
+	set @bfail,0;
+	set @bsucc,0;
+	.@weight = 100 * Weight / MaxWeight;
+   
+    if (Class != 18 && Class != 4019 ) {
+        mes .@name$;
+        mes "Alchemist or Creator only can access me.";
+        close; 
+    }
+
+	mes .@name$;
+	mes "Hello what do you want to brew?";
+	next;
+	switch(select("Acid Bottle:Bottle Grenade:Condensed Red Potion:Condensed Yellow Potion:Condensed White Potion:Glistening Coat:Marine Sphere Bottle:Plant Bottle:Alcohol")){
+		case 1:
+			mes .@name$;
+			mes "How many ^ff0000Acid Bottle^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case1:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(929) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 929,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case1;
+				} else {
+				delitem 713,1;
+				delitem 929,1;
+				getnameditem 7136,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case1;
+		}
+
+		case 2:
+			mes .@name$;
+			mes "How many ^ff0000Bottle Grenade^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case2:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(970) < 1 || countitem(1059) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 970,1;
+				delitem 1059,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case2;
+				} else {
+				delitem 713,1;
+				delitem 970,1;
+				delitem 1059,1;
+				getnameditem 7135,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case2;
+		}
+
+		case 3:
+			mes .@name$;
+			mes "How many ^ff0000Condensed Red Potion^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case3:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(501) < 1 || countitem(952) < 1 || countitem(1092) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 501,1;
+				delitem 952,1;
+				delitem 1092,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case3;
+				} else {
+				delitem 501,1;
+				delitem 952,1;
+				delitem 1092,1;
+				getnameditem 545,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case3;
+		}
+
+		case 4:
+			mes .@name$;
+			mes "How many ^ff0000Condensed Yellow Potion^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case4:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(503) < 1 || countitem(1017) < 1 || countitem(1092) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 503,1;
+				delitem 1017,1;
+				delitem 1092,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case4;
+				} else {
+				delitem 503,1;
+				delitem 1017,1;
+				delitem 1092,1;
+				getnameditem 546,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case4;
+		}
+
+		case 5:
+			mes .@name$;
+			mes "How many ^ff0000Condensed White Potion^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case5:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(504) < 1 || countitem(1061) < 1 || countitem(1092) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 504,1;
+				delitem 1061,1;
+				delitem 1092,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case5;
+				} else {
+				delitem 504,1;
+				delitem 1061,1;
+				delitem 1092,1;
+				getnameditem 547,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case5;
+		}
+
+		case 6:
+			mes .@name$;
+			mes "How many ^ff0000Glistening Coat^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case6:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(950) < 1 || countitem(970) < 1 || countitem(1044) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 950,1;
+				delitem 970,1;
+				delitem 1044,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case6;
+				} else {
+				delitem 713,1;
+				delitem 950,1;
+				delitem 970,1;
+				delitem 1044,1;
+				getnameditem 7139,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case6;
+		}
+
+		case 7:
+			mes .@name$;
+			mes "How many ^ff0000Marine Sphere Bottle^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case7:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(1050) < 1 || countitem(1051) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 1050,1;
+				delitem 1051,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case7;
+				} else {
+				delitem 713,1;
+				delitem 1050,1;
+				delitem 1051,1;
+				getnameditem 7138,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case7;
+		}
+
+		case 8:
+			mes .@name$;
+			mes "How many ^ff0000Plant Bottle^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case8:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(1032) < 1 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 1032,1;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case8;
+				} else {
+				delitem 713,1;
+				delitem 1032,1;
+				getnameditem 7137,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case8;
+		}
+
+		case 9:
+			mes .@name$;
+			mes "How many ^ff0000Alcohol^000000 you want to brew?";
+			next;
+			input .@qtity;
+			@brew += .@qtity;
+			mes .@name$;
+			mes "Please Wait...";
+			next;
+			case9:
+			if(@brew < 1 ) {
+				mes .@name$;
+				mes "Done...";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+			if(countitem(713) < 1 || countitem(905) < 5 || countitem(1092) < 1 || countitem(7033) < 5 ) {
+				mes .@name$;
+				mes "Uh Oh....";
+				next;
+				mes .@name$;
+				mes "Sorry you dont have enough requirements";
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+
+			if( 70 <= .@weight ) {
+				mes .@name$;
+				mes "Wait a minute....";
+				next;
+				mes .@name$;
+				mes "You are currently at 70% percent of your maximum weight."; 
+				next;
+				mes .@name$;
+				mes "Total Success: "+@bsucc+"";
+				mes "Total Failed: "+@bfail+"";
+				close;
+			}
+				if (rand(3) == 1){
+				delitem 713,1;
+				delitem 905,5;
+				delitem 1092,1;
+				delitem 7033,5;
+				specialeffect2 306;
+				@brew -= 1;
+				@bfail += 1;
+				sleep2 300;
+				goto case9;
+				} else {
+				delitem 713,1;
+				delitem 905,5;
+				delitem 1092,1;
+				delitem 7033,5;
+				getnameditem 970,strcharinfo(0);
+				specialeffect2 305;
+				@brew -= 1;
+				@bsucc += 1;
+				sleep2 300;
+				goto case9;
+		}
+	}
+}

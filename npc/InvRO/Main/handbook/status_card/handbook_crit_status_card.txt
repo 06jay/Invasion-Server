@@ -1,0 +1,17 @@
+function	script	CCriticalView	{
+		mes "[ Hand Book ]";
+		mes "Here's the crit list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+if(a4407 == 1) { mes "^ff0000"+getitemname(4407)+" + 5 (default) ^000000"; } else { mes "^0000FF"+getitemname(4407)+" + 5 (default) ^000000"; }
+if(a27085 == 1) { mes "^ff0000"+getitemname(27085)+" + 3 (new) ^000000"; } else { mes "^0000FF"+getitemname(27085)+" + 3 (new) ^000000"; }
+if(a4302 == 1) { mes "^ff0000"+getitemname(4302)+" + 5 (default) ^000000"; } else { mes "^0000FF"+getitemname(4302)+" + 5 (default) ^000000"; }
+if(a27087 == 1) { mes "^ff0000"+getitemname(27087)+" + 1 (new) ^000000"; } else { mes "^0000FF"+getitemname(27087)+" + 1 (new) ^000000"; }
+if(a4305 == 1) { mes "^ff0000"+getitemname(4305)+" + 5 (default) ^000000"; } else { mes "^0000FF"+getitemname(4305)+" + 5 (default) ^000000"; }
+if(a4372 == 1) { mes "^ff0000"+getitemname(4372)+" + 5 (default) ^000000"; } else { mes "^0000FF"+getitemname(4372)+" + 5 (default) ^000000"; }
+
+
+		
+		close;
+	}

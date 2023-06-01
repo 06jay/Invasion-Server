@@ -1,0 +1,324 @@
+prontera,125,63,4	script	Reseter	407,{
+	query_sql("SELECT CAST(`value` AS CHAR(13)) FROM `in_security` WHERE account_id = " + getcharid(3), @INOnHand);
+	query_sql("SELECT `block` FROM `in_security` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@INOnBlock);
+	set .npcname$,"[ Reseter ]";
+
+	if($resetst == 1) {
+		mes .npcname$;
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+	if (.@INOnBlock > 0 ) {
+		mes .npcname$;
+		mes "Your account block on ^8a2be2$IN^000000 transaction";
+		mes "^ffffff_^000000";
+		mes "^ff0000Please contact the administrator^000000";
+		close;
+	}
+
+	mes .npcname$;
+	mes "So are you satisfied with your";
+	mes "current stat/skill allocation?";
+	mes "Of course not,";
+	next;
+	switch(select("^FF3355Reset Stats and Skill^000000:Information:Quit")) {
+		case 1:
+			if(resetstatsp == 0) {
+			mes .npcname$;
+			mes "This is your 1st time to reset your stats/skill";
+			mes "Cost: Free";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				close;
+				}
+			}
+
+			if(resetstatsp == 1) {
+			mes .npcname$;
+			mes "This is your 2nd time to reset your stats/skill";
+			mes "Cost: 10x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 10) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,10;
+				//#TCGOnHand -= 10;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-10) ON DUPLICATE KEY UPDATE `value` = `value` - 10;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',10) ON DUPLICATE KEY UPDATE `value` = `value` + 10;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+
+			if(resetstatsp == 2) {
+			mes .npcname$;
+			mes "This is your 3rd time to reset your stats/skill";
+			mes "Cost: 20x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 20) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,20;
+				//#TCGOnHand -= 20;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-20) ON DUPLICATE KEY UPDATE `value` = `value` - 20;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',20) ON DUPLICATE KEY UPDATE `value` = `value` + 20;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+
+			if(resetstatsp == 3) {
+			mes .npcname$;
+			mes "This is your 4th time to reset your stats/skill";
+			mes "Cost: 40x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 40) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,40;
+				//#TCGOnHand -= 40;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-40) ON DUPLICATE KEY UPDATE `value` = `value` - 40;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',40) ON DUPLICATE KEY UPDATE `value` = `value` + 40;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+
+			if(resetstatsp == 4) {
+			mes .npcname$;
+			mes "This is your 5th time to reset your stats/skill";
+			mes "Cost: 80x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 80) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,80;
+				//#TCGOnHand -= 80;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-80) ON DUPLICATE KEY UPDATE `value` = `value` - 80;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',80) ON DUPLICATE KEY UPDATE `value` = `value` + 80;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+
+			if(resetstatsp == 5) {
+			mes .npcname$;
+			mes "This is your 6th time to reset your stats/skill";
+			mes "Cost: 160x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 160) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,160;
+				//#TCGOnHand -= 160;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-160) ON DUPLICATE KEY UPDATE `value` = `value` - 160;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',160) ON DUPLICATE KEY UPDATE `value` = `value` + 160;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+
+			if(resetstatsp == 6) {
+			mes .npcname$;
+			mes "This is your 7th time to reset your stats/skill";
+			mes "Cost: 320x ^8a2be2$IN^000000";
+			next;
+			mes .npcname$;
+			mes "Are you sure?";
+			next;
+		switch(select("No:Yes")){
+			case 1:
+				mes .npcname$;
+				mes "Okay have a nice day";
+				close;
+				
+			case 2:
+				mes .npcname$;
+				if (countitem(35371) < 320) {
+					mes "Sorry, you don't have enough ^8a2be2$IN^000000.";
+					close;
+				}
+				mes .npcname$;
+				mes "Alright, here we go now..";
+				delitem 35371,320;
+				//#TCGOnHand -= 320;
+				.ttime$ = gettimetick(2)+900;
+				mes .npcname$;
+				mes "Please wait while we are processing your request...";
+				sleep2 1000;
+				query_sql("INSERT INTO `in_security` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INOnHand',-320) ON DUPLICATE KEY UPDATE `value` = `value` - 320;");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_delay_transact` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@INTransaction','"+.ttime$+"') ON DUPLICATE KEY UPDATE `value` = "+.ttime$+";");
+				sleep2 1000;
+				query_sql("INSERT INTO `in_token_claim_ref` (`account_id`,`key`,`value`) VALUES ('"+getcharid(3)+"','@token_coin_ref',320) ON DUPLICATE KEY UPDATE `value` = `value` + 320;");
+				ResetStatus;
+				ResetSkill;
+				callfunc "F_GetPlatinumSkills";
+				set resetstatsp,resetstatsp+1;
+				mes "Complete...";
+				close;
+				}
+			}
+			mes .npcname$;
+			mes "Sorry you already reach the maximum reset status";
+			close;
+			
+		case 2:
+			mes .npcname$;
+			mes "You may only 7x reset limit, so use it wisely.";
+			next;
+			mes .npcname$;
+			mes "1st - Free";
+			mes "2nd - 10 ^8a2be2$IN^000000";
+			mes "3rd - 20 ^8a2be2$IN^000000";
+			mes "4th - 40 ^8a2be2$IN^000000";
+			mes "5th - 80 ^8a2be2$IN^000000";
+			mes "6th - 160 ^8a2be2$IN^000000";
+			mes "7th - 320 ^8a2be2$IN^000000";
+			close;
+
+		case 3:
+			close;
+	}
+}

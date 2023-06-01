@@ -1,0 +1,126 @@
+/*.-----------------------------------------------------------------.
+  .    ____                          __                             .
+  .   /\  _`\                       /\ \__  __                      .
+  .   \ \ \/\_\  _ __    __     __  \ \ ,_\/\_\  __  __     __      .
+  .    \ \ \/_/_/\`'__\/'__`\ /'__`\ \ \ \/\/\ \/\ \/\ \  /'__`\    .
+  .     \ \ \s\ \ \ \//\  __//\ \d\.\_\ \ \_\ \ \ \ \_/ |/\  __/    .
+  .      \ \____/\ \_\\ \____\ \__/.\_\\ \__\\ \_\ \___/ \ \____\   .
+  .       \/___/  \/_/ \/____/\/__/\/_/ \/__/ \/_/\/__/   \/____/   .
+  .                                                                 .
+  .          2014~2019 © Creative Services and Development          .
+  .                      www.creativesd.com.br                      .
+  .-----------------------------------------------------------------.
+  . Script:                                                         .
+  .    Funções Globais                                              .
+  .-----------------------------------------------------------------.
+  . Autor: Romulo SM (sbk_)                            Versão: 1.0  .
+  .                                                                 .
+  . Compatível:	eAthena e derivações.                    	        .
+  .-----------------------------------------------------------------.
+  . Descrição:                                                      .
+  .    Gerencia informações do servidor para o FluxCP.              .
+  *-----------------------------------------------------------------*/
+-	script	FluxCP_Scripts	-1,{
+OnInit:
+	if( agitcheck() )
+		donpcevent "FluxCP_ServerStatus::OnAgitStart";
+	else
+		donpcevent "FluxCP_ServerStatus::OnAgitEnd";
+		
+	if( agitcheck2() )
+		donpcevent "FluxCP_ServerStatus::OnAgitStart2";
+	else
+		donpcevent "FluxCP_ServerStatus::OnAgitEnd2";
+		
+	if( agitcheck3() )
+		donpcevent "FluxCP_ServerStatus::OnAgitStart";
+	else
+		donpcevent "FluxCP_ServerStatus::OnAgitEnd";
+	end;
+
+OnAgitStart:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_fe', 1)";
+	end;
+	
+OnAgitEnd:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_fe', 0)";
+	end;
+	
+OnAgitStart2:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_se', 1)";
+	end;
+	
+OnAgitEnd2:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_se', 0)";
+	end;
+	
+OnAgitStart3:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_th', 1)";
+	end;
+	
+OnAgitEnd3:
+	query_sql "REPLACE INTO `server_info` VALUES ('woe_th', 0)";
+	end;
+	
+OnPCLoginEvent:
+	query_sql "SELECT `value` FROM `server_info` WHERE `name`='peak'", .@peak;
+	query_sql "SELECT COUNT(*) FROM `char` WHERE `online`='1'", .@count;
+	
+	if( .@peak <= 0 || .@count > .@peak )
+		query_sql "REPLACE INTO `server_info` VALUES ('peak', " + .@count + ")";
+		
+	query_sql "SELECT `balance` FROM `cp_credits` WHERE `account_id`='" + getcharid(3) + "'", .@balance;
+	if( .@balance >= 0 )
+		set #CASHPOINTS, #CASHPOINTS + .@balance;
+	else
+		set #CASHPOINTS, #CASHPOINTS - .@balance;
+		
+	query_sql "UPDATE `cp_credits` SET `balance`='0' WHERE `account_id`='" + .@balance + "'";
+	end;
+	
+OnNPCKillEvent:
+	if( getmonsterinfo(killedrid,MOB_MODE)&0x0020 == 0 )
+		end;
+	
+	.@CID = getcharid(0);
+	if( .@CID <= 0 )
+		end;
+
+	query_sql "INSERT INTO `mvp_flux_csd` (`char_id`, `kill`, `last_update`) VALUES (" + .@CID + ", 1, NOW()) ON DUPLICATE KEY UPDATE `kill`=`kill`+1, `last_update`=NOW()";
+	end;
+	
+OnPCKillEvent:
+	.@CID = getcharid(0);
+	.@GID = getcharid(2);
+	.@Map$ = strcharinfo(3);
+	.@Player$ = rid2name(killedrid);
+	.@RID = getcharid(0,.@Player$);
+	.@RGID = getcharid(2,.@Player$);
+	
+	if( .@RID <= 0 )
+		end;
+	
+	if( getmapflag(.@Map$,mf_gvg) || getmapflag(.@Map$,mf_gvg_castle) ) {
+		query_sql "INSERT INTO `pvp_flux_csd` (`char_id`, `type`, `kill`, `last_update`) VALUES (" + .@CID + ", 1, 1, NOW()) ON DUPLICATE KEY UPDATE `kill`=`kill`+1, `last_update`=NOW()";
+		query_sql "INSERT INTO `pvp_flux_csd` (`char_id`, `type`, `die`, `last_update`) VALUES (" + .@RID + ", 1, 1, NOW()) ON DUPLICATE KEY UPDATE `die`=`die`+1, `last_update`=NOW()";
+		if( .@GID )
+			query_sql "INSERT INTO `ggvg_flux_csd` (`guild_id`, `kill`, `last_update`) VALUES (" + .@GID + ", 1, NOW()) ON DUPLICATE KEY UPDATE `kill`=`kill`+1, `last_update`=NOW()";
+		if( .@RGID )
+			query_sql "INSERT INTO `ggvg_flux_csd` (`guild_id`, `die`, `last_update`) VALUES (" + .@GID + ", 1, NOW()) ON DUPLICATE KEY UPDATE `die`=`die`+1, `last_update`=NOW()";
+	}
+	else if( getmapflag(.@Map$,mf_pvp) ) {
+		query_sql "INSERT INTO `pvp_flux_csd` (`char_id`, `type`, `kill`, `last_update`) VALUES (" + .@CID + ", 0, 1, NOW()) ON DUPLICATE KEY UPDATE `kill`=`kill`+1, `last_update`=NOW()";
+		query_sql "INSERT INTO `pvp_flux_csd` (`char_id`, `type`, `die`, `last_update`) VALUES (" + .@RID + ", 0, 1, NOW()) ON DUPLICATE KEY UPDATE `die`=`die`+1, `last_update`=NOW()";
+	}
+	end;	
+}
+
+function	script	csd_gplayer_set	{
+	query_sql "INSERT INTO `pguild_flux_csd` (`char_id`, `break`, `last_update`) VALUES (" + getarg(0) + ", 1, NOW()) ON DUPLICATE KEY UPDATE `break`=`break`+1, `last_update`=NOW()";
+	return;
+}
+
+function	script	csd_gguild_set	{
+	query_sql "INSERT INTO `guild_flux_csd` (`guild_id`, `break`, `last_update`) VALUES (" + getarg(0) + ", 1, NOW()) ON DUPLICATE KEY UPDATE `break`=`break`+1, `last_update`=NOW()";
+	return;
+}

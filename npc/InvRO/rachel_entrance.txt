@@ -1,0 +1,110 @@
+prontera,166,125,4	script	Nemma#ratemp	920,{
+if(rachelaccess== 0 ){
+    mes "[Priestess Nemma]";
+    mes "Good day, adventurer.";
+    mes "May I ask what brings";
+    mes "you to the temple today?";
+    next;
+    switch(select("I want to enter:Just sight-seeing.")){
+        case 1:
+            mes "[Priestess Nemma]";
+			mes "Oh! I'm glad to see that";
+			mes "our kind of spirituality is";
+			mes "practiced in other countries~";
+			mes "You know, we at the Temple of";
+			mes "Cheshrumnir will be hosting a";
+			mes "festival here at the temple.";
+			next;
+			mes "[Priestess Nemma]";
+			mes "We're accepting 100M payment";
+			mes "for the festival, so we'd be";
+			mes "grateful if you could make";
+			mes "a contribution. Regardless,";
+			mes "we invite you to celebrate the";
+			mes "grace of the goddess with us.";
+            next;
+            mes "[Priestess Nemma]";
+            mes "Would you like to pay 100M";
+            mes "for lifetime access on rachel dungeon?";
+            next;
+            mes "[Priestess Nemma]";
+            mes "^ff0000Note^000000: The 100M fee is only for that character and not for the whole account so be smart in choosing your character to be use";
+            next;
+            switch(select("I want to pay 100M:No way!")){
+                case 1:
+                    mes "[Priestess Nemma]";
+                    mes "Great!.";
+                    mes "Lets proceed for the payment";
+                    next;
+                    switch(select("Pay 100M:Cancel")){
+                        case 1:
+                            if (Zeny < 100000000 ) {
+                            mes "[Priestess Nemma]";
+                            mes "Sorry you dont have enought zeny";
+                            close;
+                            }
+                            mes "[Priestess Nemma]";
+                            mes "^ff0000"+strcharinfo(0)+"^000000 has been blessed by Freya for lifetime access to the rachel dungeon";
+                            set rachelaccess,1;
+                            set Zeny, Zeny-100000000;
+                            next;
+                            mes "[Priestess Nemma]";
+                            mes "Would you like to enter?";
+                            next;
+                            switch(select("Yes:No")){
+                                case 1:
+                                    warp "ra_san01",140,135;
+                                    end;
+
+                                case 2:
+                                    mes "[Priestess Nemma]";
+                                    mes "Have a nice day";
+                                    close;
+                            }
+
+                        case 2:
+                            close;
+                    }
+                case 2:
+                    mes "[Priestess Nemma]";
+                    mes "I understand. Well,";
+                    mes "maybe some other time.";
+                    mes "May Freya bless you on";
+                    mes "all your journeys. May the";
+                    mes "grace of the goddess always";
+                    mes "support us in all that we do~";
+                    close;
+            }
+
+        case 2:
+            mes "[Priestess Nemma]";
+            mes "I guess most foreigners";
+            mes "aren't familiar with our";
+            mes "faith, so I suppose they";
+            mes "wouldn't come here to pray...";
+            mes "Well, I hope you enjoy your";
+            mes "time here, adventurer.";
+            close;
+    }
+}
+mes "[Priestess Nemma]";
+mes "Would you like to enter?";
+next;
+switch(select("Rachel Dungeon:Nameless:No")){
+    case 1:
+        warp "ra_san01",140,135;
+        end;
+
+    case 2:
+        warp "nameless_n",256,215;
+        end;
+
+    case 3:
+        mes "[Priestess Nemma]";
+        mes "Have a nice day";
+        close;
+}
+}
+
+
+ra_temin,28,316,5	duplicate(Nemma#ratemp)	Nemma#1	920

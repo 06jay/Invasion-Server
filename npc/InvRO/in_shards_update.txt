@@ -1,0 +1,75 @@
+function	script	shards_price_update	{
+function ex_getrate_boss;
+function ex_getrate_woes;
+function ex_getrate_wobs;
+function ex_getrate_evens;
+function ex_getrate_actvs;
+function ex_getrate_tpvps;
+goto OnTalk;
+end;
+
+OnTalk:
+function ex_getrate_boss {
+	query_sql("SELECT shard_boss_pool_db FROM in_shard_audit",.@shard_boss_pool_db);	
+	query_sql("UPDATE shard_boss_farm_db SET shard_boss_farm_db="+$BOSSS);
+	if (!$BOSSS) return 0;
+	query_sql("UPDATE shard_boss_rate_db SET shard_boss_rate_db = (SELECT " + .@shard_boss_pool_db + " / " + $BOSSS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_boss_rate_db AS CHAR(13)) FROM shard_boss_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_woes {
+	query_sql("SELECT shard_woes_pool_db2 FROM in_shard_audit",.@shard_woes_pool_db2);	
+	query_sql("UPDATE shard_woes_farm_db SET shard_woes_farm_db="+$WOES);
+	if (!$WOES) return 0;
+	query_sql("UPDATE shard_woes_rate_db SET shard_woes_rate_db = (SELECT " + .@shard_woes_pool_db2 + " / " + $WOES + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_woes_rate_db AS CHAR(13)) FROM shard_woes_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_wobs {
+	query_sql("SELECT shard_wobs_pool_db FROM in_shard_audit",.@shard_wobs_pool_db);	
+	query_sql("UPDATE shard_wobs_farm_db SET shard_wobs_farm_db="+$WOBS);
+	if (!$WOBS) return 0;
+	query_sql("UPDATE shard_wobs_rate_db SET shard_wobs_rate_db = (SELECT " + .@shard_wobs_pool_db + " / " + $WOBS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_wobs_rate_db AS CHAR(13)) FROM shard_wobs_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_evens {
+	query_sql("SELECT shard_evens_pool_db FROM in_shard_audit",.@shard_evens_pool_db);	
+	query_sql("UPDATE shard_evens_farm_db SET shard_evens_farm_db="+$EVENS);
+	if (!$EVENS) return 0;
+	query_sql("UPDATE shard_evens_rate_db SET shard_evens_rate_db = (SELECT " + .@shard_evens_pool_db + " / " + $EVENS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_evens_rate_db AS CHAR(13)) FROM shard_evens_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_actvs {
+	query_sql("SELECT shard_actvs_pool_db FROM in_shard_audit",.@shard_actvs_pool_db);	
+	query_sql("UPDATE shard_actvs_farm_db SET shard_actvs_farm_db="+$ACTVS);
+	if (!$ACTVS) return 0;
+	query_sql("UPDATE shard_actvs_rate_db SET shard_actvs_rate_db = (SELECT " + .@shard_actvs_pool_db + " / " + $ACTVS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_actvs_rate_db AS CHAR(13)) FROM shard_actvs_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_tpvps {
+	query_sql("SELECT shard_tpvps_pool_db FROM in_shard_audit",.@shard_tpvps_pool_db);	
+	query_sql("UPDATE shard_tpvps_farm_db SET shard_tpvps_farm_db="+$TPVPS);
+	if (!$TPVPS) return 0;
+	query_sql("UPDATE shard_tpvps_rate_db SET shard_tpvps_rate_db = (SELECT " + .@shard_tpvps_pool_db + " / " + $TPVPS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_tpvps_rate_db AS CHAR(13)) FROM shard_tpvps_rate_db", .@rate$);
+	return .@rate$;
+}
+
+function ex_getrate_mvp {
+	query_sql("SELECT shard_mvp_pool_db FROM in_shard_audit",.@shard_mvp_pool_db);	
+	query_sql("UPDATE shard_mvp_farm_db SET shard_mvp_farm_db="+$MVPS);
+	if (!$MVPS) return 0;
+	query_sql("UPDATE shard_mvp_rate_db SET shard_mvp_rate_db = (SELECT " + .@shard_mvp_pool_db + " / " + $MVPS + " FROM DUAL)");
+	query_sql("SELECT CAST(shard_mvp_rate_db AS CHAR(13)) FROM shard_mvp_rate_db", .@rate$);
+	return .@rate$;
+}
+end;
+}

@@ -1,0 +1,212 @@
+// prontera,150,150,6	script	test	100,{
+// 	mes vip_status(VIP_STATUS_ACTIVE) ? "VIP" : "Not VIP";
+// 	mes vip_status(VIP_STATUS_REMAINING) + " (s).";
+// 	close;
+// }
+
+new_1-1,66,119,3	script	Combat Time Manager	123,{
+
+//-	script	combat_timer_	-1,{ 
+
+if($combattm == 1) {
+	mes "[ Combat Time Manager ]";
+	mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+	close;
+}
+
+
+OnCombat:
+	if(openbox==1) {
+		mes "[ Combat Time Manager ]";
+		mes "Please relog to access me";
+		close;
+	}
+	if(#BankTransaction > gettimetick(2)){
+	mes "[ Combat Time Manager ]";
+	mes "^ff0000Note^000000: For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+	mes "--";
+	mes "You need to wait "+Time2Str(#BankTransaction)+" before you can do another transaction.";
+	close;
+	}
+	.@cid = getcharid(0);
+	.@aid = getcharid(3);
+	.@s = query_sql("SELECT `char_id` FROM `char` WHERE `account_id` = '"+.@aid+"'",.@sqlcid);
+	for(.@i = 0; .@i < .@s; .@i++){
+			query_sql("SELECT SUM(`amount`) FROM `inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@inv);
+			query_sql("SELECT SUM(`amount`) FROM `cart_inventory` WHERE `char_id` = '"+.@sqlcid[.@i]+"' AND `nameid` = '35371'",.@cinv);
+			.@total += .@inv + .@cinv;
+	}
+	query_sql("SELECT SUM(`amount`) FROM `storage` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@stinv);
+	query_sql("SELECT SUM(`amount`) FROM `marketplace_inventory` WHERE `account_id` = '"+.@aid+"' AND `nameid` = '35371'",.@binv);
+	.@total += .@stinv + .@binv;
+	if(.@total != #TCGOnHand){
+			mes "[ Combat Time Manager ]";
+			mes "You have been blocked because your total ^8a2be2$IN^000000 on hand isn't same on the ^8a2be2$IN^000000 you withdraw.";
+			mes "You have a Total ^8a2be2$IN^000000 on your account of : "+.@total;
+			mes "But you only withdraw "+#TCGOnHand+".";
+			sleep2 5000;
+			announce "You have been blocked because your total ^8a2be2$IN^000000 on hand isn't same on the ^8a2be2$IN^000000 you withdraw.",bc_self;
+			atcommand "@ban 365d "+strcharinfo(0);        // Change 1d to how many days you want him to ban.
+			close;
+	}
+	mes "[ Combat Time Manager ]";
+	mes "^ff0000Note^000000:";
+	mes "For every transaction you make with ^8a2be2$IN^000000 there is a 15 minute delay to transact again";
+	next;
+	mes "[ Combat Time Manager ]";
+	mes "What do you want to do?";
+	next;
+switch(select("Get a Combat Time potion:Combat Time Status:Information:Nothing")){
+	case 1:
+		mes "[ Combat Time Manager ]";
+		mes "If you want to get a ^ff0000CTP^000000";
+		mes "you have to pay me x1 ^8a2be2$IN^000000";
+		mes "for x1 ^ff0000CTP^000000"; 
+		mes "Before you buy a combat potion"; 
+		mes "you can read the Information ";
+		mes "first to know the details";
+		next;
+		mes "[ Combat Time Manager ]";
+		mes "Increase benefits:";
+		mes "BJExp: ^ff00001^000000x -> ^00ff002^000000x";
+		mes "Drop: ^ff00000.01^000000x -> ^00ff001.5^000000x";
+		next;
+		mes "[ Combat Time Manager ]";
+		mes "Would you like to exchange?";
+		mes "x1 ^8a2be2$IN^000000 = x1 ^ff0000CTP^000000";
+		next;
+	switch(select("No:Yes")){
+		case 1:
+			mes "[ Combat Time Manager ]";
+			mes "Ok have a nice day~";
+			close;
+			
+		case 2:
+			if (getgroupid()>6) { 
+			mes "[ Combat Time Manager ]";
+			mes "Sorry,GM staff can't use this."; 
+			close; 
+			}
+			if(countitem(35395) > 0 ) {
+				mes "[ Token Manager ]";
+				mes "You have ^8a2be2$IN^000000 reward in your inventory, we will use this first";
+				next;
+				input .@count;
+			if (.@count == 0) {
+				mes "[ Token Manager ]";
+				mes "You cant exchange less than 1 ^8a2be2$IN^000000.";
+				query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+				close;
+			}
+			if (countitem(35395) < .@count*1) {
+			mes "[ Token Manager ]";
+			mes "Sorry you dont have enough of ^8a2be2$IN^000000";
+			query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+			close;
+			}
+			delitem 35395,.@count*1;
+			getitem 35415,.@count*1;
+			//query_sql("INSERT INTO `in_free_combat_usage` (`account_id`,`char_name`,`currency`,`intkn`,`type`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '$IN', '"+.@count+"','Purchase');");
+			query_sql("INSERT INTO `in_free_total_consume` (`account_id`,`char_name`,`intkn`,`transaction`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '"+.@count+"', 'Cash Points');");
+			query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+			close;
+			}
+			input .@count;
+			if (.@count == 0) {
+			mes "[ Combat Time Manager ]";
+			mes "Input valid amount";
+			close;
+			}
+			if(countitem(35371) < .@count*1) {
+			mes "[ Combat Time Manager ]";
+			mes "Sorry you dont have enought ^8a2be2$IN^000000";
+			close;
+			}
+			mes "[ Combat Time Manager ]";
+			delitem 35371,.@count*1;
+			getitem 35372,.@count*1;
+			#TCGOnHand -= .@count;
+			#BankTransaction = gettimetick(2)+900;
+			query_sql("INSERT INTO `in_total_consume` (`account_id`,`char_name`,`intkn`,`transaction`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '"+.@count+"','Combat Time');");
+			query_sql("INSERT INTO `in_combat_exchange` (`account_id`,`char_name`,`currency`,`intkn`,`type`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , '$IN', '"+.@count+"','Purchase');");
+			
+			// allocate 55% on AIN
+			query_sql("INSERT INTO `mapreg` (`varname`, `index`, `value`) VALUES ('$AIN$', 0, 0.5500*"+.@count+") ON DUPLICATE KEY UPDATE `value` = `value` + 0.5500*"+.@count+";");
+			// allocate 45% on SIN
+			query_sql(
+				"INSERT INTO `in_shard_audit` (`id`, `shard_actvs_pool_db`, `shard_boss_pool_db`, " +
+				"`shard_evens_pool_db`, `shard_tpvps_pool_db`, `shard_wobs_pool_db`, `shard_woes_pool_db`) " +
+				" VALUES (1, 0.0225*"+.@count+", 0.135*"+.@count+", 0.0675*"+.@count+", 0.045*"+.@count+", 0.045*"+.@count+", 0.135*"+.@count+") ON DUPLICATE KEY UPDATE " +
+				" `shard_actvs_pool_db` = `shard_actvs_pool_db` + 0.02250*"+.@count+", " +
+				" `shard_boss_pool_db` = `shard_boss_pool_db` + 0.1350*"+.@count+", " +
+				" `shard_evens_pool_db` = `shard_evens_pool_db` + 0.06750*"+.@count+", " +
+				" `shard_tpvps_pool_db` = `shard_tpvps_pool_db` + 0.0450*"+.@count+", " +
+				" `shard_wobs_pool_db` = `shard_wobs_pool_db` + 0.0450*"+.@count+", " +
+				" `shard_woes_pool_db` = `shard_woes_pool_db` + 0.1350*"+.@count+", " +
+				" `update_date` = CURRENT_TIMESTAMP"
+			);
+			callfunc "shards_price_update";
+			query_sql("UPDATE `token_db` SET `process_game` = 0 WHERE `account_id` = '"+getcharid(3)+"'");
+			mes "Congratulation you have "+.@count+" ^ff0000CTP^000000";
+			close;
+		}
+
+	case 2:
+		if(getgroupid() == 5) {
+		mes "[ Combat Time Manager ]";
+		set .@Timer, vip_status(VIP_STATUS_EXPIRE);
+		mes "Your combat time status will end at: " + gettimestr("%Y-%m/%d %H:%M:%S",21,vip_status(VIP_STATUS_EXPIRE));
+		mes "Time left: " + callfunc("Time2Str",.@Timer);
+		mes "==============================";
+		mes "Your account benefits";
+		mes "Drop: ^ff00000.01^000000x -> ^00ff002^000000x";
+		mes "Exp Penalty: ^ff00001^000000% -> ^00ff000^000000%";
+		close;
+		}
+		mes "[ Combat Time Manager ]";
+		mes "You have no combat time right now";
+		close;
+		
+	case 3:
+		mes "[ Combat Time Manager ]";
+		mes "Combat Time Potion (^ff0000CTP^000000)";
+		mes "You can exchange x1 ^ff0000CTP^000000";
+		mes "in the amount of x1 ^8a2be1$IN^000000";
+		mes "with each ^ff0000CTP^000000 you can farm"; 
+		mes "60 minutes to increase rate";
+		mes "Please use x1 ^ff0000CTP^000000 at the";
+		mes "same time or depending on";
+		mes "time you want.";
+		close;
+		
+	case 4:
+		mes "[ Combat Time Manager ]";
+		mes "Ok have a nice day~";
+		close;
+	}
+
+}
+
+prontera,147,102,5	duplicate(Combat Time Manager)	Combat Time Manager#pront	123
+
+
+
+-	script	combat_timer_	-1,{ 
+OnInit:
+	bindatcmd "combat",strnpcinfo(3)+"::OnCombat1";
+	end;
+
+OnCombat1:
+if(getgroupid() == 5) {
+		mes "[ Combat Time Manager ]";
+		set .@Timer, vip_status(VIP_STATUS_EXPIRE);
+		mes "Your combat time status will end at: " + gettimestr("%Y-%m/%d %H:%M:%S",21,vip_status(VIP_STATUS_EXPIRE));
+		mes "Time left: " + callfunc("Time2Str",.@Timer);
+		mes "==============================";
+		mes "Your account benefits";
+		mes "Drop: ^ff00000.01^000000x -> ^00ff001^000000x";
+		mes "Exp Penalty: ^ff00001^000000% -> ^00ff000^000000%";
+		mes "Battle Manual: ^ff00001^000000x -> ^00ff001.5^000000x";
+		close;
+	}
+}

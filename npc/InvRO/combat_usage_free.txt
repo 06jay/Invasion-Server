@@ -1,0 +1,5 @@
+function	script	combat_usage_free	{
+
+query_sql("INSERT INTO `in_free_combat_usage` (`account_id`,`char_name`,`currency`,`intkn`,`type`) VALUES ('"+getcharid(3)+"','"+strcharinfo(0)+"' , 'None', '1','Used');");
+
+}

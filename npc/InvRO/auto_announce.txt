@@ -1,0 +1,22 @@
+-	script	News11	-1,{
+OnInit:
+set .Time,5;		// Announce every x Minute.
+
+setarray .News$[0],	// Random Message to be Announced
+		"[ System ]: Combat Potion can be used to boost Farming capabilities. 1 Combat Potion = 60 Minutes. Please use wisely",
+		"[ System ]: $Zeny can be bought thru DEX or thru selling items. In-game ZENY can be converted thru $ZENY. Please read the details in https://whitepaper.invasionro.net/server-feature/usdzeny-farming",
+		"[ System ]: $IN can be bought thru DEX or by farming shards. In-game SHARDS can be converted thru $IN. Please read the details in https://whitepaper.invasionro.net/server-feature/usdin-farming",
+		"[ System ]: Normal loot drop is disabled if you no longer have any remaining Combat Time. Usage of Combat Time is a must for better farming experience.",
+		"[ System ]: You can purchase Combat Potion through cashshop or through the [ Combat Time Manager.] Please use utilize your Combat Time wisely.",
+		"[ System ]: Did you know that you can still obtain Job and Experience points even without using any Combat Potions? You can still gain experience x1.",
+		"[ System ]: You can use the [ Marketplace NPC ] to deposit your items in the Marketplace website and/or vise versa. Please make sure your Meta Mask account is linked in our marketplace website.",
+		"[ System ]: The [ Token Manager NPC ] can be used to deposit your ZENY in the Marketplace website and/or vise versa. Please make sure your Meta Mask account is linked in our marketplace website.",
+		"[ System ]: We offer FREE RED POTIONS and FREE ARROW. The NPC is located in the middle of Prontera. ",
+		"[ System ]: We recommend that you refer your friends and relatives who share the same passion in this server. Mechanics of this promo is in https://whitepaper.invasionro.net/server-feature/referral-system";
+		
+while( 1 ){
+	announce .News$[ rand( getarraysize( .News$ ) ) ],0;
+	sleep ( .Time * 60000 );
+	}
+end;
+}

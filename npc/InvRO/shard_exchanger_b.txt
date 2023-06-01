@@ -1,0 +1,422 @@
+prontera,164,105,4	script	Shard Exchanger B#reward2	898,{
+	if($shexchageb == 1) {
+		mes "[ Shard Exchanger B ]";
+		mes "Sorry for the inconvenience but this NPC is currently under ^ff0000maintenance^000000";
+		close;
+	}
+
+function ex_getrate_woes;
+function ex_getrate_tpvps;
+goto OnTalk;
+end;
+
+OnInit:
+	.n$ = "[ Shard Exchanger B ]";
+
+	.tcg_id2 = 35390;
+	.tcg_id4 = 35392;
+	.tcg_id6 = 35394;
+/*
+	.@nb = query_sql("SELECT shard_woes_farm_db FROM in_shard_farm_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_farm_db (shard_woes_farm_db) values('"+$WOES+"')");
+	}*/
+	.@nb = query_sql("SELECT shard_woes_rate_db FROM in_shard_rate_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_rate_db (shard_woes_rate_db) values('0')");
+	}
+	.@nb = query_sql("SELECT shard_tpvps_farm_db FROM in_shard_farm_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_farm_db (shard_tpvps_farm_db) values('"+$TPVPS+"')");
+	}
+	.@nb = query_sql("SELECT shard_tpvps_rate_db FROM in_shard_rate_db",.@n);
+	if (!.@nb) {
+		query_sql("INSERT INTO in_shard_rate_db (shard_tpvps_rate_db) values('0')");
+	}
+	
+	while(1) {
+		sleep(1000);
+		/*query_sql("UPDATE in_shard_farm_db SET shard_woes_farm_db="+$WOES);*/
+		query_sql("UPDATE in_shard_farm_db SET shard_tpvps_farm_db="+$TPVPS);
+	}
+
+end;
+
+OnTalk:
+mes .n$;
+	mes "^ff0000NOTE:^000000 ";
+	mes "1. Shards exchanger will automatically convert your shard to ^8a2be2$IN Token^000000.";
+	next;
+	mes .n$;
+	.@updated_rate_woes$ = ex_getrate_woes();
+	mes "^ff00001^000000x ^00ff7fWoE Shard^000000 rate is ^00ff00" + .@updated_rate_woes$ + "^000000^8a2be2$IN Token^000000";
+	mes "^ff00001^000000x ^aaaaaaEvent Shard^000000 rate is ^00ff001^000000^8a2be2$IN Token^000000";
+	.@updated_rate_tpvps$ = ex_getrate_tpvps();
+	mes "^ff00001^000000x ^C0C0C0Top Ladder Shard^000000 rate is ^00ff00" + .@updated_rate_tpvps$ + "^000000^8a2be2$IN Token^000000";
+switch(select(
+
+	($WOEL > 0 )?"^00ff7fWoE Shard^000000":"^00ff7fWoE Shard^000000 - ^ff0000Locked^000000",
+	($EVENTL > 0)?"^aaaaaaEvent Shard^000000":"^aaaaaaEvent Shard^000000 - ^ff0000Locked^000000",
+	($TPLL > 0)?"^C0C0C0Top Ladder Shard^000000":"^C0C0C0Top Ladder Shard^000000 - ^ff0000Locked^000000",
+  (getgroupid() < 99) ? "":" > ^0000ffAdmin Control^000000"
+	)){
+
+				case 1:
+        if( $WOEL > 0 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your ^00ff7fWoE Shard^000000 amount";
+						input(.@amountw);
+						next;
+						if ((.@amountw) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						.@updated_rate_woes$ = ex_getrate_woes();
+						mes "Confirmation the current exchange rate is ^ff0000" + .@updated_rate_woes$ +"^000000 ^8a2be2$IN Token^000000";
+            mes "^ffffff_^000000";
+            mes "^ff0000Transact at your own risk.^000000";
+            mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id2) < .@amountw) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id2);
+							close;
+						}
+						delitem .tcg_id2,.@amountw;
+						$WOES-=.@amountw;
+
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_woes_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_woes_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,last_exchange_date,last_exchange_amount,shard_rate,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_woes_rate_db FROM in_shard_rate_db ) * " + .@amountw + ", " + .@updated_rate_woes$ + ", " + (.@amountw) +",'WoE Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_woes_pool_db = shard_woes_pool_db - ( SELECT shard_woes_rate_db FROM in_shard_rate_db ) * " + .@amountw);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_woes_rate_db FROM in_shard_rate_db ) * " + .@amountw + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+					case 2:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amountw$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amountw$[.@i];
+						}
+						close;
+
+					default:
+						close;
+
+				}
+        }
+        next;
+				mes .n$;
+				mes "Sorry ^00ff7fWoE Shard^000000 exchanger is locked.";
+				mes "It will be unlocked once the end season is over";
+				close;
+
+				case 2:
+        if( $EVENTL > 0 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your ^aaaaaaEvent Shard^000000 amount";
+						input(.@amountw);
+						next;
+						if ((.@amountw) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						mes "Confirmation the current exchange rate is ^ff00001^000000 ^8a2be2$IN Token^000000";
+            mes "^ffffff_^000000";
+            mes "^ff0000Transact at your own risk.^000000";
+            mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id4) < .@amountw) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id4);
+							close;
+						}
+						delitem .tcg_id4,.@amountw;
+						$EVENS-=.@amountw;
+
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_evens_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_evens_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,last_exchange_date,last_exchange_amount,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_evens_rate_db FROM in_shard_rate_db ) * " + .@amountw + ", " + (.@amountw) +",'Event Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_evens_pool_db = shard_evens_pool_db - ( SELECT shard_evens_rate_db FROM in_shard_rate_db ) * " + .@amountw);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_evens_rate_db FROM in_shard_rate_db ) * " + .@amountw + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+					
+					case 2:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amountw$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amountw$[.@i];
+						}
+						close;
+
+					default:
+						close;
+
+				}
+        }
+		    next;
+				mes .n$;
+				mes "Sorry ^aaaaaaEvent Shard^000000 exchanger is locked.";
+				close;
+
+				case 3:
+        if( $TPLL > 0 ){
+				switch(select("Exchange:History")) {
+					case 1:
+						next;
+						mes .n$;
+						mes "Input your ^c0c0c0Top Ladder Shard^000000 amount";
+						input(.@amountw);
+						next;
+						if ((.@amountw) < 1) {
+       			mes .n$;
+						mes "You cant exchange less than 1 Shard.";
+						close;
+						}
+						mes .n$;
+						.@updated_rate_tpvps$ = ex_getrate_tpvps();
+						mes "Exchange rate is ^ff0000" + .@updated_rate_tpvps$ +"^000000 ^8a2be2$IN Token^000000";
+            mes "^ffffff_^000000";
+            mes "^ff0000Transact at your own risk.^000000";
+            mes "^ff0000Irreversible transaction";
+						if (select("Proceed:No")==2) close;
+						if (countitem(.tcg_id6) < .@amountw) {
+							next;
+							mes .n$;
+							mes "Not Enough "+getitemname(.tcg_id6);
+							close;
+						}
+						delitem .tcg_id6,.@amountw;
+						$TPVPS-=.@amountw;
+
+						.@query$ = "INSERT INTO `token_db` (`account_id`,`in`) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", ";
+						.@query$ = .@query$ + "( SELECT shard_tpvps_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						.@query$ = .@query$ + ") ON DUPLICATE KEY UPDATE account_id = " + getcharid(3) + ", token_db.in = token_db.in + ( SELECT shard_tpvps_rate_db FROM in_shard_rate_db ) * " + .@amountw;
+						
+						query_sql(.@query$);
+						
+						.@query$ = "INSERT INTO in_shard_exchange_history (account_id,last_exchange_date,last_exchange_amount,shard_rate,shard_amount,type) VALUES (";
+						.@query$ = .@query$ + getcharid(3) + ", NOW(), ";
+						.@query$ = .@query$ + "( SELECT shard_tpvps_rate_db FROM in_shard_rate_db ) * " + .@amountw + ", " + .@updated_rate_tpvps$ + ", " + (.@amountw) +",'WoE Shards')";
+						query_sql(.@query$);
+						
+						query_sql("UPDATE `in_shard_audit` SET shard_tpvps_pool_db = shard_tpvps_pool_db - ( SELECT shard_tpvps_rate_db FROM in_shard_rate_db ) * " + .@amountw);
+									
+						next;
+						
+						.@s = query_sql("SELECT CAST((( SELECT shard_tpvps_rate_db FROM in_shard_rate_db ) * " + .@amountw + ") AS CHAR(13)) FROM DUAL", .@amt$);
+						
+						mes .n$;
+						mes "You received "+.@amt$+" ^8a2be2$IN Token^000000";
+						close;
+
+				
+					case 2:
+						.@nb = query_sql("SELECT `last_exchange_date`,CAST(`last_exchange_amount` AS CHAR(13)) FROM `in_shard_exchange_history` WHERE account_id="+getcharid(3)+" ORDER BY last_exchange_date DESC LIMIT 30",.@date$,.@amountw$);
+						next;
+						mes .n$;
+						if (!.@nb)
+							mes "No history available";
+						for (.@i = 0;.@i < .@nb;.@i++) {
+							mes .@date$[.@i]+" : "+.@amountw$[.@i];
+						}
+						close;
+
+					default:
+						close;
+
+					}
+          }
+          next;
+          mes .n$;
+          mes "Sorry ^c0c0c0Top Ladder Shard^000000 exchanger is locked.";
+          mes "It will be unlocked once the end season is over";
+          close;
+
+        case 4:
+          next;
+          mes .n$;
+          mes "Hello GM ^0000ff"+strcharinfo(0)+"^000000";
+          if($WOEL == 0) {
+          mes "^00ff7fWoE Shard^000000: ^ff0000Locked^000000";
+          } else {
+          mes "^00ff7fWoE Shard^000000: ^00ff00Unlocked^000000";
+          }
+          if($EVENTL == 0) {
+          mes "^aaaaaaEvent Shard^000000: ^ff0000Locked^000000";
+          } else {
+          mes "^aaaaaaEvent Shard^000000: ^00ff00Unlocked^000000";
+          }
+          if($TPLL == 0) {
+          mes "^c0c0c0Top Ladder Shard^000000: ^ff0000Locked^000000";
+          } else {
+          mes "^c0c0c0Top Ladder Shard^000000: ^00ff00Unlocked^000000";
+          }
+          next;
+        switch(select(
+        ($WOEL > 0 )?"^00ff00WoE Shard^000000":"^ff0000WoE Shard^000000",
+        ($EVENTL > 0)?"^00ff00Event Shard^000000":"^ff0000Event Shard^000000",
+        ($TPLL > 0)?"^00ff00Top Ladder Shard^000000":"^ff0000Top Ladder Shard^000000"
+        )){
+
+          case 1:
+            mes .n$;
+            mes "^00ff7fWoE Shard^000000";
+            if($WOEL == 1) {
+            mes "Do you want to : ^ff0000Locked^000000 ?";
+            } else {
+            mes "Do you want to : ^00ff00Unlocked^000000 ?";
+            }
+            next;
+            switch(select(
+              ($WOEL > 0 )?"":"Do you want to ^00ff00UNLOCKED^000000 ?",
+              ($WOEL > 0 )?"Do you want to ^ff0000LOCKED^000000 ?":"",
+              "Cancel"
+            )){
+
+              case 1:
+                $WOEL+=1;
+                announce strcharinfo(0)+": WoE Shards - Unlocked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 2:
+                $WOEL-=1;
+                announce strcharinfo(0)+": WoE Shards - Locked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 3:
+                close;
+
+            }
+
+          case 2:
+            mes .n$;
+            mes "^00ff00Event Shard^000000";
+            if($EVENTL == 1) {
+            mes "Do you want to : ^ff0000Locked^000000 ?";
+            } else {
+            mes "Do you want to : ^00ff00Unlocked^000000 ?";
+            }
+            next;
+            switch(select(
+              ($EVENTL > 0 )?"":"Do you want to ^00ff00UNLOCKED^000000 ?",
+              ($EVENTL > 0 )?"Do you want to ^ff0000LOCKED^000000 ?":"",
+              "Cancel"
+            )){
+
+              case 1:
+                $EVENTL+=1;
+                announce strcharinfo(0)+": Event Shards - Unlocked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 2:
+                $EVENTL-=1;
+                announce strcharinfo(0)+": Event Shards - Locked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 3:
+                close;
+
+            }
+
+          case 3:
+            mes .n$;
+            mes "^00ff00Top Ladder Shard^000000";
+            if($TPLL == 1) {
+            mes "Do you want to : ^ff0000Locked^000000 ?";
+            } else {
+            mes "Do you want to : ^00ff00Unlocked^000000 ?";
+            }
+            next;
+            switch(select(
+              ($TPLL > 0 )?"":"Do you want to ^00ff00UNLOCKED^000000 ?",
+              ($TPLL > 0 )?"Do you want to ^ff0000LOCKED^000000 ?":"",
+              "Cancel"
+            )){
+
+              case 1:
+                $TPLL+=1;
+                announce strcharinfo(0)+": Top Ladder Shards - Unlocked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 2:
+                $TPLL-=1;
+                announce strcharinfo(0)+": Top Ladder Shards - Locked at [ Shard Exchanger B ]",bc_all;
+                end;
+
+              case 3:
+                close;
+
+            }
+
+        }
+			}
+
+  function ex_getrate_woes {
+    query_sql("SELECT shard_woes_pool_db FROM in_shard_audit",.@shard_woes_pool_db);	
+    query_sql("UPDATE in_shard_farm_db SET shard_woes_farm_db="+$WOES);
+    if (!$WOES) return 0;
+    query_sql("UPDATE in_shard_rate_db SET shard_woes_rate_db = (SELECT " + .@shard_woes_pool_db + " / " + $WOES + " FROM DUAL)");
+    query_sql("SELECT CAST(shard_woes_rate_db AS CHAR(13)) FROM in_shard_rate_db", .@rate$);
+    return .@rate$;
+  }
+
+    function ex_getrate_tpvps {
+    query_sql("SELECT shard_tpvps_pool_db FROM in_shard_audit",.@shard_tpvps_pool_db);	
+    query_sql("UPDATE in_shard_farm_db SET shard_tpvps_farm_db="+$TPVPS);
+    if (!$TPVPS) return 0;
+    query_sql("UPDATE in_shard_rate_db SET shard_tpvps_rate_db = (SELECT " + .@shard_tpvps_pool_db + " / " + $TPVPS + " FROM DUAL)");
+    query_sql("SELECT CAST(shard_tpvps_rate_db AS CHAR(13)) FROM in_shard_rate_db", .@rate$);
+    return .@rate$;
+  }
+}

@@ -1,0 +1,29 @@
+function	script	FleeView	{
+		mes "[ Hand Book ]";
+		mes "Here's the flee list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+if(a5076 == 1) { mes "^ff0000"+getitemname(5076)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5076)+" + 1(Default)^000000"; }
+if(a2279 == 1) { mes "^ff0000"+getitemname(2279)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2279)+" + 1(Default)^000000"; }
+if(a5034 == 1) { mes "^ff0000"+getitemname(5034)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5034)+" + 1(Default)^000000"; }
+if(a5024 == 1) { mes "^ff0000"+getitemname(5024)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5024)+" + 1(Default)^000000"; }
+if(a2267 == 1) { mes "^ff0000"+getitemname(2267)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2267)+" + 1(Default)^000000"; }
+if(a5808 == 1) { mes "^ff0000"+getitemname(5808)+" + 5(Default)^000000"; } else { mes "^0000FF"+getitemname(5808)+" + 5(Default)^000000"; }
+if(a2218 == 1) { mes "^ff0000"+getitemname(2218)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2218)+" + 1(Default)^000000"; }
+if(a5097 == 1) { mes "^ff0000"+getitemname(5097)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5097)+" + 1(Default)^000000"; }
+if(a5069 == 1) { mes "^ff0000"+getitemname(5069)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5069)+" + 1(Default)^000000"; }
+if(a5045 == 1) { mes "^ff0000"+getitemname(5045)+" + 5(Default)^000000"; } else { mes "^0000FF"+getitemname(5045)+" + 5(Default)^000000"; }
+if(a5173 == 1) { mes "^ff0000"+getitemname(5173)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5173)+" + 1(Default)^000000"; }
+if(a5004 == 1) { mes "^ff0000"+getitemname(5004)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5004)+" + 1(Default)^000000"; }
+if(a5350 == 1) { mes "^ff0000"+getitemname(5350)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5350)+" + 1(Default)^000000"; }
+if(a5087 == 1) { mes "^ff0000"+getitemname(5087)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5087)+" + 1(Default)^000000"; }
+if(a2293 == 1) { mes "^ff0000"+getitemname(2293)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2293)+" + 1(Default)^000000"; }
+if(a5108 == 1) { mes "^ff0000"+getitemname(5108)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5108)+" + 1(Default)^000000"; }
+if(a5161 == 1) { mes "^ff0000"+getitemname(5161)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5161)+" + 1(Default)^000000"; }
+if(a5029 == 1) { mes "^ff0000"+getitemname(5029)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5029)+" + 1(Default)^000000"; }
+if(a5077 == 1) { mes "^ff0000"+getitemname(5077)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5077)+" + 1(Default)^000000"; }
+
+
+		close;
+	}

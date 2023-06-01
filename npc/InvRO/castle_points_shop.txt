@@ -1,0 +1,294 @@
+prontera,137,125,5	script	Castle Points Shop	733,{
+    query_sql("SELECT CAST(`points` AS CHAR(13)) FROM `castle_points` WHERE account_id = " + getcharid(3), .@castle_points$);
+    query_sql("SELECT `points` FROM `castle_points` WHERE `account_id` = "+getcharid(3)+" LIMIT 1", .@total_cpoints);
+    .@weight = 100 * Weight / MaxWeight;
+    .@n$ = "[ Castle Points Shop ]";
+
+    mes .@n$;
+    mes "What would you like?";
+    next;
+    switch(select("Shop:View Points")){
+        case 1:
+            mes .@n$;
+            mes "Here's the available item at the moment";
+            next;
+            switch(select("C. Baby Panda:C. Analyze Eye:C. Bouncing Hair - Yellow:C. Blue Wing of Fairy:C. Alice Wig - Peach:C. Crow:C. Desert Wolf Baby:C. Dolor Thanatos Mask:C. Drooping Oscar:C. Drooping Schmidt")){
+                case 1:
+                    mes .@n$;
+                    mes "<ITEM>Costume Baby Panda<INFO>31798</INFO></ITEM>";
+                    mes "Price: ^ff000040^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 40 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-40) ON DUPLICATE KEY UPDATE `points` = `points` - 40;");
+                            getitem 31798,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 2:
+                    mes .@n$;
+                    mes "<ITEM>Costume Analyze Eye<INFO>20315</INFO></ITEM>";
+                    mes "Price: ^ff000050^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 50 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-50) ON DUPLICATE KEY UPDATE `points` = `points` - 50;");
+                            getitem 20315,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 3:
+                    mes .@n$;
+                    mes "<ITEM>Costume Bouncing Hair - Yellow<INFO>20350</INFO></ITEM>";
+                    mes "Price: ^ff000070^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 70 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-70) ON DUPLICATE KEY UPDATE `points` = `points` - 70;");
+                            getitem 20350,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 4:
+                    mes .@n$;
+                    mes "<ITEM>Costume Blue Wing of Fairy<INFO>20511</INFO></ITEM>";
+                    mes "Price: ^ff000070^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 70 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-70) ON DUPLICATE KEY UPDATE `points` = `points` - 70;");
+                            getitem 20511,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 5:
+                    mes .@n$;
+                    mes "<ITEM>Costume Alice Wig - Peach<INFO>31407</INFO></ITEM>";
+                    mes "Price: ^ff000060^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 60 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-60) ON DUPLICATE KEY UPDATE `points` = `points` - 60;");
+                            getitem 31407,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 6:
+                    mes .@n$;
+                    mes "<ITEM>Costume Crow<INFO>31380</INFO></ITEM>";
+                    mes "Price: ^ff000020^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 20 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-20) ON DUPLICATE KEY UPDATE `points` = `points` - 20;");
+                            getitem 31380,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 7:
+                    mes .@n$;
+                    mes "<ITEM>Costume Desert Wolf Baby<INFO>31686</INFO></ITEM>";
+                    mes "Price: ^ff000040^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 40 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-40) ON DUPLICATE KEY UPDATE `points` = `points` - 40;");
+                            getitem 31686,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 8:
+                    mes .@n$;
+                    mes "<ITEM>Costume Dolor Thanatos Mask<INFO>31311</INFO></ITEM>";
+                    mes "Price: ^ff000040^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 40 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-40) ON DUPLICATE KEY UPDATE `points` = `points` - 40;");
+                            getitem 31311,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 9:
+                    mes .@n$;
+                    mes "<ITEM>Costume Drooping Oscar<INFO>31632</INFO></ITEM>";
+                    mes "Price: ^ff000030^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 30 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-30) ON DUPLICATE KEY UPDATE `points` = `points` - 30;");
+                            getitem 31632,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                case 10:
+                    mes .@n$;
+                    mes "<ITEM>Costume Drooping Schmidt<INFO>31631</INFO></ITEM>";
+                    mes "Price: ^ff000030^000000 Points";
+                    next;
+                    switch(select("Buy Now:Cancel")){
+                        case 1:
+                        if (.@total_cpoints < 30 ) {
+                            mes .@n$;
+                            mes "Sorry you dont have enough Points.";
+                            close;
+                        }
+                        if( 50 <= .@weight ) {
+                            mes .@n$;
+                            mes "You are currently at 50% percent of your maximum weight."; 
+                            close;
+                        }
+                            query_sql("INSERT INTO `castle_points` (`account_id`,`points`) VALUES ('"+getcharid(3)+"',-30) ON DUPLICATE KEY UPDATE `points` = `points` - 30;");
+                            getitem 31631,1;
+                            close;
+
+                        case 2:
+                            mes .@n$;
+                            mes "Have a nice day";
+                            close;
+                    }
+
+                
+            }
+
+        case 2:
+            mes .@n$;
+            mes "Castle Points: ^ff0000"+.@castle_points$+"^000000";
+            close;
+    }
+}

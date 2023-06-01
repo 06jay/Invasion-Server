@@ -1,0 +1,15 @@
+function	script	SpecialView	{
+		mes "[ Hand Book ]";
+		mes "Here's the attack/m.atak (%) list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		next;
+if(a35032 == 1) { mes "^ff0000"+getitemname(35032)+" 1% attack^000000"; } else { mes "^0000FF"+getitemname(35032)+" 1% attack ^000000"; }
+if(a20764 == 1) { mes "^ff0000"+getitemname(20764)+" 1% m.attack^000000"; } else { mes "^0000FF"+getitemname(20764)+" 1% m.attack^000000"; }
+if(a20504 == 1) { mes "^ff0000"+getitemname(20504)+" 1% m.attack^000000"; } else { mes "^0000FF"+getitemname(20504)+" 1% m.attack^000000"; }
+if(a35275 == 1) { mes "^ff0000"+getitemname(35275)+" 1% attack^000000"; } else { mes "^0000FF"+getitemname(35275)+" 1% attack^000000"; }
+
+
+
+
+		close;
+	}

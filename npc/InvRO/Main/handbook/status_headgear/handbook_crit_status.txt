@@ -1,0 +1,18 @@
+function	script	CriticalView	{
+		mes "[ Hand Book ]";
+		mes "Here's the crit list";
+		mes "if ^ff0000 red ^000000 it is already deposit and if ^0000FF blue ^000000 it's not deposit yet.";
+		mes "(Default)/(new) = you can find this headgears on menu (default)/(new) ";
+		next;
+if(a5125 == 1) { mes "^ff0000"+getitemname(5125)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5125)+" + 1(Default)^000000"; }
+if(a5348 == 1) { mes "^ff0000"+getitemname(5348)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5348)+" + 1(Default)^000000"; }
+if(a5057 == 1) { mes "^ff0000"+getitemname(5057)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5057)+" + 1(Default)^000000"; }
+if(a2295 == 1) { mes "^ff0000"+getitemname(2295)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(2295)+" + 1(Default)^000000"; }
+if(a5124 == 1) { mes "^ff0000"+getitemname(5124)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5124)+" + 1(Default)^000000"; }
+if(a5022 == 1) { mes "^ff0000"+getitemname(5022)+" + 5(Default)^000000"; } else { mes "^0000FF"+getitemname(5022)+" + 5(Default)^000000"; }
+if(a5157 == 1) { mes "^ff0000"+getitemname(5157)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5157)+" + 1(Default)^000000"; }
+if(a5053 == 1) { mes "^ff0000"+getitemname(5053)+" + 1(Default)^000000"; } else { mes "^0000FF"+getitemname(5053)+" + 1(Default)^000000"; }
+
+		
+		close;
+	}

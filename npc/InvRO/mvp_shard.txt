@@ -1,0 +1,934 @@
+//__________    _____    ________  __________________________________   ____
+//\______   \  /  _  \  /  _____/ /   _____/\_   _____/\______   \   \ /   /
+// |       _/ /  /_\  \/   \  ___ \_____  \  |    __)_  |       _/\   Y   / 
+// |    |   \/    |    \    \_\  \/        \ |        \ |    |   \ \     /  
+// |____|_  /\____|__  /\______  /_______  //_______  / |____|_  /  \___/   
+//        \/         \/        \/        \/         \/         \/           
+//Website: www.ragserv.com
+//Discord Support: -R#9305
+//Facebook: https://www.facebook.com/RagServPH/
+//RAGSERV SUPPORT || RAGSERV PH";
+//====================================================
+//	MVP Event v1.0                                    |
+//	By : -R (KazumaSatou on rAthena)                  |
+//====================DESCRIPTION=====================|
+//	MVP Event with custom item drop on MVP Kill       |
+//  When MVP Event is active.                         |
+//  @mvpevent activation available for testing.       |
+//  Rewards are configurable at OnInit variable.      |
+//===================CHANGELOGS=======================|
+// v1.0 Initial Release                               |
+//=======================POLICY=======================|
+//	You must not claim my work as yours.              |
+//	You must not resell my work.                      |
+//	You must not share in any form to others.         |
+//	You can use my works on your future owned servers.|
+//====================================================
+-	script	MVP Event	FAKE_NPC,{
+	end;
+	OnSat1800:
+		announce "MVP Event : The event will begin shortly.",0;
+		sleep 5000;
+		announce "MVP Event : Prepare your teams to get the MVP and get various rewards.",0;
+		sleep 5000;
+		announce "MVP Event : The event is now picking MVP and on what map you will kill those!",0;
+		sleep 10000;
+	OnSelect:
+	if($MVPList >= .MVPSize){
+		$MVPList = $MVP_Amon_RA = $MVP_Atroce = $MVP_Bacsojin = $MVP_Baphomet = $MVP_Dark_Lord = $MVP_Detale = $MVP_Doppelganger = $MVP_Dracula = $MVP_Drake = $MVP_Eddga = $MVP_Evil_SnakeL = $MVP_Garm = $MVP_Golden_ThiefB = $MVP_Gopinich = $MVP_Ifrit = $MVP_Samurai_Spectre = $MVP_Stormy_Knight = $MVP_Lady_Tanee = $MVP_Lord_of_Death = $MVP_Maya = $MVP_Mistress = $MVP_Moonlight = $MVP_Orc_Hero = $MVP_Orc_Lord = $MVP_Osiris = $MVP_Pharaoh = $MVP_Phreeoni = $MVP_RSX = $MVP_Tao_Gunka = $MVP_Turtle_Gen = 0;
+		$MVPID = 0;
+		$MVPMap$ = "";
+		announce "MVP List Resets.",0;
+		callsub OnSelect;
+	}
+	.sel = rand(0, (.MVPSize - 1) );
+	if(.lastsel == .sel)
+		callsub OnSelect;
+	$MVPID = .MVPList[.sel];
+	$MVPMap$ = .MVPMap$[.sel];
+	if($MVP_Amon_RA == 1 && .sel == 0)
+		callsub OnSelect;
+	else if($MVP_Atroce == 1 && .sel == 1)
+		callsub OnSelect;
+	else if($MVP_Bacsojin == 1 && .sel == 2)
+		callsub OnSelect;
+	else if($MVP_Baphomet == 1 && .sel == 3)
+		callsub OnSelect;
+	else if($MVP_Dark_Lord == 1 && .sel == 4)
+		callsub OnSelect;
+	else if($MVP_Detale == 1 && .sel == 5)
+		callsub OnSelect;
+	else if($MVP_Doppelganger == 1 && .sel == 6)
+		callsub OnSelect;
+	else if($MVP_Dracula == 1 && .sel == 7)
+		callsub OnSelect;
+	else if($MVP_Drake == 1 && .sel == 8)
+		callsub OnSelect;
+	else if($MVP_Eddga == 1 && .sel == 9)
+		callsub OnSelect;
+	else if($MVP_Evil_SnakeL == 1 && .sel == 10)
+		callsub OnSelect;
+	else if($MVP_Garm == 1 && .sel == 11)
+		callsub OnSelect;
+	else if($MVP_Golden_ThiefB == 1 && .sel == 12)
+		callsub OnSelect;
+	else if($MVP_Gopinich == 1 && .sel == 13)
+		callsub OnSelect;
+	else if($MVP_Ifrit == 1 && .sel == 14)
+		callsub OnSelect;
+	else if($MVP_Samurai_Spectre == 1 && .sel == 15)
+		callsub OnSelect;
+	else if($MVP_Stormy_Knight == 1 && .sel == 16)
+		callsub OnSelect;
+	else if($MVP_Lady_Tanee == 1 && .sel == 17)
+		callsub OnSelect;
+	else if($MVP_Lord_of_Death == 1 && .sel == 18)
+		callsub OnSelect;
+	else if($MVP_Maya == 1 && .sel == 19)
+		callsub OnSelect;
+	else if($MVP_Mistress == 1 && .sel == 20)
+		callsub OnSelect;
+	else if($MVP_Moonlight == 1 && .sel == 21)
+		callsub OnSelect;
+	else if($MVP_Orc_Hero == 1 && .sel == 22)
+		callsub OnSelect;
+	else if($MVP_Orc_Lord == 1 && .sel == 23)
+		callsub OnSelect;
+	else if($MVP_Osiris == 1 && .sel == 24)
+		callsub OnSelect;
+	else if($MVP_Pharaoh == 1 && .sel == 25)
+		callsub OnSelect;
+	else if($MVP_Phreeoni == 1 && .sel == 26)
+		callsub OnSelect;
+	else if($MVP_RSX == 1 && .sel == 27)
+		callsub OnSelect;
+	else if($MVP_Tao_Gunka == 1 && .sel == 28)
+		callsub OnSelect;
+	else if($MVP_Turtle_Gen == 1 && .sel == 29)
+		callsub OnSelect;
+	.lastsel = .sel;
+	if(strmobinfo(2,$MVPID) == "Amon Ra"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Atroce"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Bacsojin"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Baphomet"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Dark Lord"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Detale"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Doppelganger"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Dracula"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Drake"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Eddga"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Evil Snake Lord"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Garm"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Golden Thief Bug"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Gopinich"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Ifrit"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Incantation Samurai"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Knight of Windstorm"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Lady Tanee"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Lord of Death"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Maya"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Mistress"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Moonlight Flower"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Orc Hero"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Orc Lord"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Osiris"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Pharaoh"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Phreeoni"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "RSX 0806"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Tao Gunka"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	if(strmobinfo(2,$MVPID) == "Turtle General"){
+		$MVPList++;
+		announce "MVP Event : Round "+$MVPList+" | Map '"+$MVPMap$+"' | MVP: "+strmobinfo(2,$MVPID),0;
+	}
+	initnpctimer;
+	$MVPEvent = 1;
+	end;
+
+	OnTimer7200000:
+		stopnpctimer;
+			$MVPEvent = 0;
+			announce "MVP Event : MVP "+strmobinfo(2,$MVPID)+" hasn't killed in 2 hours.",0;
+			sleep 3000;
+			announce "MVP Event : Changing MVP in a few seconds.",0;
+			sleep 5000;
+			callsub OnSelect;
+			end;
+
+
+	OnNPCKillEvent:
+		if($MVPEvent == 1){
+			if(killedrid == 1511 && strcharinfo(3) == $MVPMap$){
+				$MVP_Amon_RA++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1785 && strcharinfo(3) == $MVPMap$){
+				$MVP_Atroce++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1630 && strcharinfo(3) == $MVPMap$){
+				$MVP_Bacsojin++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1039 && strcharinfo(3) == $MVPMap$){
+				$MVP_Baphomet++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1272 && strcharinfo(3) == $MVPMap$){
+				$MVP_Dark_Lord++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1719 && strcharinfo(3) == $MVPMap$){
+				$MVP_Detale++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1046 && strcharinfo(3) == $MVPMap$){
+				$MVP_Doppelganger++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1389 && strcharinfo(3) == $MVPMap$){
+				$MVP_Dracula++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1112 && strcharinfo(3) == $MVPMap$){
+				$MVP_Drake++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1115 && strcharinfo(3) == $MVPMap$){
+				$MVP_Eddga++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1418 && strcharinfo(3) == $MVPMap$){
+				$MVP_Evil_SnakeL++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1252 && strcharinfo(3) == $MVPMap$){
+				$MVP_Garm++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1086 && strcharinfo(3) == $MVPMap$){
+				$MVP_Golden_ThiefB++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1885 && strcharinfo(3) == $MVPMap$){
+				$MVP_Gopinich++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1832 && strcharinfo(3) == $MVPMap$){
+				$MVP_Ifrit++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1492 && strcharinfo(3) == $MVPMap$){
+				$MVP_Samurai_Spectre++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1251 && strcharinfo(3) == $MVPMap$){
+				$MVP_Stormy_Knight++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1688 && strcharinfo(3) == $MVPMap$){
+				$MVP_Lady_Tanee++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1373 && strcharinfo(3) == $MVPMap$){
+				$MVP_Lord_of_Death++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1147 && strcharinfo(3) == $MVPMap$){
+				$MVP_Maya++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1059 && strcharinfo(3) == $MVPMap$){
+				$MVP_Mistress++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1150 && strcharinfo(3) == $MVPMap$){
+				$MVP_Moonlight++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1087 && strcharinfo(3) == $MVPMap$){
+				$MVP_Orc_Hero++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1190 && strcharinfo(3) == $MVPMap$){
+				$MVP_Orc_Lord++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1038 && strcharinfo(3) == $MVPMap$){
+				$MVP_Osiris++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1157 && strcharinfo(3) == $MVPMap$){
+				$MVP_Pharaoh++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1159 && strcharinfo(3) == $MVPMap$){
+				$MVP_Phreeoni++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1623 && strcharinfo(3) == $MVPMap$){
+				$MVP_RSX++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1583 && strcharinfo(3) == $MVPMap$){
+				$MVP_Tao_Gunka++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			} else if(killedrid == 1312 && strcharinfo(3) == $MVPMap$){
+				$MVP_Turtle_Gen++;
+				getmapxy .@map$, .@x, .@y, BL_PC;
+				while ( .@i < .RewardAmount ) {
+					do {
+						.@dx = rand( -5, 5 );
+						.@dy = rand( -5, 5 );
+					} while( !checkcell( .@map$,(.@x+.@dx),(.@y+.@dy),cell_chkpass ) );
+						makeitem .ItemIDReward, 1, .@map$, .@x + .@dx, .@y + .@dy;
+					.@i++;
+				}
+				announce "MVP Event : "+strcharinfo(0)+" has killed "+strmobinfo(2,killedrid)+" at "+$MVPMap$+".",0;
+				sleep2 5000;
+				if($MVPList >= .MVPSize){
+					announce "MVP Event : All of the MVP has been slayed. Event is now over! Thank you for participating the event.",0;
+					callsub OnCleanMVPEvent;
+					end;
+				} else {
+					announce "MVP Event : Get ready for the next round.",0;
+					sleep2 5000;
+						callsub OnSelect;
+				}
+			}
+		}
+		end;
+
+    OnSun0000:
+        stopnpctimer;
+        announce "MVP Event : MVP Event is now over! Thank you for participating the event.",0;
+        callsub OnCleanMVPEvent;
+        end;
+
+	OnCleanMVPEvent:
+		$MVPEvent = $MVPID = $MVPList = $MVP_Amon_RA = $MVP_Atroce = $MVP_Bacsojin = $MVP_Baphomet = $MVP_Dark_Lord = $MVP_Detale = $MVP_Doppelganger = $MVP_Dracula = $MVP_Drake = $MVP_Eddga = $MVP_Evil_SnakeL = $MVP_Garm = $MVP_Golden_ThiefB = $MVP_Gopinich = $MVP_Ifrit = $MVP_Samurai_Spectre = $MVP_Stormy_Knight = $MVP_Lady_Tanee = $MVP_Lord_of_Death = $MVP_Maya = $MVP_Mistress = $MVP_Moonlight = $MVP_Orc_Hero = $MVP_Orc_Lord = $MVP_Osiris = $MVP_Pharaoh = $MVP_Phreeoni = $MVP_RSX = $MVP_Tao_Gunka = $MVP_Turtle_Gen = 0;
+		$MVPMap = "";
+		end;
+
+	OnInit:
+		setarray .MVPList[0],1511,1785,1630,1039,1272,1719,1046,1389,1112,1115,1418,1252,1086,1885,1832,1492,1251,1688,1373,1147,1059,1150,1087,1190,1038,1157,1159,1623,1583,1312;
+		setarray .MVPMap$[0],"moc_pryd06","ve_fild01","lou_dun03","prt_maze03","gl_chyard","abyss_03","gef_dun02","gef_dun01","treasure02","pay_fild11","gon_dun03","xmas_fild01","prt_sewb4","mosk_dun03","thor_v03","ama_dun03","xmas_dun02","ayo_dun02","niflheim","anthell02","mjolnir_04","pay_dun04","gef_fild14","gef_fild10","moc_pryd04","in_sphinx5","moc_fild17","ein_dun02","beach_dun","tur_dun04";
+		.MVPSize = getarraysize(.MVPList);
+		$MVPList = $MVP_Amon_RA = $MVP_Atroce = $MVP_Bacsojin = $MVP_Baphomet = $MVP_Dark_Lord = $MVP_Detale = $MVP_Doppelganger = $MVP_Dracula = $MVP_Drake = $MVP_Eddga = $MVP_Evil_SnakeL = $MVP_Garm = $MVP_Golden_ThiefB = $MVP_Gopinich = $MVP_Ifrit = $MVP_Samurai_Spectre = $MVP_Stormy_Knight = $MVP_Lady_Tanee = $MVP_Lord_of_Death = $MVP_Maya = $MVP_Mistress = $MVP_Moonlight = $MVP_Orc_Hero = $MVP_Orc_Lord = $MVP_Osiris = $MVP_Pharaoh = $MVP_Phreeoni = $MVP_RSX = $MVP_Tao_Gunka = $MVP_Turtle_Gen = 0;
+		$MVPID = 0;
+		$MVPMap$ = "";
+		.ItemIDReward = 7227;
+		.RewardAmount = rand(7,10);
+		bindatcmd "mvpevent",strnpcinfo(3)+"::OnSelect",99,99;
+		end;
+}
+
